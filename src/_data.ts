@@ -55,11 +55,7 @@ export const localStorageKey = {
   savedLanguage: "NEMO_LANGUAGE"
 }
 
-export const savedLanguage = localStorage.getItem(localStorageKey.savedLanguage) || languages[0].value;
-
-strings.setLanguage(savedLanguage);
-
-export const steps = [
+export const createSteps =()=> [
   {
     id: "welcome",
     hideInput: true,

@@ -4,7 +4,7 @@ import ChatBot from "react-simple-chatbot";
 
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "./_theme";
-import { steps, strings, localStorageKey, languages, savedLanguage } from "./_data";
+import {  strings, localStorageKey, languages, createSteps } from "./_data";
 import { Header } from "./components/Header";
 
 const Container = styled.div`
@@ -21,11 +21,10 @@ const StyledChatBot = styled(ChatBot)`
   height: 90%;
 `;
 
-console.log(strings.getLanguage())
 export default class App extends Component {
 
   state={
-    language: savedLanguage
+    language: localStorage.getItem(localStorageKey.savedLanguage) || languages[0].value
   }
 
   handleLanguageChanged =(newLanguage:string)=> {
@@ -35,6 +34,8 @@ export default class App extends Component {
   }
 
   render() {
+    strings.setLanguage(this.state.language);
+
     return (
       <Container>
         <ThemeProvider theme={theme}>
@@ -44,8 +45,7 @@ export default class App extends Component {
             userAvatar={"assets/captain.png"}
             placeholder={strings.placeholder}
             userDelay={0}
-            steps={steps}
-            recognitionLang={strings.getLanguage()}
+            steps={createSteps()}
           />
         </ThemeProvider>
       </Container>
