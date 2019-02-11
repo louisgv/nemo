@@ -13,20 +13,21 @@ export const strings: any = new LocalizedStrings({
   en: {
     welcome: "Welcome back Captain!",
     end: "See you soon Captain!",
-    initialPrompt: "What would you like to do?",
+    prompt_initial: "What would you like to do?",
+    prompt_anotherOne: "What else can I do for you Captain?",
     addNew: "Add new",
     catch: "Catch 🐟",
-    prompt_catch: "What kind of catch?",
     transportShipment: "Transport 🚢",
     landing: "Landing ⚓",
     firstSaleAndShipment: "Sale 💰",
+    prompt_catch: "What kind of catch?",
     featureUnavailable: "I'm sorry Captain, I'm afraid I can't do that . . .",
     placeholder: "Say Ahoy captain!"
   },
   vn: {
     welcome: "Chào mừng trở lại thuyền trưởng!",
     end: "Hẹn gặp lại thuyền trưởng!",
-    initialPrompt: "Thuyền trưởng muốn làm gì??",
+    prompt_initial: "Thuyền trưởng muốn làm gì??",
     addNew: "Thêm mới",
     catch: "Bắt 🐟",
     prompt_catch: "Loại bắt nào?",
@@ -39,7 +40,7 @@ export const strings: any = new LocalizedStrings({
   rs: {
     welcome: "Добродошли назад капетане!",
     end: "Видимо се ускоро капетане!",
-    initialPrompt: "Шта желите да радите?",
+    prompt_initial: "Шта желите да радите?",
     addNew: "Додај ново",
     catch: "Цатцх 🐟",
     prompt_catch: "Каква врста улова?",
@@ -60,16 +61,22 @@ export const createSteps =()=> [
     id: "welcome",
     hideInput: true,
     message: () => strings.welcome,
-    trigger: "init",
+    trigger: "prompt_initial",
   },
   {
-    id: "init",
+    id: "prompt_initial",
     hideInput: true,
-    message: () => strings.initialPrompt,
-    trigger: "promptEvent",
+    message: () => strings.prompt_initial,
+    trigger: "prompt_events",
   },
   {
-    id: "promptEvent",
+    id: `prompt_anotherOne`,
+    hideInput: true,
+    message: () => strings.prompt_anotherOne,
+    trigger: "prompt_events"
+  },
+  {
+    id: "prompt_events",
     hideInput: true,
     options: [
       "catch",
@@ -98,7 +105,7 @@ export const createSteps =()=> [
   {
     id: `add_catch`,
     user: true,
-    trigger: "end"
+    trigger: "prompt_anotherOne"
   },
   {
     id: "end",
