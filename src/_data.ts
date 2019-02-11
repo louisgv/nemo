@@ -20,9 +20,12 @@ export const strings: any = new LocalizedStrings({
     transportShipment: "Transport 🚢",
     landing: "Landing ⚓",
     firstSaleAndShipment: "Sale 💰",
-    prompt_catch: "What kind of catch?",
+    prompt_catch: "What did you caught?",
+    prompt_preservation: "How are you preserving it?",
+    chilled: "Chilled ❄",
+    salted: "Salted ✨",
     featureUnavailable: "I'm sorry Captain, I'm afraid I can't do that . . .",
-    placeholder: "Say Ahoy captain!"
+    placeholder: "Type your answer . . ."
   },
   vn: {
     welcome: "Chào mừng trở lại thuyền trưởng!",
@@ -96,6 +99,16 @@ export const createSteps =()=> [
       trigger: "end"
     })
   ),
+  ...createCatchPrompt(),
+  {
+    id: "end",
+    hideInput: true,
+    message: () => strings.end,
+    end: true
+  }
+];
+
+const createCatchPrompt = () => [
   {
     id: `prompt_catch`,
     hideInput: true,
@@ -105,12 +118,24 @@ export const createSteps =()=> [
   {
     id: `add_catch`,
     user: true,
-    trigger: "prompt_anotherOne"
+    trigger: "prompt_preservation"
   },
   {
-    id: "end",
+    id: `prompt_preservation`,
     hideInput: true,
-    message: () => strings.end,
-    end: true
-  }
-];
+    message: strings.prompt_preservation,
+    trigger: "add_preservation"
+  },
+  {
+    id: `add_preservation`,
+    hideInput: true,
+    options: [
+      "chilled",
+      "salted",
+    ].map(value => ({
+      value,
+      label: strings[value],
+      trigger: `prompt_anotherOne`
+    })),
+  },
+]

@@ -3,11 +3,14 @@ import React, { Component } from "react";
 import ChatBot from "react-simple-chatbot";
 
 import styled, { ThemeProvider } from "styled-components";
-import { theme } from "./_theme";
-import { strings, localStorageKey, languages, createSteps } from "./_data";
+import { Refresh } from "styled-icons/material/Refresh";
+
+import Autoscroll from 'autoscroll-react'
+
 import { Header } from "./components/Header";
 
-import { Refresh } from "styled-icons/material/Refresh";
+import { theme } from "./_theme";
+import { strings, localStorageKey, languages, createSteps } from "./_data";
 
 const Container = styled.div`
   width: 100vw;
@@ -73,6 +76,7 @@ export default class App extends Component {
         <Container>
           {this.state.hasEnded && <RefreshButton />}
           <StyledChatBot
+            { ... this.props}
             headerComponent={
               <Header
                 language={this.state.language}
