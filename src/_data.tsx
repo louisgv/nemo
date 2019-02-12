@@ -32,7 +32,7 @@ export const fishes = [
   "bluefinTuna"
 ];
 
-export const fao3AMap = {
+export const fao3AMap : any = {
   atlanticCod: "LPS",
   blueCrab: "CRB",
   dolphinFish: "DOL",
@@ -217,9 +217,9 @@ export const strings: any = new LocalizedStrings({
 });
 
 export const getFishSelectList = () =>
-  fishes.map(value => ({
+  fishes.map((value) => ({
     value,
-    label: strings[value]
+    label: `${strings[value]}`
   }));
 
 export const localStorageKey = {

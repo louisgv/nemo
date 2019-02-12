@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
-import { getFishSelectList, strings } from "../_data";
+import { getFishSelectList, strings, fao3AMap } from "../_data";
 
 const StyledSelect = styled(Select)`
   width: 100%;
@@ -35,7 +35,7 @@ export const FishSelector = ({ triggerNextStep, steps } : any) => {
         setFish(fish);
         setDisabled(true);
         triggerNextStep({
-          value: strings[fish]
+          value: `${strings[fish]} ( 3A_CODE: ${fao3AMap[fish]} )`
         });
       }}
     />
