@@ -84,12 +84,12 @@ export const strings: any = new LocalizedStrings({
     sale: "Sale 💰",
     nothing: "I'm good 😁",
 
-    prompt_nothing: "Smooth sail 💨",
+    prompt_nothing: "Smooth sailing 💨",
 
-    prompt_catch: "What did you caught?",
-    prompt_quantity: "How many {previousValue} did you caught?",
+    prompt_catch: "What have you caught?",
+    prompt_quantity: "How many {previousValue} did you catch?",
     prompt_preservation: "How are you preserving them?",
-    prompt_catchCongrat: "🐟 Congratulation on the catch! 🐟",
+    prompt_catchCongrat: "🐟 Congratulations on the catch! 🐟",
     chilled: "Frozen ❄",
     salted: "Dried ♨",
     fresh: "Fresh ✨",
@@ -98,16 +98,16 @@ export const strings: any = new LocalizedStrings({
     // prompt_cargoLoad: "How heavy "
     prompt_landingConfirm:
       "⚓ Your time, container, and geolocation has been automatically recorded! Please review the data for accuracy:",
-    inprogress: "Inprogress ⏳",
+    inprogress: "In-progress ⏳",
     finished: "Finished 🏁",
 
-    prompt_confirmData: "Does the data seems accurate?",
+    prompt_confirmData: "Does the data seem accurate?",
 
     dataIsAccurate: "Yes",
     dataIsInaccurate: "No",
 
     prompt_errorReported:
-      "I have reported this error to our engineer. TODO: Continue this flow to add self-input data",
+      "I have reported this error to our engineers. TODO: Continue this flow to add self-input data",
 
     date: "Date",
     time: "Time",
