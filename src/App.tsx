@@ -5,8 +5,6 @@ import ChatBot from "react-simple-chatbot";
 import styled, { ThemeProvider } from "styled-components";
 import { Refresh } from "styled-icons/material/Refresh";
 
-import Autoscroll from 'autoscroll-react'
-
 import { Header } from "./components/Header";
 
 import { theme } from "./_theme";
@@ -24,6 +22,11 @@ const Container = styled.div`
 const StyledChatBot = styled(ChatBot)`
   width: 90%;
   height: 90%;
+  .rsc-os-options {
+    display: flex;
+    flex-flow: wrap;
+    flex-direction: row-reverse;
+  }
 `;
 
 const CircleButton = styled.button`
