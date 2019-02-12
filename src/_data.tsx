@@ -97,9 +97,9 @@ export const strings: any = new LocalizedStrings({
     fresh: "Fresh ✨",
 
     prompt_sale: "What would you like to sale?",
-    "prompt_size":"Dimension of this sale?",
-    "prompt_weight": "Total weight?",
-    "prompt_value": "How much does it cost?",
+    "prompt_size": "Dimension of this sale? (in cubic meter)",
+    "prompt_weight": "Total weight? (in Kilo TONS)",
+    "prompt_value": "How much does it cost? (in USD $)",
     "prompt_saleConfirmation": "Your order has been sent.",
     
     prompt_landing: "Have you finished unpacking?",
@@ -315,12 +315,12 @@ const createSalePrompt = () =>
     },
     {
       id: `prompt_size`,
-      user: true,
-      validator: numberValidator
+      hideInput: true,
     },
     {
       id: `add_size`,
       user: true,
+      validator: numberValidator
     },
     {
       id: `prompt_weight`,
