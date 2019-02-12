@@ -3,11 +3,10 @@ import React, { Component } from "react";
 import ChatBot from "react-simple-chatbot";
 
 import styled, { ThemeProvider } from "styled-components";
-import { Refresh } from "styled-icons/material/Refresh";
 
 import { Header } from "./components/Header";
 
-import { theme } from "./_theme";
+import { theme, RefreshButton } from "./_theme";
 import { strings, localStorageKey, languages, createSteps } from "./_data";
 
 const Container = styled.div`
@@ -29,26 +28,6 @@ const StyledChatBot = styled(ChatBot)`
   }
 `;
 
-const CircleButton = styled.button`
-  width: 4em;
-  height: 4em;
-  border-radius: 50%;
-  position: absolute;
-  border: none;
-  bottom: 5em;
-  z-index: 1000;
-  background: ${prop=>prop.theme.headerBgColor};
-  color: ${prop=>prop.theme.headerFontColor};
-  button:focus {
-    outline: none;
-  }
-`;
-
-const RefreshButton = () => (
-  <CircleButton>
-    <Refresh onClick={()=>window.location.reload()}/>
-  </CircleButton>
-);
 
 export default class App extends Component {
   state = {

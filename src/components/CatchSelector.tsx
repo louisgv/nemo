@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
 import { getFishSelectList, strings, fao3AMap } from "../_data";
+import { RefreshButton } from "../_theme";
 
 const StyledSelect = styled(Select)`
   width: 100%;
@@ -21,9 +22,19 @@ export const CatchSelector = ({ triggerNextStep, steps } : any) => {
   const fishStore = JSON.parse(localStorage.getItem("FISH_STORE") as any) || { catches: [] };
 
   if(!fishStore.catches[0]) {
+    setTimeout(()=>{
+      localStorage.removeItem("rsc_cache");
+      window.location.reload();
+    }, 3000)
     return (
       <div>
-        ⚠ No Catch Available . . . 
+        <b>
+          ⚠ No Fish Available ⚠ 
+        </b>
+        <br/>
+        <i>You need to report your catch first</i>
+        <br/>
+        Auto Refresh in 3... 2... 1...
       </div>
     )
   }
