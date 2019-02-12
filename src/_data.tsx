@@ -1,9 +1,11 @@
 import React from "react";
-import Reward from "react-rewards";
 
 import LocalizedStrings from "react-localization";
 import { FishSelector } from "./components/FishSelector";
 import { LandingDataTable } from "./components/LandingDataCard";
+import { SaleDetail } from "./components/SaleDetail";
+import { CatchSelector } from "./components/CatchSelector";
+import { FishDataConfirm } from "./components/FishDataConfirm";
 
 // import { IDialogue } from "./react-app-env";
 
@@ -32,7 +34,7 @@ export const fishes = [
   "bluefinTuna"
 ];
 
-export const fao3AMap : any = {
+export const fao3AMap: any = {
   atlanticCod: "LPS",
   blueCrab: "CRB",
   dolphinFish: "DOL",
@@ -47,8 +49,8 @@ export const fao3AMap : any = {
   bigeyeTuna: "BET",
   skipjackTuna: "SKJ",
   yellowfinTuna: "YFT",
-  bluefinTuna: "PBF",
-}
+  bluefinTuna: "PBF"
+};
 
 export const strings: any = new LocalizedStrings({
   en: {
@@ -94,6 +96,12 @@ export const strings: any = new LocalizedStrings({
     salted: "Dried ♨",
     fresh: "Fresh ✨",
 
+    prompt_sale: "What would you like to sale?",
+    "prompt_size":"Dimension of this sale?",
+    "prompt_weight": "Total weight?",
+    "prompt_value": "How much does it cost?",
+    "prompt_saleConfirmation": "Your order has been sent.",
+    
     prompt_landing: "Have you finished unpacking?",
     // prompt_cargoLoad: "How heavy "
     prompt_landingConfirm:
@@ -117,7 +125,6 @@ export const strings: any = new LocalizedStrings({
   },
   vn: {
     input_placeholder: "Xin giao nhập thông tin",
-
 
     atlanticCod: "Cá tuyết Đại Tây Dương",
     blueCrab: "Cua xanh (Đại Tây Dương)",
@@ -147,6 +154,7 @@ export const strings: any = new LocalizedStrings({
     transport: "Di chuyển 🚢",
     landing: "Hạ cánh ⚓",
     sale: "Giao bán 💰",
+    nothing: "Gọi đùa thôi 😁",
 
     prompt_catch: "Loại bắt nào?"
   },
@@ -180,8 +188,6 @@ export const strings: any = new LocalizedStrings({
     yellowfinTuna: "Жутоперајна туна",
     bluefinTuna: "Плавоперајна туна",
 
-
-
     prompt_initial: "Шта желите да радите?",
 
     addNew: "Додај ново",
@@ -191,7 +197,6 @@ export const strings: any = new LocalizedStrings({
     landing: "Пристајање ⚓",
     sale: "Продаја  💰",
     nothing: "Нисшта за сад 😁",
-
 
     prompt_landing: "Јесте ли завршили распакирање?",
     prompt_landingConfirm:
@@ -212,12 +217,11 @@ export const strings: any = new LocalizedStrings({
     timeZone: "Временска Зона",
     container: "Контејнер",
     geoLocation: "Локација"
-
   }
 });
 
 export const getFishSelectList = () =>
-  fishes.map((value) => ({
+  fishes.map(value => ({
     value,
     label: `${strings[value]}`
   }));
@@ -254,7 +258,7 @@ export const createSteps = () => [
   {
     id: "prompt_events",
     hideInput: true,
-    options: ["catch", "transport", "landing", "sale", "nothing"].map(
+    options: ["catch", "landing", "sale", "transport", "nothing"].map(
       value => ({
         value,
         label: `${strings[value]}`,
@@ -262,11 +266,12 @@ export const createSteps = () => [
       })
     )
   },
-  ...["transport", "sale"].map(value => ({
+  ...["transport"].map(value => ({
     id: `prompt_${value}`,
     message: () => strings.prompt_unavailable,
     trigger: "prompt_end"
   })),
+  ...createSalePrompt(),
   ...createCatchPrompt(),
   ...createLandingPrompt(),
   {
@@ -281,6 +286,64 @@ const createOptionLabel = (value: string) => ({
   value,
   label: strings[value]
 });
+
+const salePromptOrder = [
+  "prompt_sale",
+  "add_species",
+  "prompt_size",
+  "add_size",
+  "prompt_weight",
+  "add_weight",
+  "prompt_value",
+  "add_value",
+  "prompt_saleConfirmation",
+  "prompt_anotherOne"
+];
+
+const createSalePrompt = () =>
+  [
+    {
+      id: `prompt_sale`,
+      hideInput: true,
+
+    },
+    {
+      id: `add_species`,
+      hideInput: true,
+      waitAction: true,
+      component: <CatchSelector />
+    },
+    {
+      id: `prompt_size`,
+      user: true,
+      validator: numberValidator
+    },
+    {
+      id: `add_size`,
+      user: true,
+    },
+    {
+      id: `prompt_weight`,
+      hideInput: true
+    },
+    {
+      id: `add_weight`,
+      user: true,
+    },
+    {
+      id: `prompt_value`,
+      hideInput: true
+    },
+    {
+      id: `add_value`,
+      user: true,
+    },
+    {
+      id: `prompt_saleConfirmation`,
+      hideInput: true,
+      // component: <SaleDetail />
+    }
+  ].map((p: any, i) => appendTrigger(p, i, salePromptOrder));
 
 const landingPromptOrder = [
   "prompt_landing",
@@ -312,7 +375,7 @@ const createLandingPrompt = () =>
     // },
     {
       id: `prompt_landingConfirm`,
-      component: <LandingDataTable/>
+      component: <LandingDataTable />
     },
     {
       id: `prompt_confirmData`,
@@ -364,12 +427,7 @@ const createCatchPrompt = () =>
     {
       id: `add_quantity`,
       user: true,
-      validator: (value : number) => {
-        if (isNaN(value) || value <= 0) {
-          return 'It should be a number greater than 0!';
-        }
-        return true;
-      },
+      validator: numberValidator
     },
     {
       id: `prompt_preservation`,
@@ -382,19 +440,16 @@ const createCatchPrompt = () =>
     },
     {
       id: `prompt_catchCongrat`,
-      component: (
-        <Reward
-          ref={(ref: any) => ref.rewardMe()}
-          type="emoji"
-          config={{
-            emoji: ["🐟", "🦐", "🐙", "🦀", "🐳", "🐋", "🐬", "🦑", "🐡", "🦈"]
-          }}
-        >
-          <div>{strings.prompt_catchCongrat}</div>
-        </Reward>
-      )
+      component: <FishDataConfirm/>
     }
   ].map((p: any, i) => appendTrigger(p, i, catchPromptOrder));
+
+const numberValidator = (value: number) => {
+  if (isNaN(value) || value <= 0) {
+    return "It should be a number greater than 0!";
+  }
+  return true;
+};
 
 const appendTrigger = (p: any, i: number, order: Array<string>) => {
   const trigger = order[i + 1];
