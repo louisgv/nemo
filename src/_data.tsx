@@ -3,6 +3,7 @@ import Reward from "react-rewards";
 
 import LocalizedStrings from "react-localization";
 import { FishSelector } from "./components/FishSelector";
+import { LandingDataTable } from "./components/LandingDataCard";
 
 // import { IDialogue } from "./react-app-env";
 
@@ -31,6 +32,24 @@ export const fishes = [
   "bluefinTuna"
 ];
 
+export const fao3AMap = {
+  atlanticCod: "LPS",
+  blueCrab: "CRB",
+  dolphinFish: "DOL",
+  grouper: "EWL",
+  kingCrab: "KCD",
+  pacificCod: "PCO",
+  redSnapper: "RES",
+  seaCucumber: "EHV",
+  shark: "HXC",
+  swordfish: "SWO",
+  albacoreTuna: "ALB",
+  bigeyeTuna: "BET",
+  skipjackTuna: "SKJ",
+  yellowfinTuna: "YFT",
+  bluefinTuna: "PBF",
+}
+
 export const strings: any = new LocalizedStrings({
   en: {
     input_placeholder: "Type your answer . . .",
@@ -38,12 +57,12 @@ export const strings: any = new LocalizedStrings({
     atlanticCod: "Atlantic Cod",
     blueCrab: "Blue Crab (Atlantic)",
     dolphinFish: "Dolphinfish (Mahi Mahi)",
-    grouper: "Grouper",
+    grouper: "Potato Grouper",
     kingCrab: "King Crab (red)",
     pacificCod: "Pacific Cod",
     redSnapper: "Red Snapper",
-    seaCucumber: "Sea Cucumber",
-    shark: "Shark",
+    seaCucumber: "Black Spotted Sea Cucumber",
+    shark: "Frilled Shark",
     swordfish: "Swordfish",
     albacoreTuna: "Albacore Tuna",
     bigeyeTuna: "Bigeye Tuna",
@@ -76,6 +95,7 @@ export const strings: any = new LocalizedStrings({
     fresh: "Fresh ✨",
 
     prompt_landing: "Have you finished unpacking?",
+    // prompt_cargoLoad: "How heavy "
     prompt_landingConfirm:
       "⚓ Your time, container, and geolocation has been automatically recorded! Please review the data for accuracy:",
     inprogress: "Inprogress ⏳",
@@ -217,38 +237,17 @@ const createLandingPrompt = () =>
       id: `add_landingDisposition`,
       options: ["inprogress", "finished"].map(createOptionLabel)
     },
+    // { // TODO: Stretch, ask cargo load
+    //   id: `prompt_cargoLoad`,
+    //   hideInput: true,
+    //   message: ({ previousValue }: any) =>
+    //     previousValue === "finished"
+    //       ? strings.prompt_cargoLoad
+    //       : "✔"
+    // },
     {
       id: `prompt_landingConfirm`,
-      component: (
-        <div>
-          {strings.prompt_landingConfirm}
-          <hr />
-          <table>
-            <tbody>
-              <tr>
-                <td>📅</td>
-                <td>{strings.date}</td>
-                <td>2016-12-14</td>
-              </tr>
-              <tr>
-                <td>⌚</td>
-                <td>{strings.time}</td>
-                <td>11:33:00.125+08:00</td>
-              </tr>
-              <tr>
-                <td>🚢</td>
-                <td> {strings.container}</td>
-                <td>f5c5ab8f-8bcf-446a-8dea-4cb625316ffd</td>
-              </tr>
-              <tr>
-                <td>📍</td>
-                <td>{strings.geoLocation}</td>
-                <td>geo:22.58425,120.31815</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      )
+      component: <LandingDataTable/>
     },
     {
       id: `prompt_confirmData`,
