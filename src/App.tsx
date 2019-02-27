@@ -8,6 +8,7 @@ import { Header } from "./components/Header";
 
 import { theme, RefreshButton } from "./_theme";
 import { strings, localStorageKey, languages, createSteps } from "./_data";
+import { sendCatchEvent } from "./api";
 
 const Container = styled.div`
   width: 100vw;
@@ -47,6 +48,10 @@ export default class App extends Component {
       hasEnded: true
     });
   };
+
+  componentDidMount=()=>{
+    sendCatchEvent()
+  }
 
   render() {
     strings.setLanguage(this.state.language);
