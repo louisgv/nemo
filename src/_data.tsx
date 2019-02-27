@@ -3,9 +3,11 @@ import React from "react";
 import LocalizedStrings from "react-localization";
 import { FishSelector } from "./components/FishSelector";
 import { LandingDataTable } from "./components/LandingDataCard";
-import { SaleDetail } from "./components/SaleDetail";
 import { CatchSelector } from "./components/CatchSelector";
 import { FishDataConfirm } from "./components/FishDataConfirm";
+import { en } from "./i18n/en";
+import { vn } from "./i18n/vn";
+import { rs } from "./i18n/rs";
 
 // import { IDialogue } from "./react-app-env";
 
@@ -53,171 +55,9 @@ export const fao3AMap: any = {
 };
 
 export const strings: any = new LocalizedStrings({
-  en: {
-    input_placeholder: "Type your answer . . .",
-
-    atlanticCod: "Atlantic Cod",
-    blueCrab: "Blue Crab (Atlantic)",
-    dolphinFish: "Dolphinfish (Mahi Mahi)",
-    grouper: "Potato Grouper",
-    kingCrab: "King Crab (red)",
-    pacificCod: "Pacific Cod",
-    redSnapper: "Red Snapper",
-    seaCucumber: "Black Spotted Sea Cucumber",
-    shark: "Frilled Shark",
-    swordfish: "Swordfish",
-    albacoreTuna: "Albacore Tuna",
-    bigeyeTuna: "Bigeye Tuna",
-    skipjackTuna: "Skipjack Tuna",
-    yellowfinTuna: "Yellowfin Tuna",
-    bluefinTuna: "Bluefin Tuna",
-
-    prompt_welcome: "Welcome back Captain!",
-    prompt_end: "See you soon Captain!",
-    prompt_anotherOne: "What else can I add for you Captain?",
-    prompt_unavailable: "I'm sorry Captain, I'm afraid I can't do that . . .",
-
-    prompt_initial: "What would you like to add?",
-
-    addNew: "Add new",
-    catch: "Catch 🐟",
-    transport: "Transport 🚢",
-    landing: "Landing ⚓",
-    sale: "Sale 💰",
-    nothing: "I'm good 😁",
-
-    prompt_nothing: "Smooth sailing 💨",
-
-    prompt_catch: "What have you caught?",
-    prompt_quantity: "How many {previousValue} did you catch?",
-    prompt_preservation: "How are you preserving them?",
-    prompt_catchCongrat: "🐟 Congratulations on the catch! 🐟",
-    chilled: "Frozen ❄",
-    salted: "Dried ♨",
-    fresh: "Fresh ✨",
-
-    prompt_sale: "What would you like to sale?",
-    "prompt_size": "Dimension of this sale? (in cubic meter)",
-    "prompt_weight": "Total weight? (in Kilo TONS)",
-    "prompt_value": "How much does it cost? (in USD $)",
-    "prompt_saleConfirmation": "Your order has been sent.",
-    
-    prompt_landing: "Have you finished unpacking?",
-    // prompt_cargoLoad: "How heavy "
-    prompt_landingConfirm:
-      "⚓ Your time, container, and geolocation has been automatically recorded! Please review the data for accuracy:",
-    inprogress: "In-progress ⏳",
-    finished: "Finished 🏁",
-
-    prompt_confirmData: "Does the data seem accurate?",
-
-    dataIsAccurate: "Yes",
-    dataIsInaccurate: "No",
-
-    prompt_errorReported:
-      "I have reported this error to our engineers. TODO: Continue this flow to add self-input data",
-
-    date: "Date",
-    time: "Time",
-    timeZone: "Time Zone",
-    container: "Container",
-    geoLocation: "Location"
-  },
-  vn: {
-    input_placeholder: "Xin giao nhập thông tin",
-
-    atlanticCod: "Cá tuyết Đại Tây Dương",
-    blueCrab: "Cua xanh (Đại Tây Dương)",
-    dolphinFish: "Cá heo (Mahi Mahi)",
-    grouper: "Cá mú",
-    kingCrab: "Cua Vua",
-    pacificCod: "Cod Thái Bình Dương",
-    redSnapper: "Cá hồng",
-    seaCucumber: "Dưa chuột biển",
-    shark: "Cá mập",
-    swordfish: "Cá kiếm",
-    albacoreTuna: "Cá ngừ",
-    bigeyeTuna: "Cá ngừ mắt to",
-    skipjackTuna: "Cá ngừ vằn",
-    yellowfinTuna: "Cá ngừ vây vàng",
-    bluefinTuna: "Cá ngừ vây xanh",
-
-    prompt_welcome: "Chào mừng trở lại thuyền trưởng!",
-    prompt_end: "Hẹn gặp lại thuyền trưởng!",
-    prompt_unavailable:
-      "Xin lỗi Thuyền trưởng, phần mềm chưa được cài đặt  . . .",
-
-    prompt_initial: "Thuyền trưởng muốn làm gì??",
-
-    addNew: "Thêm mới",
-    catch: "Bắt 🐟",
-    transport: "Di chuyển 🚢",
-    landing: "Hạ cánh ⚓",
-    sale: "Giao bán 💰",
-    nothing: "Gọi đùa thôi 😁",
-
-    prompt_catch: "Loại bắt nào?"
-  },
-  rs: {
-    input_placeholder: "Реците капетане! Ахои!",
-    prompt_welcome: "Добродошли назад капетане!",
-    prompt_end: "Видимо се ускоро капетане!",
-    prompt_unavailable:
-      "Жао ми је капетане, Нажалост то не могу да урадим . . .",
-    prompt_quantity: "Колико {previousValue} сте уловили?",
-    prompt_preservation: "Како их чувате?",
-    prompt_catchCongrat: "🐟 Браво мајсторе! 🐟",
-
-    chilled: "Замрзнуто ❄",
-    salted: "Сушено ♨",
-    fresh: "Свеже ✨",
-
-    atlanticCod: "Атлански бакалар",
-    blueCrab: "Плави рак (Атлантик)",
-    dolphinFish: "Долпхинфисх (Махи Махи)",
-    grouper: "Групер",
-    kingCrab: "Краљевска краба",
-    pacificCod: "Пацифички koбакалар",
-    redSnapper: "Црвени снапер",
-    seaCucumber: "Морски краставац",
-    shark: "Ајкула",
-    swordfish: "Сабљарка",
-    albacoreTuna: "Дугоперајна туна",
-    bigeyeTuna: "Велика ока туна",
-    skipjackTuna: "Пругаста туна",
-    yellowfinTuna: "Жутоперајна туна",
-    bluefinTuna: "Плавоперајна туна",
-
-    prompt_initial: "Шта желите да радите?",
-
-    addNew: "Додај ново",
-    catch: "Улова 🐟",
-    prompt_catch: "Каква врста уловe?",
-    transport: "Транспорт 🚢",
-    landing: "Пристајање ⚓",
-    sale: "Продаја  💰",
-    nothing: "Нисшта за сад 😁",
-
-    prompt_landing: "Јесте ли завршили распакирање?",
-    prompt_landingConfirm:
-      "⚓ Ваше време, контејнер и геолокација су аутоматски прејављени! Молимо вас да прегледате податке за тачност",
-    inprogress: "У току. ⏳",
-    finished: "Завршено 🏁",
-
-    prompt_confirmData: "Да ли подаци изгледају тачни?",
-
-    dataIsAccurate: "Како да не",
-    dataIsInaccurate: "Ма какви",
-
-    prompt_errorReported:
-      "I have reported this error to our engineers. TODO: Continue this flow to add self-input data",
-
-    date: "Датум",
-    time: "Време",
-    timeZone: "Временска Зона",
-    container: "Контејнер",
-    geoLocation: "Локација"
-  }
+  en,
+  vn,
+  rs
 });
 
 export const getFishSelectList = () =>
