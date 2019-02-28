@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 
 import ChatBot from "react-simple-chatbot";
 
@@ -7,8 +7,9 @@ import styled, { ThemeProvider } from "styled-components";
 import { Header } from "./components/Header";
 
 import { theme, RefreshButton } from "./_theme";
-import { strings, localStorageKey, languages, createSteps } from "./_data";
+import { localStorageKey, createSteps } from "./_data";
 import { sendCatchEvent } from "./api";
+import { strings, languages } from "./i18n";
 
 const Container = styled.div`
   width: 100vw;
@@ -27,60 +28,49 @@ const StyledChatBot = styled(ChatBot)`
     flex-flow: wrap;
     flex-direction: row-reverse;
   }
+
+  .rsc-os-option-element {
+    display: flex;
+    height: 1em;
+  }
 `;
 
+const handleLanguageChanged =(newLanguage: string)=> {
+  localStorage.setItem(localStorageKey.savedLanguage, newLanguage);
+  localStorage.removeItem("rsc_cache");
+  window.location.reload();
+}
 
-export default class App extends Component {
-  state = {
-    language:
-      localStorage.getItem(localStorageKey.savedLanguage) || languages[0].value,
-    hasEnded: false
-  };
+export const App = ({props} : any) => {
+  const [hasEnded, setHasEnded] = useState(false)
 
-  handleLanguageChanged = (newLanguage: string) => {
-    localStorage.setItem(localStorageKey.savedLanguage, newLanguage);
-    localStorage.removeItem("rsc_cache");
-    window.location.reload();
-  };
+  const language = localStorage.getItem(localStorageKey.savedLanguage) || languages[0].value;
+  strings.setLanguage(language);
+  const steps = createSteps();
 
-  handleEnd = ({ steps, values }: any) => {
-    this.setState({
-      hasEnded: true
-    });
-  };
-
-  componentDidMount=()=>{
-    sendCatchEvent()
-  }
-
-  render() {
-    strings.setLanguage(this.state.language);
-
-    const steps = createSteps();
-
-    return (
-      <ThemeProvider theme={theme}>
-        <Container>
-          {this.state.hasEnded && <RefreshButton />}
-          <StyledChatBot
-            { ... this.props}
-            headerComponent={
-              <Header
-                language={this.state.language}
-                onLanguageChanged={this.handleLanguageChanged}
-              />
-            }
-            botAvatar={"assets/avatar.png"}
-            hideUserAvatar
-            cache
-            userAvatar={"assets/captain.png"}
-            placeholder={strings.placeholder}
-            userDelay={0}
-            steps={steps}
-            handleEnd={this.handleEnd}
-          />
-        </Container>
-      </ThemeProvider>
-    );
-  }
+  return (
+    <ThemeProvider theme={theme}>
+      <Container>
+        {hasEnded && <RefreshButton />}
+        <StyledChatBot
+          { ... props}
+          headerComponent={
+            <Header
+              key={language}
+              language={language}
+              onLanguageChanged={handleLanguageChanged}
+            />
+          }
+          botAvatar={"assets/avatar.png"}
+          hideUserAvatar
+          cache
+          userAvatar={"assets/captain.png"}
+          placeholder={strings.placeholder}
+          userDelay={0}
+          steps={steps}
+          handleEnd={()=> setHasEnded(true)}
+        />
+      </Container>
+    </ThemeProvider>
+  ) 
 }

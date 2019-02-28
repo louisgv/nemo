@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
-import { getFishSelectList, strings, fao3AMap } from "../_data";
+import { getFishSelectList, fao3AMap } from "../_data";
+import { strings } from "../i18n";
 
 const StyledSelect = styled(Select)`
   width: 100%;

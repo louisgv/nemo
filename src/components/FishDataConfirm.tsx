@@ -2,7 +2,8 @@ import React, { useState, Component } from "react";
 import styled from "styled-components";
 import Reward from "react-rewards";
 
-import { strings, fao3AMap } from "../_data";
+import { fao3AMap } from "../_data";
+import { strings } from "../i18n";
 
 export class FishDataConfirm extends Component {
   state = {

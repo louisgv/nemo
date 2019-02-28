@@ -1,22 +1,14 @@
 import React from "react";
 
-import LocalizedStrings from "react-localization";
 import { FishSelector } from "./components/FishSelector";
 import { LandingDataTable } from "./components/LandingDataCard";
 import { CatchSelector } from "./components/CatchSelector";
 import { FishDataConfirm } from "./components/FishDataConfirm";
-import { en } from "./i18n/en";
-import { vn } from "./i18n/vn";
-import { rs } from "./i18n/rs";
+import { strings } from "./i18n";
 
 // import { IDialogue } from "./react-app-env";
 
 // https://github.com/Semantic-Org/Semantic-UI-React/blob/master/docs/src/examples/modules/Dropdown/common.js
-export const languages = [
-  { key: "us", value: "us", flag: "us", label: "United States" },
-  { key: "vn", value: "vn", flag: "vn", label: "Vietnam" },
-  { key: "rs", value: "rs", flag: "rs", label: "Serbia" }
-];
 
 export const fishes = [
   "atlanticCod",
@@ -53,12 +45,6 @@ export const fao3AMap: any = {
   yellowfinTuna: "YFT",
   bluefinTuna: "PBF"
 };
-
-export const strings: any = new LocalizedStrings({
-  en,
-  vn,
-  rs
-});
 
 export const getFishSelectList = () =>
   fishes.map(value => ({
@@ -144,8 +130,7 @@ const createSalePrompt = () =>
   [
     {
       id: `prompt_sale`,
-      hideInput: true,
-
+      hideInput: true
     },
     {
       id: `add_species`,
@@ -155,7 +140,7 @@ const createSalePrompt = () =>
     },
     {
       id: `prompt_size`,
-      hideInput: true,
+      hideInput: true
     },
     {
       id: `add_size`,
@@ -168,7 +153,7 @@ const createSalePrompt = () =>
     },
     {
       id: `add_weight`,
-      user: true,
+      user: true
     },
     {
       id: `prompt_value`,
@@ -176,11 +161,11 @@ const createSalePrompt = () =>
     },
     {
       id: `add_value`,
-      user: true,
+      user: true
     },
     {
       id: `prompt_saleConfirmation`,
-      hideInput: true,
+      hideInput: true
       // component: <SaleDetail />
     }
   ].map((p: any, i) => appendTrigger(p, i, salePromptOrder));
@@ -280,7 +265,7 @@ const createCatchPrompt = () =>
     },
     {
       id: `prompt_catchCongrat`,
-      component: <FishDataConfirm/>
+      component: <FishDataConfirm />
     }
   ].map((p: any, i) => appendTrigger(p, i, catchPromptOrder));
 
