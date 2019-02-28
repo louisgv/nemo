@@ -17,6 +17,19 @@ export const en = {
   yellowfinTuna: "Yellowfin Tuna",
   bluefinTuna: "Bluefin Tuna",
 
+  prompt_welcomeNew: "Welcome aboard Captain.",
+  prompt_introduceNemo:
+    "My name is Nemo. I'm about working hard, earning your trust, and be a productive member of your crew.",
+  prompt_name: "How should I address you?",
+  // Answer with Custom Component: Call me Captain FIRSTNAME LASTNAME
+  prompt_vessel:
+    "Very well Captain {previousValue}. Please identify your vessel. You can use her name, her IMO, or her MMSI:",
+  // Answer with custom component: a selector with Name, IMO, or MMSI next to a text input
+  prompt_fishingGear: "What is her fishing gear?",
+  // Answer with 3 subsequence styled select
+
+  //prompt_
+
   prompt_welcome: "Welcome back Captain!",
   prompt_end: "See you soon Captain!",
   prompt_anotherOne: "What else can I add for you Captain?",
@@ -42,11 +55,11 @@ export const en = {
   fresh: "Fresh ✨",
 
   prompt_sale: "What would you like to sale?",
-  "prompt_size": "Dimension of this sale? (in cubic meter)",
-  "prompt_weight": "Total weight? (in Kilo TONS)",
-  "prompt_value": "How much does it cost? (in USD $)",
-  "prompt_saleConfirmation": "Your order has been sent.",
-  
+  prompt_size: "Dimension of this sale? (in cubic meter)",
+  prompt_weight: "Total weight? (in Kilo TONS)",
+  prompt_value: "How much does it cost? (in USD $)",
+  prompt_saleConfirmation: "Your order has been sent.",
+
   prompt_landing: "Have you finished unpacking?",
   // prompt_cargoLoad: "How heavy "
   prompt_landingConfirm:
@@ -66,5 +79,80 @@ export const en = {
   time: "Time",
   timeZone: "Time Zone",
   container: "Container",
-  geoLocation: "Location"
-}
+  geoLocation: "Location",
+
+  // Gears:
+
+  surroundingNet: "Surrounding net",
+  withPurseLines: "With purse lines",
+  oneBoatOperated: "One boat operated",
+  twoBoatsOperated: "Two boats operated",
+  withoutPurseLines: "Without purse lines (lampara)",
+  seineNets: "Seine nets",
+  beachSeines: "Beach seines",
+  vesselSeines: "Vessel seines",
+  danishSeines: "Danish seines",
+  scottishSeines: "Scottish seines",
+  pairSeines: "Pair seines",
+  seineNetsNotSpecified: "Seine nets (not specified)",
+  trawls: "Trawls",
+  bottomTrawls: "Bottom trawls",
+  beamTrawls: "Beam trawls",
+  otterTrawls: "Otter trawls",
+  pairTrawls: "Pair trawls",
+  nephropsTrawls: "Nephrops trawls",
+  shrimpTrawls: "Shrimp trawls",
+  bottomTrawlsNotSpecified: "Bottom trawls (not specified)",
+  midwaterTrawls: "Midwater trawls",
+  midwaterTrawlsNotSpecified: "Midwater trawls (not specified)",
+  otterTwinTrawls: "Otter twin trawls",
+  otterTrawlsNotSpecified: "Otter trawls (not specified)",
+  pairTrawlsNotSpecified: "Pair trawls (not specified)",
+  otherTrawlsNotSpecified: "Other trawls (not specified)",
+  dredges: "Dredges",
+  boatDredges: "Boat dredges",
+  handDredges: "Hand dredges",
+  liftNets: "Lift nets",
+  portableLiftNets: "Portable lift nets",
+  boatOperatedLiftNets: "Boat operated lift nets",
+  shoreOperatedStationaryLiftNets: "Shore operated stationary lift nets",
+  liftNetsNotSpecified: "Lift nets (not specified)",
+  fallingGear: "Falling gear",
+  castNets: "Cast nets",
+  fallingGearNotSpecified: "Falling gear (not specified)",
+  gillnetsAndEntanglingNets: "Gillnets and entangling nets",
+  setGillnetsAnchored: "Set gillnets (anchored)",
+  driftnets: "Driftnets",
+  encirclingGillnets: "Encircling gillnets",
+  fixedGillnetsOnStakes: "Fixed gillnets (on stakes)",
+  trammelNets: "Trammel nets",
+  combinedGillnetsTrammelNets: "Combined gillnets trammel nets",
+  gillnetsAndEntanglingNetsNotSpecified:
+    "Gillnets and entangling nets (not specified)",
+  gillnetsNotSpecified: "Gillnets (not specified)",
+  traps: "Traps",
+  stationaryUncoveredPoundNets: "Stationary uncovered pound nets",
+  pots: "Pots",
+  fykeNets: "Fyke nets",
+  stowNets: "Stow nets",
+  barriersFencesWeirsEtc: "Barriers, fences, weirs, etc",
+  aerialTraps: "Aerial traps",
+  trapsNotSpecified: "Traps (not specified)",
+  hooksAndLines: "Hooks and lines",
+  handlinesAndPoleLinesHandOperated: "Handlines and pole lines (hand-operated)",
+  handlinesAndPoleLinesMechanized: "Handlines and pole lines (mechanized)",
+  setLonglines: "Set longlines",
+  driftingLonglines: "Drifting longlines",
+  longlinesNotSpecified: "Longlines (not specified)",
+  trollingLines: "Trolling lines",
+  hooksAndLinesNotSpecified: "Hooks and lines (not specified)",
+  grapplingAndWounding: "Grappling and wounding",
+  harpoonsHAR: "Harpoons ha r",
+  harvestingMachines: "Harvesting machines",
+  pumps: "Pumps",
+  mechanizedDredges: "Mechanized dredges",
+  harvestingMachinesNotSpecified: "Harvesting machines (not specified)",
+  miscellaneousGear: "Miscellaneous gear",
+  recreationalFishingGear: "Recreational fishing gear",
+  gearNotKnowOrNotSpecified: "Gear not know or (not specified)"
+};

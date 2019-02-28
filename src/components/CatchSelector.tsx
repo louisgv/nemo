@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
-import { getFishSelectList, strings, fao3AMap } from "../_data";
+import { getFishSelectList, fao3AMap } from "../_data";
 import { RefreshButton } from "../_theme";
 
 const StyledSelect = styled(Select)`

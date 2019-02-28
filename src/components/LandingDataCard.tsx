@@ -1,5 +1,5 @@
 import React from "react";
-import { strings } from "../_data";
+import { strings } from "../i18n";
 
 export const LandingDataTable = () => (
   <div>
