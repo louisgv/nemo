@@ -1,0 +1,30 @@
+import { strings } from "../i18n";
+
+export const numberValidator = (value: number) => {
+  if (isNaN(value) || value <= 0) {
+    return "It should be a number greater than 0!";
+  }
+  return true;
+};
+
+export const appendTrigger = (p: any, i: number, order: Array<string>) => {
+  const trigger = order[i + 1];
+
+  if (!p.options) {
+    p.trigger = trigger;
+    if (p.hideInput && !p.waitAction && !p.message) {
+      p.message = strings[p.id];
+    }
+  } else {
+    p.options = p.options.map((o: any) => {
+      o.trigger = trigger;
+      return o;
+    });
+  }
+  return p;
+};
+
+export const createOptionLabel = (value: string) => ({
+  value,
+  label: strings[value]
+});

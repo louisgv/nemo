@@ -20,15 +20,40 @@ export const en = {
   prompt_welcomeNew: "Welcome aboard Captain.",
   prompt_introduceNemo:
     "My name is Nemo. I'm about working hard, earning your trust, and be a productive member of your crew.",
-  prompt_name: "How should I address you?",
+  prompt_vesselCaptainName: "How should I address you?",
   // Answer with Custom Component: Call me Captain FIRSTNAME LASTNAME
-  prompt_vessel:
-    "Very well Captain {previousValue}. Please identify your vessel. You can use her name, her IMO, or her MMSI:",
+  prompt_vesselName:
+    "Very well Captain {previousValue}. What is the name of your ship?",
+  prompt_vesselID:
+    "And what is {previousValue}'s IMO or MMSI?",
   // Answer with custom component: a selector with Name, IMO, or MMSI next to a text input
-  prompt_fishingGear: "What is her fishing gear?",
+  prompt_fishingGearTypeCode: "What fishing gear is on the ship?",
   // Answer with 3 subsequence styled select
+  // prompt_
+  prompt_productionMethod: "How will you be fishing?",
+  // Answer with 3 choices: Aquaculture, Inland Fishery, Marine Fishery
 
-  //prompt_
+  aquaculture: "Aquaculture",
+  inlandFishery: "Inland Fishery",
+  marineFishery: "Marine Fishery",
+
+  prompt_ownership: "Are you the ship's owner?",
+  // <input-name> NO.disabled
+  //              YES 
+
+  prompt_organization: "Do you belong to a larger organization?",
+  // <input-name> YES.disabled
+  //              NO
+
+  prompt_certificationStandard: "Is your vessel covered by the MSC?",
+  // <input-name> YES.disabled
+  //              NO  
+  
+  prompt_unitOfMeasurement: "Lastly, what's your prefered unit of measurement?",
+  // 2 choices
+  
+  kilogram: "Kilogram (kg)",
+  pound: "Pound (lb)",
 
   prompt_welcome: "Welcome back Captain!",
   prompt_end: "See you soon Captain!",
@@ -54,8 +79,8 @@ export const en = {
   salted: "Dried ♨",
   fresh: "Fresh ✨",
 
-  prompt_sale: "What would you like to sale?",
-  prompt_size: "Dimension of this sale? (in cubic meter)",
+  prompt_sale: "What would you like to sell?",
+  prompt_size: "Dimension of this sell? (in cubic meter)",
   prompt_weight: "Total weight? (in Kilo TONS)",
   prompt_value: "How much does it cost? (in USD $)",
   prompt_saleConfirmation: "Your order has been sent.",
