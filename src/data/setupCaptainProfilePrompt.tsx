@@ -62,7 +62,6 @@ const promptStructure = {
   },
   prompt_vesselID: {
     hideInput: true
-
   },
   add_vesselID: {
     component: <ShipIDInput />,
@@ -74,10 +73,11 @@ const promptStructure = {
     hideInput: true
   },
   add_fishingGearTypeCode: {
-    component: <FishingGearInput />,
-    hideInput: true,
-    replace: false,
-    waitAction: true
+    user: true,
+    // component: <FishingGearInput />,
+    // hideInput: true,
+    // replace: false,
+    // waitAction: true
   },
   prompt_productionMethod: {
     hideInput: true
