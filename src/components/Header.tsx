@@ -5,6 +5,7 @@ import Flag from "react-country-flag";
 import Select from "react-styled-select";
 import { languages } from "../i18n";
 
+import {CaptainProfile} from './CaptainProfile'
 
 const HeaderContainer = styled.div`
   height: 3.6em;
@@ -15,15 +16,18 @@ const HeaderContainer = styled.div`
   align-items: center;
   flex-direction: row;
 
+  padding-right: 1em;
+  padding-left: 1em;
+
   h1 {
     font-size: 1.8em;
-    margin-left: 2em;
   }
 `;
 
 const StyledSelect = styled(Select)`
   width: 9em;
-  margin-right: 2em;
+  margin-left: 1em;
+  margin-right: 1em;
 
   .select-control {
     border-radius: 2em;
@@ -61,6 +65,8 @@ export const Header = ({ language, onLanguageChanged }: any) => {
           onLanguageChanged(lang);
         }}
       />
+
+      <CaptainProfile/>
     </HeaderContainer>
   );
 };

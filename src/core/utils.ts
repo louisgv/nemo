@@ -1,5 +1,11 @@
 import { strings } from "../i18n";
 
+export const createSelectOptionList = (list: Array<string>) =>
+  list.map(value => ({
+    value,
+    label: `${strings[value]}`
+  }));
+
 export const numberValidator = (value: number) => {
   if (isNaN(value) || value <= 0) {
     return "It should be a number greater than 0!";

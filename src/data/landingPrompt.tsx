@@ -1,3 +1,4 @@
+import React from 'react'
 import { createOptionLabel, appendTrigger } from "../core/utils";
 import { LandingDataTable } from "../components/LandingDataCard";
 import { strings } from "../i18n";

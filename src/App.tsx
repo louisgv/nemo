@@ -7,17 +7,17 @@ import styled, { ThemeProvider } from "styled-components";
 import { Header } from "./components/Header";
 
 import { theme, RefreshButton } from "./_theme";
-import { localStorageKey, createSteps } from "./_data";
+import { localStorageKey, createSteps, useLanguageState, isProfileSetup } from "./_data";
 import { sendCatchEvent } from "./api";
 import { strings, languages } from "./i18n";
 
 const Container = styled.div`
   width: 100vw;
   height: 100vh;
-  justify-content: space-evenly;
-  align-items: center;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 
 const StyledChatBot = styled(ChatBot)`
@@ -35,18 +35,23 @@ const StyledChatBot = styled(ChatBot)`
   }
 `;
 
-const handleLanguageChanged =(newLanguage: string)=> {
-  localStorage.setItem(localStorageKey.savedLanguage, newLanguage);
-  localStorage.removeItem("rsc_cache");
-  window.location.reload();
-}
 
 export const App = ({props} : any) => {
   const [hasEnded, setHasEnded] = useState(false)
+  
+  const [language, setLanguage] = useLanguageState(languages[0].value)
 
-  const language = localStorage.getItem(localStorageKey.savedLanguage) || languages[0].value;
   strings.setLanguage(language);
+
   const steps = createSteps();
+
+  const handleLanguageChanged =(newLanguage: string)=> {
+    setLanguage(newLanguage);
+    
+    localStorage.removeItem(localStorageKey.chatCache);
+    
+    window.location.reload();
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -63,7 +68,8 @@ export const App = ({props} : any) => {
           }
           botAvatar={"assets/avatar.png"}
           hideUserAvatar
-          cache
+          cache={isProfileSetup()}
+          cacheName={localStorageKey.chatCache}
           userAvatar={"assets/captain.png"}
           placeholder={strings.placeholder}
           userDelay={0}

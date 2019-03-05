@@ -2,6 +2,9 @@ import { strings } from "./i18n";
 import { createCatchPrompt } from "./data/catchPrompt";
 import { createLandingPrompt } from "./data/landingPrompt";
 import { createSalePrompt } from "./data/salePrompt";
+import { createSetupCaptainProfilePrompt } from "./data/setupCaptainProfilePrompt";
+import createPersistedState from "use-persisted-state";
+import { createSelectOptionList } from "./core/utils";
 
 // import { IDialogue } from "./react-app-env";
 
@@ -25,6 +28,15 @@ export const fishes = [
   "bluefinTuna"
 ];
 
+export const fishOptionList = createSelectOptionList(fishes);
+
+export const shipIDTypeList = [
+  "imo",
+  "mmsi",
+]
+
+export const shipIDTypeOptionList = createSelectOptionList(shipIDTypeList);
+
 export const fao3AMap: any = {
   atlanticCod: "LPS",
   blueCrab: "CRB",
@@ -43,17 +55,27 @@ export const fao3AMap: any = {
   bluefinTuna: "PBF"
 };
 
-export const getFishSelectList = () =>
-  fishes.map(value => ({
-    value,
-    label: `${strings[value]}`
-  }));
 
 export const localStorageKey = {
-  savedLanguage: "NEMO_LANGUAGE"
+  savedLanguage: "NEMO_LANGUAGE",
+  captainProfile: "NEMO_CAPTAIN_PROFILE",
+  chatCache: "NEMO_CHAT_CACHE"
+};
+
+export const useCaptainProfileState = createPersistedState(
+  localStorageKey.captainProfile
+);
+export const useLanguageState = createPersistedState(
+  localStorageKey.savedLanguage
+);
+
+export const isProfileSetup = () => {
+  const [profile] = useCaptainProfileState({ completed: false });
+  return !!profile.completed;
 };
 
 export const createSteps = () => [
+  ...(!isProfileSetup() ? createSetupCaptainProfilePrompt() : []),
   {
     id: "prompt_welcome",
     hideInput: true,
@@ -94,13 +116,13 @@ export const createSteps = () => [
     message: () => strings.prompt_unavailable,
     trigger: "prompt_end"
   })),
-  ...createSalePrompt(),
-  ...createCatchPrompt(),
-  ...createLandingPrompt(),
   {
     id: "prompt_end",
     hideInput: true,
     message: () => strings.prompt_end,
     end: true
-  }
+  },
+  ...createSalePrompt(),
+  ...createCatchPrompt(),
+  ...createLandingPrompt()
 ];
