@@ -17,15 +17,19 @@ export const en = {
   yellowfinTuna: "Yellowfin Tuna",
   bluefinTuna: "Bluefin Tuna",
 
-  prompt_welcomeNew: "Welcome aboard Captain.",
+  prompt_welcomeNew: "Welcome aboard Captain 🎉🎉🎉",
   prompt_introduceNemo:
-    "My name is Nemo. I'm about working hard, earning your trust, and be a productive member of your crew.",
-  prompt_vesselCaptainName: "How should I address you?",
+    "My name is Nemo and I am here to replace your paper and pencil logbook (as long as your phone is charged 🔋 . . . )",
+  prompt_vesselCaptainName: "How may I address you?",
   // Answer with Custom Component: Call me Captain FIRSTNAME LASTNAME
+
+  captain: "Captain",
   prompt_vesselName:
     "Very well Captain {previousValue}. What is the name of your ship?",
   prompt_vesselID:
     "And what is {previousValue}'s IMO or MMSI?",
+  imo: "IMO",
+  mmsi: "MMSI",
   // Answer with custom component: a selector with Name, IMO, or MMSI next to a text input
   prompt_fishingGearTypeCode: "What fishing gear is on the ship?",
   // Answer with 3 subsequence styled select
@@ -62,6 +66,9 @@ export const en = {
 
   prompt_initial: "What would you like to add?",
 
+  yes: "✅ YES",
+  no: "❎ NO",
+
   addNew: "Add new",
   catch: "Catch 🐟",
   transport: "Transport 🚢",
@@ -72,7 +79,12 @@ export const en = {
   prompt_nothing: "Smooth sailing 💨",
 
   prompt_catch: "What have you caught?",
-  prompt_quantity: "How many {previousValue} did you catch?",
+  prompt_harvestStartDate: "When did you start this catch?",
+  // Show option to pick a time range?
+  prompt_harvestEndDate: "When did you finish this catch?",
+  // Show option to manually input date, or simply say now.
+
+  prompt_quantity: "What's the total weight of the catch?",
   prompt_preservation: "How are you preserving them?",
   prompt_catchCongrat: "🐟 Congratulations on the catch! 🐟",
   chilled: "Frozen ❄",

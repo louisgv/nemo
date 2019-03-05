@@ -1,3 +1,4 @@
+import React from 'react'
 import { FishSelector } from "../components/FishSelector";
 import { numberValidator, appendTrigger, createOptionLabel } from "../core/utils";
 import { FishDataConfirm } from "../components/FishDataConfirm";

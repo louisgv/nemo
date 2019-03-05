@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
-import { getFishSelectList, fao3AMap } from "../_data";
-import { strings } from "../i18n";
+import { fao3AMap, fishes, fishOptionList } from "../_data";
 
 const StyledSelect = styled(Select)`
   width: 100%;
@@ -18,25 +17,24 @@ const StyledSelect = styled(Select)`
 `;
 
 export const FishSelector = ({ triggerNextStep, steps } : any) => {
-  const fishes = getFishSelectList();
+  const options = fishOptionList;
   const [disabled, setDisabled] = useState(false);
-  const [fish, setFish] = useState(fishes[0].value);
+  const [value, setValue] = useState(options[0].value);
 
   return (
     <StyledSelect
-      value={fish}
+      value={value}
       disabled={disabled}
-      options={fishes}
-      virtualized
+      options={options}
       classes={{
         selectControl: "select-control",
         selectInput: "select-input"
       }}
       onChange={(fish: string) => {
-        setFish(fish);
+        setValue(fish);
         setDisabled(true);
         triggerNextStep({
-          value: `${strings[fish]} ( 3A_CODE: ${fao3AMap[fish]} )`
+          value: fish
         });
       }}
     />

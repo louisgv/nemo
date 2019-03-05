@@ -1,7 +1,9 @@
+import React from 'react'
 import { CatchSelector } from "../components/CatchSelector";
 import { numberValidator, appendTrigger } from "../core/utils";
+import { SaleDetail } from '../components/SaleDetail';
 
-export const salePromptOrder = [
+const salePromptOrder = [
   "prompt_sale",
   "add_species",
   "prompt_size",
@@ -53,7 +55,7 @@ export const createSalePrompt = () =>
     },
     {
       id: `prompt_saleConfirmation`,
-      hideInput: true
+      hideInput: true,
       // component: <SaleDetail />
     }
   ].map((p: any, i) => appendTrigger(p, i, salePromptOrder));

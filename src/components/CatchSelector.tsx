@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
-import { getFishSelectList, fao3AMap } from "../_data";
+import { fao3AMap, localStorageKey } from "../_data";
 import { RefreshButton } from "../_theme";
 
 const StyledSelect = styled(Select)`
@@ -23,7 +23,7 @@ export const CatchSelector = ({ triggerNextStep, steps } : any) => {
 
   if(!fishStore.catches[0]) {
     setTimeout(()=>{
-      localStorage.removeItem("rsc_cache");
+      localStorage.removeItem(localStorageKey.chatCache);
       window.location.reload();
     }, 3000)
     return (
@@ -47,7 +47,6 @@ export const CatchSelector = ({ triggerNextStep, steps } : any) => {
       value={fish}
       disabled={disabled}
       options={fishStore.catches}
-      virtualized
       classes={{
         selectControl: "select-control",
         selectInput: "select-input"
