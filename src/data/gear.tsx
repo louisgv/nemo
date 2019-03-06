@@ -94,6 +94,8 @@ export const gearTree = {
   gearNotKnowOrNotSpecified: null
 };
 
+export const gearBaseList = Object.keys(gearTree)
+
 export const gearISSCFGMap = {
   surroundingNet: "01.0.0",
   surroundingNet_withPurseLines: "01.1.0",
@@ -171,7 +173,7 @@ export const gearISSCFGMap = {
   gearNotKnowOrNotSpecified: "99.0.0"
 };
 
-const gearAbbreviationMap = {
+export const gearAbbreviationMap = {
   surroundingNet_withPurseLines: "PS",
   surroundingNet_withPurseLines_oneBoatOperated: "PS1",
   surroundingNet_withPurseLines_twoBoatsOperated: "PS2",

@@ -7,6 +7,8 @@ import { FishingGearInput } from "../components/FishingGearInput";
 
 const prompOrder = [
   "prompt_welcomeNew",
+  "prompt_fishingGearTypeCode",
+  "add_fishingGearTypeCode",
 
   "prompt_introduceNemo",
 
@@ -73,11 +75,11 @@ const promptStructure = {
     hideInput: true
   },
   add_fishingGearTypeCode: {
-    user: true,
-    // component: <FishingGearInput />,
-    // hideInput: true,
-    // replace: false,
-    // waitAction: true
+    // user: true,
+    component: <FishingGearInput />,
+    hideInput: true,
+    replace: false,
+    waitAction: true
   },
   prompt_productionMethod: {
     hideInput: true

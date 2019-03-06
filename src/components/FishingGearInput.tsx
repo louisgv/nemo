@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
-import { shipIDTypeOptionList, useCaptainProfileState } from "../_data";
-import { StyledInput, StyledSubmitButton } from "../_theme";
 import { useFormState } from "react-use-form-state";
+
+import { useCaptainProfileState } from "../_data";
+import { StyledSubmitButton } from "../_theme";
+import { createSelectOptionList } from "../core/utils";
+
+import { gearTree, gearBaseList } from "../data/gear";
 
 interface VesselIDFormFields {
   idType: ["imo", "mmsi"];
@@ -29,49 +33,65 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-const IDInput = styled(StyledInput)`
-  width: 10em;
-`;
-
-export const FishingGearInput = ({ triggerNextStep, steps }: any) => {
+export const FishingGearInput = () => {
   const [profile, setProfile] = useCaptainProfileState({});
 
-  const options = shipIDTypeOptionList;
+  const [partOne, setPartOne] = useState("");
+  const [partTwo, setPartTwo] = useState("");
+  const [partThree, setPartThree] = useState("");
 
-  const [disabled, setDisabled] = useState(false);
+  const partOneOptions = createSelectOptionList(gearBaseList);
 
-  const [formState, { text, select }] = useFormState<VesselIDFormFields>();
+  const [disabled] = useState(false);
+
+  const [, { select }] = useFormState<VesselIDFormFields>();
 
   return (
     <StyledForm
       onSubmit={e => {
         e.preventDefault();
 
-        console.log(steps);
-        console.log(formState.values);
+        // setDisabled(true);
 
-        setDisabled(true);
+        // setProfile({
+        //     ...profile,
+        // });
 
-        setProfile({
-            ...profile,
-        });
-
-        triggerNextStep();
+        // triggerNextStep();
       }}
     >
-      Work-in-progress...
-      {/* <StyledSelect
-        onChange={(value:string) => select("idType").onChange({target:{value}})}
-        value={select("idType").value}
+      <StyledSelect
+        onChange={(value: string) => console.log(value)}
+        value={partOne}
         disabled={disabled}
-        options={options}
+        options={partOneOptions}
         classes={{
           selectControl: "select-control",
           selectInput: "select-input"
         }}
       />
-      <IDInput disabled={disabled} {...text('idString')}/>
-      <StyledSubmitButton disabled={disabled} /> */}
+      <StyledSelect
+        onChange={(value: string) => console.log(value)}
+        value={partTwo}
+        disabled={disabled || !partOne}
+        options={partOneOptions}
+        classes={{
+          selectControl: "select-control",
+          selectInput: "select-input"
+        }}
+      />
+      <StyledSelect
+        onChange={(value: string) => console.log(value)}
+        value={partThree}
+        disabled={disabled || !partOne || !partTwo}
+        options={partOneOptions}
+        classes={{
+          selectControl: "select-control",
+          selectInput: "select-input"
+        }}
+      />
+
+      <StyledSubmitButton disabled={disabled || !partOne || !partTwo} />
     </StyledForm>
   );
 };
