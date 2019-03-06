@@ -21,7 +21,7 @@ const StyledForm = styled.form`
 `;
 
 const StyledSelect = styled(Select)`
-  width: 4em;
+  width: 25%;
 
   .select-control {
     border-radius: 2em;
