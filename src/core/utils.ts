@@ -22,11 +22,16 @@ export const appendTrigger = (p: any, i: number, order: Array<string>) => {
       p.message = strings[p.id];
     }
   } else {
-    p.options = p.options.map((o: any) => {
-      o.trigger = trigger;
+    p.options = p.options.map((o: any, j: number) => {
+      if(p.triggers) {
+        o.trigger = p.triggers[j]
+      } else {
+        o.trigger = trigger;
+      }
       return o;
     });
   }
+  delete p.triggers;
   return p;
 };
 

@@ -8,6 +8,11 @@ import { animated } from "react-spring";
 
 import { StyledInput, StyledSubmitButton } from "../_theme";
 
+interface YesNoFormFields {
+  isYes: boolean;
+  value: string;
+}
+
 const Container = styled(animated.div)`
   width: 100%;
 
@@ -25,6 +30,7 @@ const StyledForm = styled.form`
   margin-top: 0.5em;
   display: flex;
   justify-content: space-between;
+  flex-direction: column;
 `;
 
 const StyledCaptainLabel = styled.span`
@@ -33,45 +39,42 @@ const StyledCaptainLabel = styled.span`
 `;
 
 export const YesNoDynamicInput = ({ triggerNextStep, steps }: any) => {
-  const [profile, setProfile] = useCaptainProfileState({})
+  const [profile, setProfile] = useCaptainProfileState({});
 
   const [disabled, setDisabled] = useState(false);
-  
-  const [formState, { text }] = useFormState<CaptainNameFormFields>();
+
+  const [formState, { text }] = useFormState<YesNoFormFields>();
 
   return (
     <Container>
-      <StyledCaptainLabel>{strings.captain}</StyledCaptainLabel>
-
       <StyledForm
         onSubmit={e => {
           e.preventDefault();
-          const { lastName } = formState.values;
-
+ 
           setDisabled(true);
 
           setProfile({
-            ... profile,
-            captain: formState.values,
-          })
+            ...profile,
 
-          triggerNextStep({
-            value: lastName,
-          })
+          });
+
+          // triggerNextStep();
         }}
       >
+        <div>
+          If YES, press this button:
+        </div>
+
+
+        <div>
+          If NO, please provide the name of the organization that own the ship:
+        </div>
+
         <StyledInput
           disabled={disabled}
           required
-          placeholder="Last"
-          {...text("lastName")}
-        />
-        {", "}
-        <StyledInput
-          disabled={disabled}
-          required
-          placeholder="First"
-          {...text("firstName")}
+          placeholder="Owner Organization"
+          {...text("value")}
         />
 
         <StyledSubmitButton disabled={disabled} />

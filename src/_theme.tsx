@@ -47,6 +47,21 @@ export const StyledInput = styled.input`
   outline: none;
 `;
 
+export const LabeledInput = styled (({className, label, ...rest}: any) => (
+  <div className={className}>
+    <label>{label}</label>
+    <StyledInput {...rest}/>
+  </div>
+))`
+  display: inline-flex;
+  label {
+    width: 25%;
+  }
+  input {
+    width: 75%;
+  }
+`;
+
 export const StyledSubmitButton = styled(( props : any) => (
   <button {...props}>
     <Check />

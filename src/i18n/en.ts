@@ -26,14 +26,18 @@ export const en = {
   captain: "Captain",
   prompt_vesselName:
     "Very well Captain {previousValue}. What is the name of your ship?",
-  prompt_vesselID:
-    "And what is {previousValue}'s IMO or MMSI?",
+  prompt_vesselID: "And what is {previousValue}'s IMO or MMSI?",
   imo: "IMO",
   mmsi: "MMSI",
   // Answer with custom component: a selector with Name, IMO, or MMSI next to a text input
   prompt_fishingGearTypeCode: "What fishing gear is on the ship?",
   // Answer with 3 subsequence styled select
   // prompt_
+
+  selectGearBase: "Select Base Gear . . .",
+  selectGearSubtype: "Select Sub-type . . .",
+  selectGearOptionalType: "Optional type . . .",
+
   prompt_productionMethod: "How will you be fishing?",
   // Answer with 3 choices: Aquaculture, Inland Fishery, Marine Fishery
 
@@ -42,20 +46,39 @@ export const en = {
   marineFishery: "Marine Fishery",
 
   prompt_ownership: "Are you the ship's owner?",
+  prompt_vesselOwnerName: "Who is the owner of this ship?",
+
   // <input-name> NO.disabled
-  //              YES 
+  //              YES
 
   prompt_organization: "Do you belong to a larger organization?",
   // <input-name> YES.disabled
   //              NO
 
-  prompt_certificationStandard: "Is your vessel covered by the MSC?",
+  prompt_organizationName: "What is the name of this organization/company?",
+
+  prompt_certificationHolder: "Is your vessel covered by the MSC?",
   // <input-name> YES.disabled
-  //              NO  
+  //              NO
+  certification: "Certification",
+
+  form_certificationAgencyLabel: "Agency",
+  form_certificationValueLabel: "Cert. #",
+  form_certificationIdentificationLabel: "Cert. ID",
+
+  form_certificationAgencyPlaceholder: "Agency 101",
+  form_certificationValuePlaceholder: "999",
+  form_certificationIdentificationPlaceholder: "M12554-12486-FC-GFF-1Y",
   
+  form_firstNamePlaceholder: "First",
+  form_lastNamePlaceholder: "Last",
+  form_middleNamePlaceholder: "M",
+  
+  prompt_certificationStandard: "Please provide your certification information:",
+
   prompt_unitOfMeasurement: "Lastly, what's your prefered unit of measurement?",
   // 2 choices
-  
+
   kilogram: "Kilogram (kg)",
   pound: "Pound (lb)",
 
