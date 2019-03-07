@@ -184,7 +184,7 @@ export const en = {
   trollingLines: "Trolling lines",
   hooksAndLinesNotSpecified: "Hooks and lines (not specified)",
   grapplingAndWounding: "Grappling and wounding",
-  harpoonsHAR: "Harpoons ha r",
+  harpoons: "Harpoons",
   harvestingMachines: "Harvesting machines",
   pumps: "Pumps",
   mechanizedDredges: "Mechanized dredges",
