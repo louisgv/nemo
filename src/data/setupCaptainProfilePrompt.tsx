@@ -4,8 +4,6 @@ import { appendTrigger, createOptionLabel } from "../core/utils";
 import { VesselCaptainNameInput } from "../components/VesselCaptainNameInput";
 import { ShipIDInput } from "../components/ShipIDInput";
 import { FishingGearInput } from "../components/FishingGearInput";
-import { YesNoDynamicInput } from "../components/YesNoDynamicInput";
-import { useCaptainProfileState } from "../_data";
 import { CaptainProfileReview } from "../components/CaptainProfileReview";
 import { VesselCertificationInput } from "../components/VesselCertificationInput";
 
@@ -50,43 +48,32 @@ const prompOrder = [
   "prompt_unitOfMeasurement",
   "add_unitOfMeasurement",
 
+  "prompt_setupProfileCompleted",
+
   "prompt_profileReview",
 
   "prompt_end"
 ];
 
 const promptStructure = {
-  prompt_welcomeNew: {
-    hideInput: true
-  },
-  prompt_introduceNemo: { hideInput: true },
-  prompt_vesselCaptainName: {
-    hideInput: true
-  },
   add_vesselCaptainName: {
     component: <VesselCaptainNameInput />,
     hideInput: true,
     replace: false,
     waitAction: true
   },
-  prompt_vesselName: {
-    hideInput: true
-  },
+  
   add_vesselName: {
     user: true
   },
-  prompt_vesselID: {
-    hideInput: true
-  },
+  
   add_vesselID: {
     component: <ShipIDInput />,
     hideInput: true,
     replace: false,
     waitAction: true
   },
-  prompt_fishingGearTypeCode: {
-    hideInput: true
-  },
+
   add_fishingGearTypeCode: {
     // user: true,
     component: <FishingGearInput />,
@@ -94,82 +81,55 @@ const promptStructure = {
     replace: false,
     waitAction: true
   },
-  prompt_productionMethod: {
-    hideInput: true
-  },
+
   add_productionMethod: {
     // user: true
+    hideInput: true,
     options: ["aquaculture", "inlandFishery", "marineFishery"].map(
       createOptionLabel
     )
   },
 
-  prompt_ownership: {
-    hideInput: true
-  },
-
   add_ownership: {
     // user: true
+    hideInput: true,
     options: ["yes", "no"].map(createOptionLabel),
-    triggers: [
-      "prompt_organization",
-      "prompt_vesselOwnerName"
-    ]
+    triggers: ["prompt_organization", "prompt_vesselOwnerName"]
   },
 
-  prompt_vesselOwnerName: {
-    hideInput: true
-  },
   add_vesselOwnerName: {
     user: true
   },
 
-  prompt_organization: {
-    hideInput: true
-  },
   add_organization: {
+    hideInput: true,
     options: ["yes", "no"].map(createOptionLabel),
-    triggers: [
-      "prompt_organizationName",
-      "prompt_certificationHolder"
-    ]
+    triggers: ["prompt_organizationName", "prompt_certificationHolder"]
   },
 
-  prompt_organizationName: {
-    hideInput: true
-  },
   add_organizationName: {
-    user: true,
-  },
-  
-  prompt_certificationHolder: {
-    hideInput: true
-  },
-  add_certificationHolder: {
-    options: ["yes", "no"].map(createOptionLabel),
-    triggers: [
-      "prompt_certificationStandard",
-      "prompt_unitOfMeasurement",
-    ]
+    user: true
   },
 
-  prompt_certificationStandard: {
-    hideInput: true
+  add_certificationHolder: {
+    hideInput: true,
+    options: ["yes", "no"].map(createOptionLabel),
+    triggers: ["prompt_certificationStandard", "prompt_unitOfMeasurement"]
   },
+
   add_certificationStandard: {
-    component: <VesselCertificationInput/>,
+    component: <VesselCertificationInput />,
     hideInput: true,
     replace: false,
-    waitAction: true  },
+    waitAction: true
+  },
 
-  prompt_unitOfMeasurement: {
-    hideInput: true
-  },
   add_unitOfMeasurement: {
-    options: ["kilogram", "pound"].map(createOptionLabel),
+    options: ["kilogram", "pound"].map(createOptionLabel)
   },
+
   prompt_profileReview: {
-    component: <CaptainProfileReview/>,
+    component: <CaptainProfileReview />,
     hideInput: true,
     replace: false,
     waitAction: true
@@ -182,7 +142,7 @@ export const createSetupCaptainProfilePrompt = () =>
       acc.push(appendTrigger(
         {
           id,
-          ...promptStructure[id]
+          ... (promptStructure[id] || {hideInput: true})
         },
         i,
         prompOrder
