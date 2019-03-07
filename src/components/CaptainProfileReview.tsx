@@ -44,7 +44,7 @@ const StyledCaptainLabel = styled.span`
   font-weight: bold;
 `;
 
-export const VesselCaptainNameInput = ({ triggerNextStep, steps }: any) => {
+export const CaptainProfileReview = ({ triggerNextStep, steps }: any) => {
   const [profile, setProfile] = useCaptainProfileState({})
 
   const [disabled, setDisabled] = useState(false);
@@ -80,19 +80,19 @@ export const VesselCaptainNameInput = ({ triggerNextStep, steps }: any) => {
         <StyledInput
           disabled={disabled}
           required
-          placeholder={strings.form_lastNamePlaceholder}
+          placeholder="Last"
           {...text("lastName")}
         />
         {", "}
         <StyledInput
           disabled={disabled}
           required
-          placeholder={strings.form_firstNamePlaceholder}
+          placeholder="First"
           {...text("firstName")}
         />
         <StyledMiddleNameInput
           disabled={disabled}
-          placeholder={strings.form_middleNamePlaceholder}
+          placeholder="M"
           {...text("middleName")}
           maxLength={1}
         />

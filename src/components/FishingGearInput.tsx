@@ -14,6 +14,7 @@ import {
   isGearValid,
   getGearId,
 } from "../data/gear";
+import { strings } from "../i18n";
 
 const StyledForm = styled.form`
   display: flex;
@@ -98,7 +99,7 @@ export const FishingGearInput = ({triggerNextStep}: any) => {
       }}
     >
       <StyledSelect
-        placeholder={"Select Base Gear . . ."}
+        placeholder={strings.selectGearBase}
         onChange={(value: string) => {
           setPartOne(value);
 
@@ -117,7 +118,7 @@ export const FishingGearInput = ({triggerNextStep}: any) => {
         }}
       />
       <StyledSelect
-        placeholder={"Select Sub-type . . ."}
+        placeholder={strings.selectGearSubtype}
         onChange={(value: string) => {
           setPartTwo(value);
           setPartThree("");
@@ -133,7 +134,7 @@ export const FishingGearInput = ({triggerNextStep}: any) => {
       />
       <StyledSelect
         clearable
-        placeholder={"Optional type . . ."}
+        placeholder={strings.selectGearOptionalType}
         onChange={setPartThree}
         onInputClear={()=>setPartThree('')}
         value={partThree}
