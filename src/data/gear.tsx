@@ -1,3 +1,47 @@
+export const getGearId =(partOne: string, partTwo?: string, partThree?: string) => {
+  if(!!partThree) {
+    return `${partOne}_${partTwo}_${partThree}`;
+  }
+
+  if (!!partTwo) {
+    return `${partOne}_${partTwo}`;
+  }
+
+  if(!!partOne) {
+    return partOne
+  }
+
+  return null;
+}
+
+export const isGearValid = (partOne: string, partTwo?: string, partThree?: string) => {
+  if (!!gearAbbreviationMap[partOne]) {
+    return true;
+  }
+
+  if(!partTwo) {
+    return false;
+  }
+
+  const partOneTwo = `${partOne}_${partTwo}`
+
+  if(!!gearAbbreviationMap[partOneTwo]) {
+    return true;
+  }
+
+  if(!partThree) {
+    return false;
+  }
+
+  const partOneTwoThree = `${partOneTwo}_${partThree}`
+
+  if(!!gearAbbreviationMap[partOneTwoThree]) {
+    return true;
+  }
+
+  return false;
+}
+
 export const gearTree = {
   surroundingNet: {
     // 01.0.0
@@ -82,7 +126,7 @@ export const gearTree = {
     hooksAndLinesNotSpecified: null
   },
   grapplingAndWounding: {
-    harpoonsHAR: null
+    harpoons: null
   },
   harvestingMachines: {
     pumps: null,
@@ -92,7 +136,7 @@ export const gearTree = {
   miscellaneousGear: null,
   recreationalFishingGear: null,
   gearNotKnowOrNotSpecified: null
-};
+} as any;
 
 export const gearBaseList = Object.keys(gearTree)
 
@@ -171,7 +215,7 @@ export const gearISSCFGMap = {
   miscellaneousGear: "20.0.0",
   recreationalFishingGear: "25.0.0",
   gearNotKnowOrNotSpecified: "99.0.0"
-};
+} as any;
 
 export const gearAbbreviationMap = {
   surroundingNet_withPurseLines: "PS",
@@ -247,7 +291,7 @@ export const gearAbbreviationMap = {
   miscellaneousGear: "MIS",
   recreationalFishingGear: "RG",
   gearNotKnowOrNotSpecified: "NK"
-};
+} as any;
 
 /**
  * data extraction code:

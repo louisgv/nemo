@@ -1,14 +1,15 @@
 import React from "react";
 
-import { appendTrigger } from "../core/utils";
+import { appendTrigger, createOptionLabel } from "../core/utils";
 import { VesselCaptainNameInput } from "../components/VesselCaptainNameInput";
 import { ShipIDInput } from "../components/ShipIDInput";
 import { FishingGearInput } from "../components/FishingGearInput";
 
 const prompOrder = [
   "prompt_welcomeNew",
-  "prompt_fishingGearTypeCode",
-  "add_fishingGearTypeCode",
+  
+  "prompt_ownership",
+  "add_ownership",
 
   "prompt_introduceNemo",
 
@@ -85,12 +86,16 @@ const promptStructure = {
     hideInput: true
   },
   add_productionMethod: {
-    user: true
-  },
-  prompt_ownership: {
-    hideInput: true
+    // user: true
+    options: ["aquaculture", "inlandFishery", "marineFishery"].map(createOptionLabel)
   },
 
+  prompt_ownership: {
+    component: <FishingGearInput />,
+    hideInput: true,
+    replace: false,
+    waitAction: true
+  },
   add_ownership: {
     user: true
   },
