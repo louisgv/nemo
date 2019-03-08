@@ -72,9 +72,7 @@ export const CaptainProfileReview = ({ triggerNextStep, steps }: any) => {
             },
           })
 
-          triggerNextStep({
-            value: lastName,
-          })
+          triggerNextStep()
         }}
       >
         <StyledInput
