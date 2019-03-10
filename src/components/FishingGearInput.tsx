@@ -74,15 +74,9 @@ export const FishingGearInput = ({triggerNextStep}: any) => {
 
         setDisabled(true);
 
-        console.log({
-          partOne,
-          partTwo,
-          partThree
-        })
-
         const gearId = getGearId(partOne, partTwo, partThree);
 
-        console.log(gearId);
+        // console.log(gearId);
         
         if (!gearId) {
           return console.error("GEAR ID IS INVALID!!!");

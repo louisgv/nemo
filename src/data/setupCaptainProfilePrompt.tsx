@@ -2,7 +2,7 @@ import React from "react";
 
 import { appendTrigger, createOptionLabel } from "../core/utils";
 import { VesselCaptainNameInput } from "../components/VesselCaptainNameInput";
-import { ShipIDInput } from "../components/ShipIDInput";
+import { VesselIDInput } from "../components/VesselIDInput";
 import { FishingGearInput } from "../components/FishingGearInput";
 import { CaptainProfileReview } from "../components/CaptainProfileReview";
 import { VesselCertificationInput } from "../components/VesselCertificationInput";
@@ -52,7 +52,9 @@ const prompOrder = [
 
   "prompt_profileReview",
 
-  "prompt_end"
+  "prompt_profileDone",
+
+  "prompt_anotherOne"
 ];
 
 const promptStructure = {
@@ -68,7 +70,7 @@ const promptStructure = {
   },
   
   add_vesselID: {
-    component: <ShipIDInput />,
+    component: <VesselIDInput />,
     hideInput: true,
     replace: false,
     waitAction: true
@@ -122,10 +124,6 @@ const promptStructure = {
     hideInput: true,
     replace: false,
     waitAction: true
-  },
-
-  add_unitOfMeasurement: {
-    options: ["kilogram", "pound"].map(createOptionLabel)
   },
 
   prompt_profileReview: {

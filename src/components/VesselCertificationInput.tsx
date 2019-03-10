@@ -60,13 +60,19 @@ export const VesselCertificationInput = ({ triggerNextStep, steps }: any) => {
     <Container>
       <StyledHeaderLabel>{strings.certification}</StyledHeaderLabel>
 
-
-
       <StyledForm
         onSubmit={e => {
           e.preventDefault();
 
           setDisabled(true);
+
+          setProfile({
+            ... profile,
+            vesselCertification: {
+              ...formState.values,
+              standard: "MSC"
+            },
+          })
 
           triggerNextStep();
         }}

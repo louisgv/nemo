@@ -68,7 +68,7 @@ export const VesselCaptainNameInput = ({ triggerNextStep, steps }: any) => {
               firstName,
               middleName,
               lastName,
-              formName: upper(`${lastName},${firstName}`)
+              formName: upper(`${lastName}_${firstName}`,',')
             },
           })
 

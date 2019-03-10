@@ -33,7 +33,7 @@ const IDInput = styled(StyledInput)`
   width: 10em;
 `;
 
-export const ShipIDInput = ({ triggerNextStep, steps }: any) => {
+export const VesselIDInput = ({ triggerNextStep, steps }: any) => {
   const [profile, setProfile] = useCaptainProfileState({});
 
   const options = shipIDTypeOptionList;

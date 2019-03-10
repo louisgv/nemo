@@ -9,6 +9,9 @@ import {
 import styled from "styled-components";
 
 import { Close } from "styled-icons/material/Close";
+import { useProfileState } from "../_data";
+import { useFormState } from "react-use-form-state";
+import { StyledSubmitButton, LabeledInput } from "../_theme";
 
 const data = [
   {
@@ -98,11 +101,40 @@ const CloseProfileModalButton = styled(ProfileIcon)`
 `;
 
 const ItemContainer = styled(animated.div)`
-  margin-top: 3em;
-`
+  margin: 3em 3em;
+`;
+
+const ReviewInput = styled(LabeledInput)`
+  width: 100%;
+  margin-bottom: 0.5em;
+
+  label {
+    width: 50%;
+    color: black;
+  }
+  input {
+    width: 50%;
+  }
+`;
+
+const StyledForm = styled.form`
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+`;
 
 export const CaptainProfile = () => {
   const [open, setOpen] = useState(false);
+  const [profile, setProfile] = useProfileState({});
+
+  const {completed, ...profileFormRest} = profile;
+
+  const [formState, { text }] = useFormState<CaptainProfileReviewFormFields>({
+    ...profileFormRest
+  });
 
   const springRef = useRef(null);
   const { size, ...rest } = useSpring({
@@ -155,13 +187,35 @@ export const CaptainProfile = () => {
           <Close />
         </CloseProfileModalButton>
         <ItemContainer>
-          {transitions.map(({ item, key, props }) => (
+          {/* {transitions.map(({ item, key, props }) => (
             <Item key={key} style={{ ...props, background: item.css }}>
-              PROFILE MENU WORK IN PROGRESS. . .
-            </Item>
-          ))}
-        </ItemContainer>
 
+            </Item>
+          ))} */}
+
+          <StyledForm
+            onSubmit={e => {
+              e.preventDefault();
+
+              setProfile({
+                ...formState.values,
+                completed: true
+              });
+
+              setOpen(false)
+            }}
+          >
+            {Object.keys(formState.values).map(k => (
+              <ReviewInput
+                key={k}
+                label={k}
+                {...text(k as any)}
+              />
+            ))}
+
+            <StyledSubmitButton />
+          </StyledForm>
+        </ItemContainer>
       </Container>
     </>
   );
