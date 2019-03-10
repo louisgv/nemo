@@ -79,7 +79,8 @@ export const en = {
   prompt_unitOfMeasurement: "Lastly, what's your prefered unit of measurement?",
   // 2 choices
 
-  prompt_setupProfileCompleted: "You are all set Captain! Please review your information below. NOTE: You can change your information anytime! Simply open your profile via the button in the top right corner.",
+  prompt_setupProfileCompleted: "Please review your information below:",
+  prompt_profileDone: "You are all set Captain! NOTE: You can change your information anytime! Simply open your profile via the button in the top right corner.",
 
   kilogram: "Kilogram (kg)",
   pound: "Pound (lb)",

@@ -58,7 +58,8 @@ export const fao3AMap: any = {
 
 export const localStorageKey = {
   savedLanguage: "NEMO_LANGUAGE",
-  captainProfile: "NEMO_CAPTAIN_PROFILE",
+  captainProfile: "NEMO_CAPTAIN_PROFILE_TEMP",
+  profile: "NEMO_PROFILE",
   chatCache: "NEMO_CHAT_CACHE"
 };
 
@@ -68,9 +69,12 @@ export const useCaptainProfileState = createPersistedState(
 export const useLanguageState = createPersistedState(
   localStorageKey.savedLanguage
 );
+export const useProfileState = createPersistedState(
+  localStorageKey.profile
+);
 
 export const isProfileSetup = () => {
-  const [profile] = useCaptainProfileState({ completed: false });
+  const [profile] = useProfileState({ completed: false });
   return !!profile.completed;
 };
 
