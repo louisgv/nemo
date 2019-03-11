@@ -30,12 +30,28 @@ export const fishes = [
 
 export const fishOptionList = createSelectOptionList(fishes);
 
-export const shipIDTypeList = [
-  "imo",
-  "mmsi",
-]
+export const shipIDTypeList = ["imo", "mmsi"];
+
+export const durationList = ["days", "weeks", "months"]
+
+export const durationMultiplier = {
+  days:  24 * 60 * 60 * 1000,
+  weeks: 7 * 24 * 60 * 60 * 1000,
+  months: 30 * 7 * 24 * 60 * 60 * 1000
+}
 
 export const shipIDTypeOptionList = createSelectOptionList(shipIDTypeList);
+
+export const uomMap: any = {
+  kilogram: "KGM",
+  pound: "LBS",
+}
+
+export const productionMethodCodeMap = {
+  aquaculture: "AQUACULTURE",
+  inlandFishery: "INLAND_FISHERY",
+  marineFishery: "MARINE_FISHERY",
+} as any
 
 export const fao3AMap: any = {
   atlanticCod: "LPS",
@@ -55,12 +71,12 @@ export const fao3AMap: any = {
   bluefinTuna: "PBF"
 };
 
-
 export const localStorageKey = {
   savedLanguage: "NEMO_LANGUAGE",
   captainProfile: "NEMO_CAPTAIN_PROFILE_TEMP",
   profile: "NEMO_PROFILE",
-  chatCache: "NEMO_CHAT_CACHE"
+  chatCache: "NEMO_CHAT_CACHE",
+  catchCache: "NEMO_CATCH_CACHE"
 };
 
 export const useCaptainProfileState = createPersistedState(
@@ -69,8 +85,10 @@ export const useCaptainProfileState = createPersistedState(
 export const useLanguageState = createPersistedState(
   localStorageKey.savedLanguage
 );
-export const useProfileState = createPersistedState(
-  localStorageKey.profile
+export const useProfileState = createPersistedState(localStorageKey.profile);
+
+export const useCatchCacheState = createPersistedState(
+  localStorageKey.catchCache
 );
 
 export const isProfileSetup = () => {

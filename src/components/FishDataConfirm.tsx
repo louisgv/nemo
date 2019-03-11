@@ -1,48 +1,27 @@
-import React, { useState, Component } from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
 import Reward from "react-rewards";
 
-import { fao3AMap } from "../_data";
 import { strings } from "../i18n";
 
-export class FishDataConfirm extends Component {
-  state = {
-      done: false
-  };
+export const FishDataConfirm = ({ triggerNextStep }: any) => {
+  const [done, setDone] = useState(false);
 
-  componentWillMount() {
-    const { steps } = this.props as any;
+  return (
+    <Reward
+      ref={(ref: any) => {
+        if (ref && !done) {
+          ref.rewardMe();
+          setDone(true);
 
-    const { add_catch, add_quantity, add_preservation } = steps;
-
-    const fishStore = JSON.parse(localStorage.getItem("FISH_STORE") as any) || { catches: [] };
-
-    const label = `${add_quantity.value} ${add_preservation.value} ${add_catch.value}`;
-
-    fishStore.catches.push({
-        value: label,
-        label
-    })
-
-    localStorage.setItem("FISH_STORE", JSON.stringify(fishStore));
-}
-
-  render() {
-    return (
-      <Reward
-        ref={(ref: any) => {
-            if(ref && !this.state.done) {
-                ref.rewardMe()
-                this.setState({done: true})
-            }
-        }}
-        type="emoji"
-        config={{
-          emoji: ["🐟", "🦐", "🐙", "🦀", "🐳", "🐋", "🐬", "🦑", "🐡", "🦈"]
-        }}
-      >
-        <div>{strings.prompt_catchCongrat}</div>
-      </Reward>
-    );
-  }
-}
+          triggerNextStep();
+        }
+      }}
+      type="emoji"
+      config={{
+        emoji: ["🐟", "🦐", "🐙", "🦀", "🐳", "🐋", "🐬", "🦑", "🐡", "🦈"]
+      }}
+    >
+      <div>{strings.prompt_catchCongrat}</div>
+    </Reward>
+  );
+};

@@ -7,6 +7,7 @@ declare module 'react-styled-select';
 declare module 'autoscroll-react';
 declare module 'react-rewards';
 declare module 'use-persisted-state';
+declare module 'uuid/v4';
 
 interface IDialogue extends LocalizedStringsMethods {
   initialAsk: string;

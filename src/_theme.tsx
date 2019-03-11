@@ -2,6 +2,7 @@ import React from "react";
 
 import styled from "styled-components";
 
+import Select from "react-styled-select";
 import { Refresh } from "styled-icons/material/Refresh";
 import { Check } from "styled-icons/material/Check";
 
@@ -47,10 +48,10 @@ export const StyledInput = styled.input`
   outline: none;
 `;
 
-export const LabeledInput = styled (({className, label, ...rest}: any) => (
+export const LabeledInput = styled(({ className, label, ...rest }: any) => (
   <div className={className}>
     <label>{label}</label>
-    <StyledInput {...rest}/>
+    <StyledInput {...rest} />
   </div>
 ))`
   display: inline-flex;
@@ -62,21 +63,78 @@ export const LabeledInput = styled (({className, label, ...rest}: any) => (
   }
 `;
 
-export const StyledSubmitButton = styled(( props : any) => (
-  <button {...props}>
-    <Check />
-  </button>
-))`
-  width: 30px;
-  height: 30px;
+export const Divider = styled.hr`
+  width: 80%;
+`
+
+export const ReviewInput = styled(LabeledInput)`
+  width: 100%;
+  margin-bottom: 0.5em;
+
+  label {
+    color: black;
+    width: 50%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  input {
+    width: 50%;
+  }
+`;
+
+export const StyledButton = styled.button`
+
   border: none;
   background: ${p => p.theme.botBubbleColor};
+  color: ${p => p.theme.botFontColor};
+  height: 30px;
 
-  svg {
-    fill: ${p => p.theme.botFontColor};
-  }
-  
   :disabled {
     background: ${p => p.theme.userFontColor};
   }
 `;
+
+export const StyledSubmitButton = styled((props: any) => (
+  <StyledButton {...props}>
+    <Check />
+  </StyledButton>
+))`
+  width: 30px;
+  height: 30px;
+
+  svg {
+    fill: ${p => p.theme.botFontColor};
+  }
+`;
+
+export const StyledColumnForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const StyledRowForm = styled(StyledColumnForm)`
+  flex-direction: row;
+`;
+
+export const RowDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+export const StyledSelect = styled(Select)`
+  .select-control {
+    border-radius: 2em;
+    background: #eee;
+  }
+
+  .select-input {
+    margin-left: 0.5em;
+  }
+`;
+
