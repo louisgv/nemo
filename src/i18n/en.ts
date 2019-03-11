@@ -95,6 +95,10 @@ export const en = {
   yes: "✅ YES",
   no: "❎ NO",
 
+  days: "Day",
+  weeks: "Week",
+  months: "Month",
+
   addNew: "Add new",
   catch: "Catch 🐟",
   transport: "Transport 🚢",
@@ -104,15 +108,29 @@ export const en = {
 
   prompt_nothing: "Smooth sailing 💨",
 
-  prompt_catch: "What have you caught?",
-  prompt_harvestStartDate: "When did you start this catch?",
-  // Show option to pick a time range?
-  prompt_harvestEndDate: "When did you finish this catch?",
-  // Show option to manually input date, or simply say now.
+  prompt_catch: "Let's get this done ⚡",
 
-  prompt_quantity: "What's the total weight of the catch?",
-  prompt_preservation: "How are you preserving them?",
+  prompt_catchFishType: "What have you caught?",
+  prompt_catchDuration: "How long was the journey?",
+
+  prompt_catchHarvestStartDate: "When did you start this catch?",
+  // Show option to pick a time range?
+  prompt_catchHarvestEndDate: "When did you finish this catch?",
+  // Show option to manually input date, or simply say now.
+  
+  prompt_catchArea: "Which FAO catch area did you fish?",
+
+  prompt_catchQuantity: "Please scan the container QR code and provide the quantity:",
+  prompt_catchQuantityListDone: "Is that the last container?",
+  
+  prompt_catchReview: "Please review the catch data:",
+
   prompt_catchCongrat: "🐟 Congratulations on the catch! 🐟",
+  
+  prompt_preservation: "How are you preserving them?",
+
+  add_quantityPlaceholder: "Enter quantity in ",
+
   chilled: "Frozen ❄",
   salted: "Dried ♨",
   fresh: "Fresh ✨",

@@ -9,9 +9,9 @@ import {
 import styled from "styled-components";
 
 import { Close } from "styled-icons/material/Close";
-import { useProfileState } from "../_data";
+import { useProfileState, localStorageKey } from "../_data";
 import { useFormState } from "react-use-form-state";
-import { StyledSubmitButton, LabeledInput } from "../_theme";
+import { StyledSubmitButton, LabeledInput, StyledColumnForm, StyledButton, RowDiv as RowDiv, ReviewInput } from "../_theme";
 
 const data = [
   {
@@ -104,33 +104,15 @@ const ItemContainer = styled(animated.div)`
   margin: 3em 3em;
 `;
 
-const ReviewInput = styled(LabeledInput)`
-  width: 100%;
-  margin-bottom: 0.5em;
-
-  label {
-    width: 50%;
-    color: black;
-  }
-  input {
-    width: 50%;
-  }
-`;
-
-const StyledForm = styled.form`
+const StyledForm = styled(StyledColumnForm)`
   margin-top: 1em;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-end;
-  width: 100%;
 `;
 
 export const CaptainProfile = () => {
   const [open, setOpen] = useState(false);
   const [profile, setProfile] = useProfileState({});
 
-  const {completed, ...profileFormRest} = profile;
+  const { completed, ...profileFormRest } = profile;
 
   const [formState, { text }] = useFormState<CaptainProfileReviewFormFields>({
     ...profileFormRest
@@ -202,18 +184,25 @@ export const CaptainProfile = () => {
                 completed: true
               });
 
-              setOpen(false)
+              setOpen(false);
             }}
           >
             {Object.keys(formState.values).map(k => (
-              <ReviewInput
-                key={k}
-                label={k}
-                {...text(k as any)}
-              />
+              <ReviewInput key={k} label={k} {...text(k as any)} />
             ))}
 
-            <StyledSubmitButton />
+            <RowDiv>
+              <StyledButton
+                onClick={e => {
+                  e.preventDefault();
+                  localStorage.removeItem(localStorageKey.chatCache);
+                  window.location.reload();
+                }}
+              >
+                Clear chat cache
+              </StyledButton>
+              <StyledSubmitButton />
+            </RowDiv>
           </StyledForm>
         </ItemContainer>
       </Container>

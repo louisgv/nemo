@@ -46,6 +46,8 @@ export const App = ({props} : any) => {
   const steps = createSteps();
 
   const handleLanguageChanged =(newLanguage: string)=> {
+    if (language === newLanguage) return;
+
     setLanguage(newLanguage);
     
     localStorage.removeItem(localStorageKey.chatCache);
@@ -66,6 +68,7 @@ export const App = ({props} : any) => {
               onLanguageChanged={handleLanguageChanged}
             />
           }
+          enableMobileAutoFocus
           botAvatar={"assets/avatar.png"}
           hideUserAvatar
           cache={isProfileSetup()}

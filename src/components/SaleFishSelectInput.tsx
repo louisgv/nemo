@@ -17,7 +17,7 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-export const CatchSelector = ({ triggerNextStep, steps } : any) => {
+export const SaleFishSelectInput = ({ triggerNextStep, steps } : any) => {
 
   const fishStore = JSON.parse(localStorage.getItem("FISH_STORE") as any) || { catches: [] };
 

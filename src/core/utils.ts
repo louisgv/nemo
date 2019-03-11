@@ -37,5 +37,5 @@ export const appendTrigger = (p: any, i: number, order: Array<string>) => {
 
 export const createOptionLabel = (value: string) => ({
   value,
-  label: strings[value]
+  label: strings[value] || value
 });

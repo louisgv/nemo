@@ -3,24 +3,16 @@ import styled from "styled-components";
 import { useFormState } from "react-use-form-state";
 import { animated } from "react-spring";
 
-import { upper } from 'case'
 
 import { useCaptainProfileState, useProfileState } from "../_data";
-import { strings } from "../i18n";
 
-import { StyledInput, StyledSubmitButton, LabeledInput } from "../_theme";
+import {
+  StyledSubmitButton,
+  LabeledInput,
+  ReviewInput} from "../_theme";
 
 const Container = styled(animated.div)`
   width: 100%;
-
-  .select-control {
-    border-radius: 2em;
-    background: #eee;
-  }
-
-  .select-input {
-    margin-left: 0.5em;
-  }
 `;
 
 const StyledForm = styled.form`
@@ -32,18 +24,6 @@ const StyledForm = styled.form`
   width: 100%;
 `;
 
-const ReviewInput = styled(LabeledInput)`
-  width: 100%;
-  margin-bottom: 0.5em;
-
-  label {
-    width: 50%;
-  }
-  input {
-    width: 50%;
-  }
-`;
-
 export const CaptainProfileReview = ({ triggerNextStep, steps }: any) => {
   const {
     add_productionMethod,
@@ -51,20 +31,20 @@ export const CaptainProfileReview = ({ triggerNextStep, steps }: any) => {
     add_vesselOwnerName,
     add_organizationName,
 
-    add_unitOfMeasurement,
-  } = steps
+    add_unitOfMeasurement
+  } = steps;
 
-  const [captainProfile, setCaptainProfileProfile] = useCaptainProfileState({})
+  const [captainProfile] = useCaptainProfileState({});
 
-  const [profile, setProfile] = useProfileState({})
+  const [, setProfile] = useProfileState({});
 
   const [disabled, setDisabled] = useState(false);
-  
+
   const [formState, { text }] = useFormState<CaptainProfileReviewFormFields>({
     firstName: captainProfile.captain.firstName,
     middleName: captainProfile.captain.middleName,
     lastName: captainProfile.captain.lastName,
-  
+
     vesselIdType: captainProfile.vessel.idType,
     vesselIdString: captainProfile.vessel.idString,
     vesselName: captainProfile.vessel.name,
@@ -72,16 +52,17 @@ export const CaptainProfileReview = ({ triggerNextStep, steps }: any) => {
     vesselCertificationStandard: captainProfile.vesselCertification.standard,
     vesselCertificationAgency: captainProfile.vesselCertification.agency,
     vesselCertificationValue: captainProfile.vesselCertification.value,
-    vesselCertificationIdentification: captainProfile.vesselCertification.identification,
-    
+    vesselCertificationIdentification:
+      captainProfile.vesselCertification.identification,
+
     fishingGearType: captainProfile.fishingGearTypeCode,
-  
+
     productionMethod: add_productionMethod.value,
 
-    vesselOwnerName: add_vesselOwnerName ? add_vesselOwnerName.value : '',
-    organizationName: add_organizationName ? add_organizationName.value : '',
+    vesselOwnerName: add_vesselOwnerName ? add_vesselOwnerName.value : "",
+    organizationName: add_organizationName ? add_organizationName.value : "",
 
-    unitOfMeasurement: add_unitOfMeasurement.value,
+    unitOfMeasurement: add_unitOfMeasurement.value
   });
 
   // console.log(formState.values)
@@ -98,22 +79,20 @@ export const CaptainProfileReview = ({ triggerNextStep, steps }: any) => {
 
           setProfile({
             ...formState.values,
-            completed: true,
-          })
+            completed: true
+          });
 
-          triggerNextStep()
+          triggerNextStep();
         }}
       >
-        {
-          Object.keys(formState.values).map(k =>
-            <ReviewInput
-              key={k}
-              disabled={disabled}
-              label={k}
-              {...text(k as any)}
-            />
-          )
-        }
+        {Object.keys(formState.values).map(k => (
+          <ReviewInput
+            key={k}
+            disabled={disabled}
+            label={k}
+            {...text(k as any)}
+          />
+        ))}
 
         <StyledSubmitButton disabled={disabled} />
       </StyledForm>

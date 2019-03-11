@@ -1,4 +1,5 @@
 import { testCatchPayload } from "./sample";
+import { createCatchPayload } from "./catch";
 
 const origin = {
   capture: {
@@ -10,7 +11,7 @@ const origin = {
   }
 }
 
-export const sendCatchEvent = async () => {
+export const sendCatchEvent = async (catchData : any) => {
 
   const headers = new Headers()
 
@@ -19,12 +20,12 @@ export const sendCatchEvent = async () => {
   headers.set('Authorization', 'Basic ' + btoa(auth.username + ":" + auth.password));
   headers.set('Content-Type', 'text/xml');
   
+  const body = await createCatchPayload(catchData)
   const response = await fetch(uri,{
     method: 'POST',
     headers,
-    body: testCatchPayload
+    body
   })
 
   console.log(response)
-
 };
