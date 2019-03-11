@@ -112,6 +112,11 @@ const promptStructure = {
   add_organizationName: {
     user: true
   },
+  
+  add_unitOfMeasurement: {
+    hideInput: true,
+    options: ["pound", "kilogram"].map(createOptionLabel),
+  },
 
   add_certificationHolder: {
     hideInput: true,
