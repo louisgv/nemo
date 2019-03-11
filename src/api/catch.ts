@@ -27,7 +27,7 @@ const generateQuantityElementList = (fishCode='', quantityList=[]) =>
     .map(
       ({ epcClass, quantity, uom }: any) => `
     <quantityElement>
-      <epcClass>http://epcis.cosintl.com/user/vocab/obj/${fishCode}.${epcClass}</epcClass>
+      <epcClass>http://epcis.nemo.com/user/vocab/obj/${fishCode}.${epcClass}</epcClass>
       <quantity>${quantity}</quantity>
       <uom>${uom}</uom>
     </quantityElement>`
