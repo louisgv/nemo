@@ -4,19 +4,19 @@ self.__precacheManifest = [
     "url": "/nemo/static/js/runtime~main.8e962d31.js"
   },
   {
-    "revision": "701811cfaa3c37918de8",
-    "url": "/nemo/static/js/main.701811cf.chunk.js"
+    "revision": "7482bc7194239cfee390",
+    "url": "/nemo/static/js/main.7482bc71.chunk.js"
   },
   {
     "revision": "5a40ef45ed31ec19fee2",
     "url": "/nemo/static/js/2.5a40ef45.chunk.js"
   },
   {
-    "revision": "701811cfaa3c37918de8",
+    "revision": "7482bc7194239cfee390",
     "url": "/nemo/static/css/main.47ae442d.chunk.css"
   },
   {
-    "revision": "38965c6a734dd952b9cdc902cf2d51f1",
+    "revision": "fd554f82c609edc3d2db2386bd820965",
     "url": "/nemo/index.html"
   }
 ];
