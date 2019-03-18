@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useFormState } from "react-use-form-state";
 import { animated } from "react-spring";
 
-import { useCaptainProfileState, useProfileState } from "../_data";
+import { useCaptainProfileState, useProfileState, localStorageKey } from "../_data";
 
 import { StyledSubmitButton, LabeledInput, ReviewInput } from "../_theme";
 
@@ -86,6 +86,8 @@ export const CaptainProfileReview = ({ triggerNextStep, steps }: any) => {
             ...formState.values,
             completed: true
           });
+
+          localStorage.removeItem(localStorageKey.chatCache);
 
           triggerNextStep();
         }}
