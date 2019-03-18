@@ -5,7 +5,7 @@ import { StyledInput, StyledSubmitButton, StyledSelect, StyledRowForm } from "..
 import { useFormState } from "react-use-form-state";
 
 interface VesselIDFormFields {
-  idType: ["imo", "mmsi"];
+  idType: "imo" | "mmsi";
   idString: string;
 }
 
@@ -24,7 +24,9 @@ export const VesselIDInput = ({ triggerNextStep, steps }: any) => {
 
   const [disabled, setDisabled] = useState(false);
 
-  const [formState, { text, select }] = useFormState<VesselIDFormFields>();
+  const [formState, { text, select }] = useFormState<VesselIDFormFields>({
+    idType: "imo"
+  });
 
   return (
     <StyledRowForm
