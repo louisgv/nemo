@@ -22,7 +22,7 @@ const getCoordinate = () =>
     }
   });
 
-const generateQuantityElementList = (fishCode='', quantityList=[]) =>
+const generateQuantityElementList = (fishCode = "", quantityList = []) =>
   quantityList
     .map(
       ({ epcClass, quantity, uom }: any) => `
@@ -34,20 +34,23 @@ const generateQuantityElementList = (fishCode='', quantityList=[]) =>
     )
     .join("\n");
 
+const generateNonEmptyElement = (element: string, value: string) =>
+  value ? `<${element}>${value}</${element}>` : "";
+
 export const createCatchPayload = async ({
   catchArea,
   fishCode,
   harvestEndDate,
   harvestStartDate,
   quantityList,
-  
+
   firstName,
   lastName,
-  
+
   fishingGearType,
   organizationName,
   productionMethod,
-  
+
   language,
 
   vesselIdType,
@@ -67,15 +70,18 @@ export const createCatchPayload = async ({
 
   const { latitude, longitude } = (await getCoordinate()) as any;
 
-  const quantityElementList = generateQuantityElementList(fishCode, quantityList)
+  const quantityElementList = generateQuantityElementList(
+    fishCode,
+    quantityList
+  );
 
-  const vesselCaptainName = upper(`${lastName}_${firstName}`,',');
+  const vesselCaptainName = upper(`${lastName}_${firstName}`, ",");
 
-  const productionMethodCode = productionMethodCodeMap[productionMethod] 
+  const productionMethodCode = productionMethodCodeMap[productionMethod];
 
-  const vesselID = upper(vesselIdType) + '.' + vesselIdString
+  const vesselID = upper(vesselIdType) + "." + vesselIdString;
 
-  const vesselFlagState = upper(language)
+  const vesselFlagState = upper(language);
 
   return `
   <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
@@ -108,8 +114,11 @@ export const createCatchPayload = async ({
                             <vesselCatchInformation>
                                 <vesselID>${vesselID}</vesselID> <!-- #2 & 3 GDST KDE Vessel ID -->
                                 <vesselName>${vesselName}</vesselName> <!-- #1 GDST KDE Vessel Name  -->
-                                <vesselOwnerName>${vesselOwnerName}</vesselOwnerName> <!-- A1 GDST KDE Vessel Ownership -->
-                                <organizationName>${organizationName}</organizationName>
+
+                                <!-- A1 GDST KDE Vessel Ownership -->
+                                ${generateNonEmptyElement('vesselOwnerName',vesselOwnerName)}
+                                ${generateNonEmptyElement('organizationName',organizationName)}
+
                                 <vesselCaptainName>${vesselCaptainName}</vesselCaptainName>
                                 <vesselFlagState>${vesselFlagState}</vesselFlagState> <!-- #4 Vessel Flag State -->
                                 <catchArea>FAO.${catchArea}</catchArea> <!-- #7 GDST KDE Catch Area -->
@@ -119,14 +128,19 @@ export const createCatchPayload = async ({
                         <cbvmda:productionMethodCode>${productionMethodCode}</cbvmda:productionMethodCode> <!-- #19 GDST KDE Production Method -->
                         <cbvmda:harvestStartDate>${harvestStartDate}</cbvmda:harvestStartDate> <!-- #8 & 9 GDST KDE Date of Capture -->
                         <cbvmda:harvestEndDate>${harvestEndDate}</cbvmda:harvestEndDate> <!-- #8 & 9 GDST KDE Date of Capture -->
-                        <cbvmda:certificationList> <!-- #6 GDST KDE Fishing Authorization / Organization License, Certs (Aqua) -->
-                            <certification>
-                                <certificationStandard>${vesselCertificationStandard}</certificationStandard>
-                                <certificationAgency>${vesselCertificationAgency}</certificationAgency>
-                                <certificationValue>${vesselCertificationValue}</certificationValue>
-                                <certificationIdentification>${vesselCertificationIdentification}</certificationIdentification>
-                            </certification>
-                        </cbvmda:certificationList>
+                        ${
+                          vesselCertificationStandard ? 
+                          `
+                            <cbvmda:certificationList> <!-- #6 GDST KDE Fishing Authorization / Organization License, Certs (Aqua) -->
+                              <certification>
+                                  <certificationStandard>${vesselCertificationStandard}</certificationStandard>
+                                  <certificationAgency>${vesselCertificationAgency}</certificationAgency>
+                                  <certificationValue>${vesselCertificationValue}</certificationValue>
+                                  <certificationIdentification>${vesselCertificationIdentification}</certificationIdentification>
+                              </certification>
+                          </cbvmda:certificationList>
+                          `: ''
+                        }
                     </ilmd>
                 </extension>
             </ObjectEvent>    
