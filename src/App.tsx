@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 
 import ChatBot from "react-simple-chatbot";
 
@@ -7,7 +7,7 @@ import styled, { ThemeProvider } from "styled-components";
 import { Header } from "./components/Header";
 
 import { theme, RefreshButton } from "./_theme";
-import { localStorageKey, createSteps, useLanguageState, isProfileSetup } from "./_data";
+import { localStorageKey, createSteps, useLanguageState, useProfileState } from "./_data";
 import { sendCatchEvent } from "./api";
 import { strings, languages } from "./i18n";
 
@@ -41,9 +41,12 @@ export const App = ({props} : any) => {
   
   const [language, setLanguage] = useLanguageState(languages[0].value)
 
+  const [profile] = useProfileState({ completed: false });
+  const isProfileSetup = !!profile.completed;
+
   strings.setLanguage(language);
 
-  const steps = createSteps();
+  const steps = createSteps(isProfileSetup);
 
   const handleLanguageChanged =(newLanguage: string)=> {
     if (language === newLanguage) return;
@@ -71,7 +74,7 @@ export const App = ({props} : any) => {
           enableMobileAutoFocus
           botAvatar={"assets/avatar.png"}
           hideUserAvatar
-          cache={isProfileSetup()}
+          cache={isProfileSetup}
           cacheName={localStorageKey.chatCache}
           userAvatar={"assets/captain.png"}
           placeholder={strings.placeholder}

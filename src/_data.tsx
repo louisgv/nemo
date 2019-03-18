@@ -32,26 +32,26 @@ export const fishOptionList = createSelectOptionList(fishes);
 
 export const shipIDTypeList = ["imo", "mmsi"];
 
-export const durationList = ["days", "weeks", "months"]
+export const durationList = ["days", "weeks", "months"];
 
 export const durationMultiplier = {
-  days:  24 * 60 * 60 * 1000,
+  days: 24 * 60 * 60 * 1000,
   weeks: 7 * 24 * 60 * 60 * 1000,
   months: 30 * 7 * 24 * 60 * 60 * 1000
-}
+};
 
 export const shipIDTypeOptionList = createSelectOptionList(shipIDTypeList);
 
 export const uomMap: any = {
   kilogram: "KGM",
-  pound: "LBR",
-}
+  pound: "LBR"
+};
 
 export const productionMethodCodeMap = {
   aquaculture: "AQUACULTURE",
   inlandFishery: "INLAND_FISHERY",
-  marineFishery: "MARINE_FISHERY",
-} as any
+  marineFishery: "MARINE_FISHERY"
+} as any;
 
 export const fao3AMap: any = {
   atlanticCod: "LPS",
@@ -91,19 +91,18 @@ export const useCatchCacheState = createPersistedState(
   localStorageKey.catchCache
 );
 
-export const isProfileSetup = () => {
-  const [profile] = useProfileState({ completed: false });
-  return !!profile.completed;
-};
-
-export const createSteps = () => [
-  ...(!isProfileSetup() ? createSetupCaptainProfilePrompt() : []),
-  {
-    id: "prompt_welcome",
-    hideInput: true,
-    message: () => strings.prompt_welcome,
-    trigger: "prompt_initial"
-  },
+export const createSteps = (isProfileSetup: boolean) => [
+  ...(isProfileSetup
+    ? [
+        {
+          id: "prompt_welcome",
+          hideInput: true,
+          message: () => strings.prompt_welcome,
+          trigger: "prompt_initial"
+        }
+      ]
+    : []),
+  ...createSetupCaptainProfilePrompt(),
   {
     id: "prompt_initial",
     hideInput: true,
