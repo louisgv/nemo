@@ -44,7 +44,7 @@ export const shipIDTypeOptionList = createSelectOptionList(shipIDTypeList);
 
 export const uomMap: any = {
   kilogram: "KGM",
-  pound: "LBS",
+  pound: "LBR",
 }
 
 export const productionMethodCodeMap = {

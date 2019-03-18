@@ -3,13 +3,9 @@ import styled from "styled-components";
 import { useFormState } from "react-use-form-state";
 import { animated } from "react-spring";
 
-
 import { useCaptainProfileState, useProfileState } from "../_data";
 
-import {
-  StyledSubmitButton,
-  LabeledInput,
-  ReviewInput} from "../_theme";
+import { StyledSubmitButton, LabeledInput, ReviewInput } from "../_theme";
 
 const Container = styled(animated.div)`
   width: 100%;
@@ -40,20 +36,29 @@ export const CaptainProfileReview = ({ triggerNextStep, steps }: any) => {
 
   const [disabled, setDisabled] = useState(false);
 
+  const { captain, vessel, vesselCertification } = captainProfile;
+
   const [formState, { text }] = useFormState<CaptainProfileReviewFormFields>({
-    firstName: captainProfile.captain.firstName,
-    middleName: captainProfile.captain.middleName,
-    lastName: captainProfile.captain.lastName,
+    firstName: captain.firstName,
+    middleName: captain.middleName,
+    lastName: captain.lastName,
 
-    vesselIdType: captainProfile.vessel.idType,
-    vesselIdString: captainProfile.vessel.idString,
-    vesselName: captainProfile.vessel.name,
+    vesselIdType: vessel.idType,
+    vesselIdString: vessel.idString,
+    vesselName: vessel.name,
 
-    vesselCertificationStandard: captainProfile.vesselCertification.standard,
-    vesselCertificationAgency: captainProfile.vesselCertification.agency,
-    vesselCertificationValue: captainProfile.vesselCertification.value,
-    vesselCertificationIdentification:
-      captainProfile.vesselCertification.identification,
+    vesselCertificationStandard: vesselCertification
+      ? vesselCertification.standard
+      : "",
+    vesselCertificationAgency: vesselCertification
+      ? vesselCertification.agency
+      : "",
+    vesselCertificationValue: vesselCertification
+      ? vesselCertification.value
+      : "",
+    vesselCertificationIdentification: vesselCertification
+      ? vesselCertification.identification
+      : "",
 
     fishingGearType: captainProfile.fishingGearTypeCode,
 
