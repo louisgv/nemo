@@ -12,6 +12,7 @@
     "@types/styled-components": "^4.1.8",
     "autoscroll-react": "^3.2.0",
     "case": "^1.6.1",
+    "eosjs": "^20.0.0-beta3",
     "epcis-js": "^0.1.0",
     "luxon": "^1.11.4",
     "react": "^16.8.1",
