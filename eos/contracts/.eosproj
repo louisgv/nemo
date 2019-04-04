@@ -1,0 +1,19 @@
+{
+  "main": "src/nemoeosmark1.cpp",
+  "contract": "nemoeosmark1",
+  "include": "",
+  "cdt": "",
+  "output": "",
+  "scripts": {
+    "build": ""
+  },
+  "deploy": {
+    "mainnet": "",
+    "kylin": "",
+    "jungle": "",
+    "local": ""
+  },
+  "test": {
+    "npmClient": "npm"
+  }
+}
