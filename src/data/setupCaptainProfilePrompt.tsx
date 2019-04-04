@@ -1,13 +1,16 @@
 import React from "react";
 
-import { appendTrigger, createOptionLabel } from "../core/utils";
+import {
+  createOptionLabel,
+  createPromptArray
+} from "../core/utils";
 import { VesselCaptainNameInput } from "../components/VesselCaptainNameInput";
 import { VesselIDInput } from "../components/VesselIDInput";
 import { FishingGearInput } from "../components/FishingGearInput";
 import { CaptainProfileReview } from "../components/CaptainProfileReview";
 import { VesselCertificationInput } from "../components/VesselCertificationInput";
 
-const prompOrder = [
+const promptOrder = [
   "prompt_welcomeNew",
 
   "prompt_introduceNemo",
@@ -64,11 +67,11 @@ const promptStructure = {
     replace: false,
     waitAction: true
   },
-  
+
   add_vesselName: {
     user: true
   },
-  
+
   add_vesselID: {
     component: <VesselIDInput />,
     hideInput: true,
@@ -112,10 +115,10 @@ const promptStructure = {
   add_organizationName: {
     user: true
   },
-  
+
   add_unitOfMeasurement: {
     hideInput: true,
-    options: ["pound", "kilogram"].map(createOptionLabel),
+    options: ["pound", "kilogram"].map(createOptionLabel)
   },
 
   add_certificationHolder: {
@@ -140,16 +143,4 @@ const promptStructure = {
 } as any;
 
 export const createSetupCaptainProfilePrompt = () =>
-  prompOrder.reduce((acc, id: string, i, src) => {
-    if (i < src.length - 1) {
-      acc.push(appendTrigger(
-        {
-          id,
-          ... (promptStructure[id] || {hideInput: true})
-        },
-        i,
-        prompOrder
-      ) as never);
-    }
-    return acc;
-  }, []);
+  createPromptArray(promptOrder, promptStructure);

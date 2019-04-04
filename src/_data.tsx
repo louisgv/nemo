@@ -5,6 +5,9 @@ import { createSalePrompt } from "./data/salePrompt";
 import { createSetupCaptainProfilePrompt } from "./data/setupCaptainProfilePrompt";
 import createPersistedState from "use-persisted-state";
 import { createSelectOptionList } from "./core/utils";
+import { createTestPrompt } from "./data/testPrompt";
+
+const isDebug = localStorage.getItem("debug");
 
 // import { IDialogue } from "./react-app-env";
 
@@ -124,13 +127,18 @@ export const createSteps = (isProfileSetup: boolean) => [
   {
     id: "prompt_events",
     hideInput: true,
-    options: ["catch", "landing", "sale", "transport", "nothing"].map(
-      value => ({
-        value,
-        label: `${strings[value]}`,
-        trigger: `prompt_${value}`
-      })
-    )
+    options: [
+      ...(isDebug ? ["test"] : []),
+      "catch",
+      "landing",
+      "sale",
+      "transport",
+      "nothing"
+    ].map(value => ({
+      value,
+      label: `${strings[value]}`,
+      trigger: `prompt_${value}`
+    }))
   },
   ...["transport"].map(value => ({
     id: `prompt_${value}`,
@@ -145,5 +153,6 @@ export const createSteps = (isProfileSetup: boolean) => [
   },
   ...createSalePrompt(),
   ...createCatchPrompt(),
-  ...createLandingPrompt()
+  ...createLandingPrompt(),
+  ...(isDebug ? createTestPrompt() : [])
 ];

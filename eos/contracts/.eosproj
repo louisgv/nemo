@@ -1,5 +1,5 @@
 {
-  "main": "src/nemoeosmark1.cpp",
+  "main": "nemoeosmark1.cpp",
   "contract": "nemoeosmark1",
   "include": "",
   "cdt": "",

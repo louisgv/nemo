@@ -104,9 +104,15 @@ export const en = {
   transport: "Transport 🚢",
   landing: "Landing ⚓",
   sale: "Sale 💰",
+
+  test: "TEST 🙉",
+  
   nothing: "I'm good 😁",
 
   prompt_nothing: "Smooth sailing 💨",
+
+  prompt_test: "WELCOME TO THE TESTING FLOW . . .",
+
 
   prompt_catch: "Let's get this done ⚡",
 

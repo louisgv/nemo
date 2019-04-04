@@ -39,3 +39,18 @@ export const createOptionLabel = (value: string) => ({
   value,
   label: strings[value] || value
 });
+
+export const createPromptArray = (order: Array<string>, structure: any) =>
+order.reduce((acc, id: string, i, src) => {
+  if (i < src.length - 1) {
+    acc.push(appendTrigger(
+      {
+        id,
+        ...(structure[id] || { hideInput: true })
+      },
+      i,
+      order
+    ) as never);
+  }
+  return acc;
+}, []);
