@@ -17,6 +17,7 @@ const promptStructure = {
     replace: false,
     waitAction: true
   }
+
 } as any;
 
 export const createTestPrompt = () =>

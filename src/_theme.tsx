@@ -32,6 +32,12 @@ const CircleButton = styled.button`
   }
 `;
 
+export const StyledColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
+
 export const RefreshButton = () => (
   <CircleButton>
     <Refresh onClick={() => window.location.reload()} />
@@ -55,6 +61,7 @@ export const LabeledInput = styled(({ className, label, ...rest }: any) => (
   </div>
 ))`
   display: inline-flex;
+  width: 100%;
   label {
     width: 25%;
   }
@@ -84,16 +91,25 @@ export const ReviewInput = styled(LabeledInput)`
 `;
 
 export const StyledButton = styled.button`
-
+  cursor: pointer;
   border: none;
   background: ${p => p.theme.botBubbleColor};
   color: ${p => p.theme.botFontColor};
   height: 30px;
 
+  :hover {
+    opacity: 0.7;
+  }
+
   :disabled {
     background: ${p => p.theme.userFontColor};
   }
 `;
+
+export const FillButton = styled(StyledButton)`
+  margin-top: 1em;
+  width: 100%;
+`
 
 export const StyledSubmitButton = styled((props: any) => (
   <StyledButton {...props}>

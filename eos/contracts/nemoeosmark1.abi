@@ -28,6 +28,16 @@
             ]
         },
         {
+            "name": "echo",
+            "base": "",
+            "fields": [
+                {
+                    "name": "str",
+                    "type": "string"
+                }
+            ]
+        },
+        {
             "name": "nemotx",
             "base": "",
             "fields": [
@@ -72,12 +82,7 @@
             ]
         },
         {
-            "name": "test",
-            "base": "",
-            "fields": []
-        },
-        {
-            "name": "upsert",
+            "name": "submit",
             "base": "",
             "fields": [
                 {
@@ -102,18 +107,18 @@
             "ricardian_contract": ""
         },
         {
+            "name": "echo",
+            "type": "echo",
+            "ricardian_contract": ""
+        },
+        {
             "name": "notify",
             "type": "notify",
             "ricardian_contract": ""
         },
         {
-            "name": "test",
-            "type": "test",
-            "ricardian_contract": ""
-        },
-        {
-            "name": "upsert",
-            "type": "upsert",
+            "name": "submit",
+            "type": "submit",
             "ricardian_contract": ""
         }
     ],

@@ -10,12 +10,11 @@ public:
   nemologbook(name receiver, name code,  datastream<const char*> ds):contract(receiver, code, ds) {}
     
   [[eosio::action]]
-  void test() {
-    
+  void echo(std::string str) {
+    print(str);
   }
 
   
-
   [[eosio::action]]
   void submit(name seller, std::string data_hash, uint32_t price) {
     require_auth( seller );

@@ -42,3 +42,11 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+# nemo-dapp
+
+How to test:
++ Go to Nemo's test contract account: https://jungle.eosweb.net/account/nemoeosmark1 
++ Press TEST for nemo
++ Put any string in there
++ Send
