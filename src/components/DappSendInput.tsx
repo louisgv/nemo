@@ -29,7 +29,7 @@ const Container = styled(StyledColumn)`
 export const DappSendInput = ({ triggerNextStep }: any) => {
   const [disabled, setDisabled] = useState(false);
   const [formState, { text }] = useFormState<TestInputFields>({
-    serverString: "http://35.165.133.251:8888"
+    serverString: "https://api.jungle.alohaeos.com:443"
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");

@@ -14,9 +14,30 @@ public:
     print(str);
   }
 
+  [[eosio::action]]
+  void test(uint64_t id, const asset& submitTax) {
+    require_auth( get_self() );
+
+    auto sym = submitTax.symbol;
+    check( sym.is_valid(), "invalid symbol name" );
+    check( submitTax.is_valid(), "invalid quantity" );
+    
+    nemotable table(get_self(), get_first_receiver().value);
+    
+    auto iterator = table.find(id);
+    
+    // check(iterator->buyer.length() > 0, "Buyer is set");
+    // check(iterator->buyer.length() == 0, "Buyer is not set");
+    
+  }
   
   [[eosio::action]]
-  void submit(name seller, std::string data_hash, uint32_t price) {
+  void submit(name seller, const std::string& data_hash, const asset& price) {
+
+    auto sym = price.symbol;
+    check( sym.is_valid(), "invalid symbol name" );
+    check( price.is_valid(), "invalid quantity" );
+
     require_auth( seller );
     nemotable table(get_self(), get_first_receiver().value);
   
@@ -25,8 +46,32 @@ public:
       nemotx.seller = seller;
       nemotx.data_hash = data_hash;
       nemotx.price = price;
+      nemotx.submitTax = asset( 0.0010 , symbol(symbol_code("EOS"), 4));
     });
+  }
+  
+  /* Fixed Tax for now
+  
+  [[eosio::action]]
+  void tax(name seller, uint64_t id, asset submitTax) {
+    auto sym = submitTax.symbol;
+    check( sym.is_valid(), "invalid symbol name" );
+    check( submitTax.is_valid(), "invalid quantity" );
     
+    require_auth( seller );
+    nemotable table(get_self(), get_first_receiver().value);
+    
+    auto iterator = table.find(id);
+
+    check(iterator != table.end(), "Record does not exist");
+
+    table.modify(iterator, get_self(), [&](auto& nemotx) {
+      nemotx.submitTax = submitTax;
+    });
+  }
+  */
+  
+   
     /*
     
     getSelf.currentBalance
@@ -43,19 +88,19 @@ emplace with diffBalance * 2
     */
     
     // print(balance)
-  }
   
   [[eosio::action]]
   void claim(name buyer, uint64_t id) {
     require_auth( buyer );
     
     nemotable table(get_self(), get_first_receiver().value);
-  
+    
     auto iterator = table.find(id);
-
     check(iterator != table.end(), "Record does not exist");
-  
-    table.modify(iterator, buyer, [&](auto& nemotx) {
+    
+    check(iterator->buyer.length() > 0, "Record is already claimed");
+
+    table.modify(iterator, get_self(), [&](auto& nemotx) {
       nemotx.buyer = buyer;
     });
   }
@@ -74,28 +119,28 @@ private:
     name seller;
     name buyer;
     std::string data_hash;
-    uint32_t price;
-    uint32_t submitTax;
+    asset price;
+    asset submitTax;
 
     auto primary_key() const { return id; }
   };
   
   typedef multi_index<"nemotablemk1"_n, nemotx> nemotable;
   
-   struct [[eosio::table]] account {
-    asset    balance;
+  // struct [[eosio::table]] account {
+  //   asset    balance;
 
-    uint64_t primary_key() const { return balance.symbol.code().raw(); }
-   };
+  //   uint64_t primary_key() const { return balance.symbol.code().raw(); }
+  // };
   
-   typedef eosio::multi_index< "accounts"_n, account > accounts;
+  // typedef eosio::multi_index< "accounts"_n, account > accounts;
 
   
-  void get_balance(name account) {
-    accounts accountstable( "eosio.token"_n, account.value );
-    const auto& ac = accountstable.get( symbol_code ("EOS").raw() );
-    print (ac.balance);
-  }
+  // void get_balance(name account) {
+  //   accounts accountstable( "eosio.token"_n, account.value );
+  //   const auto& ac = accountstable.get( symbol_code ("EOS").raw() );
+  //   print (ac.balance);
+  // }
   
       // return ac.balance;
 

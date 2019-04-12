@@ -4,16 +4,6 @@
     "types": [],
     "structs": [
         {
-            "name": "account",
-            "base": "",
-            "fields": [
-                {
-                    "name": "balance",
-                    "type": "asset"
-                }
-            ]
-        },
-        {
             "name": "claim",
             "base": "",
             "fields": [
@@ -59,11 +49,11 @@
                 },
                 {
                     "name": "price",
-                    "type": "uint32"
+                    "type": "asset"
                 },
                 {
                     "name": "submitTax",
-                    "type": "uint32"
+                    "type": "asset"
                 }
             ]
         },
@@ -95,7 +85,21 @@
                 },
                 {
                     "name": "price",
-                    "type": "uint32"
+                    "type": "asset"
+                }
+            ]
+        },
+        {
+            "name": "test",
+            "base": "",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "uint64"
+                },
+                {
+                    "name": "submitTax",
+                    "type": "asset"
                 }
             ]
         }
@@ -120,16 +124,14 @@
             "name": "submit",
             "type": "submit",
             "ricardian_contract": ""
+        },
+        {
+            "name": "test",
+            "type": "test",
+            "ricardian_contract": ""
         }
     ],
     "tables": [
-        {
-            "name": "accounts",
-            "type": "account",
-            "index_type": "i64",
-            "key_names": [],
-            "key_types": []
-        },
         {
             "name": "nemotablemk1",
             "type": "nemotx",
