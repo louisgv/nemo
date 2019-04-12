@@ -4,24 +4,135 @@
     "types": [],
     "structs": [
         {
-            "name": "hi",
+            "name": "account",
+            "base": "",
+            "fields": [
+                {
+                    "name": "balance",
+                    "type": "asset"
+                }
+            ]
+        },
+        {
+            "name": "claim",
+            "base": "",
+            "fields": [
+                {
+                    "name": "buyer",
+                    "type": "name"
+                },
+                {
+                    "name": "id",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "nemotx",
+            "base": "",
+            "fields": [
+                {
+                    "name": "id",
+                    "type": "uint64"
+                },
+                {
+                    "name": "seller",
+                    "type": "name"
+                },
+                {
+                    "name": "buyer",
+                    "type": "name"
+                },
+                {
+                    "name": "data_hash",
+                    "type": "string"
+                },
+                {
+                    "name": "price",
+                    "type": "uint32"
+                },
+                {
+                    "name": "submitTax",
+                    "type": "uint32"
+                }
+            ]
+        },
+        {
+            "name": "notify",
             "base": "",
             "fields": [
                 {
                     "name": "user",
                     "type": "name"
+                },
+                {
+                    "name": "msg",
+                    "type": "uint64"
+                }
+            ]
+        },
+        {
+            "name": "test",
+            "base": "",
+            "fields": []
+        },
+        {
+            "name": "upsert",
+            "base": "",
+            "fields": [
+                {
+                    "name": "seller",
+                    "type": "name"
+                },
+                {
+                    "name": "data_hash",
+                    "type": "string"
+                },
+                {
+                    "name": "price",
+                    "type": "uint32"
                 }
             ]
         }
     ],
     "actions": [
         {
-            "name": "hi",
-            "type": "hi",
+            "name": "claim",
+            "type": "claim",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "notify",
+            "type": "notify",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "test",
+            "type": "test",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "upsert",
+            "type": "upsert",
             "ricardian_contract": ""
         }
     ],
-    "tables": [],
+    "tables": [
+        {
+            "name": "accounts",
+            "type": "account",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        },
+        {
+            "name": "nemotablemk1",
+            "type": "nemotx",
+            "index_type": "i64",
+            "key_names": [],
+            "key_types": []
+        }
+    ],
     "ricardian_clauses": [],
     "variants": []
 }
