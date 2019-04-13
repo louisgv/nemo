@@ -16,6 +16,7 @@ import {
 
 import { useFormState } from "react-use-form-state";
 import { eosVault } from "../_data";
+import { useIpfs } from "../hooks/use-ipfs";
 
 const debug = require("debug")("DappSendInput");
 
@@ -29,7 +30,12 @@ const Container = styled(StyledColumn)`
   margin: 0.5em;
 `;
 
-export const DappSendInput = ({ triggerNextStep }: any) => {
+export const DappSendInput = ({ triggerNextStep, step }: any) => {
+  const { ipfs, isIpfsReady, ipfsInitError } = useIpfs({
+    repo: "/nemo",
+    silent: true
+  });
+
   const { keys, account, apiUrl } = eosVault;
 
   const [disabled, setDisabled] = useState(false);
@@ -42,85 +48,101 @@ export const DappSendInput = ({ triggerNextStep }: any) => {
 
   return (
     <Container>
-      <StyledColumnForm
-        onSubmit={async e => {
-          e.preventDefault();
-          setDisabled(true);
+      {isIpfsReady && (
+        <StyledColumnForm
+          onSubmit={async event => {
+            event.preventDefault();
+            setDisabled(true);
 
-          // Jungle testnet keys
+            try {
+              // Jungle testnet keys
+              const { apiUrl, echoString } = formState.values;
+              const content = Buffer.from(echoString);
+              const results = await ipfs.add(content);
+              debug(results)
 
-          const signatureProvider = new JsSignatureProvider(keys);
+              const {hash} = results[0];
 
-          try {
-            const rpc = new JsonRpc(formState.values.apiUrl);
+              const signatureProvider = new JsSignatureProvider(keys);
 
-            const api = new Api({ rpc, signatureProvider });
+              const rpc = new JsonRpc(apiUrl);
 
-            const result = await api.transact(
-              {
-                actions: [
-                  {
-                    account: account.contract,
-                    name: "echo",
-                    authorization: [
-                      {
-                        actor: account.captain,
-                        permission: "active"
+              const api = new Api({ rpc, signatureProvider });
+
+              const result = await api.transact(
+                {
+                  actions: [
+                    {
+                      account: account.contract,
+                      name: "echo",
+                      authorization: [
+                        {
+                          actor: account.captain,
+                          permission: "active"
+                        }
+                      ],
+                      data: {
+                        str: hash
                       }
-                    ],
-                    data: {
-                      str: formState.values.echoString
                     }
-                  }
-                ]
-              },
-              {
-                blocksBehind: 3,
-                expireSeconds: 30
-              }
-            );
+                  ]
+                },
+                {
+                  blocksBehind: 3,
+                  expireSeconds: 30
+                }
+              );
 
-            debug(result);
+              debug(result);
 
-            // const blockNum = result.processed.block_num;
+              // const blockNum = result.processed.block_num;
 
-            setOriginId(`${result.transaction_id}.NEMOTX.${result.processed.block_num}`);
+              setOriginId(
+                `${result.transaction_id}.NEMOTX.${result.processed.block_num}`
+              );
 
-            setSuccess("sent");
-          } catch (error) {
-            console.error(e);
-            if (e instanceof RpcError)
-              console.log(JSON.stringify(e.json, null, 2));
+              setSuccess("sent");
+            } catch (err) {
+              console.error(err);
+              if (err instanceof RpcError)
+                console.log(JSON.stringify(err.json, null, 2));
 
-            setError("Try a differrent P2P server...");
-          }
+              setError("Try a differrent P2P server...");
+            }
 
-          triggerNextStep({
-            value: originId
-          });
-        }}
-      >
-        <LabeledInput
-          label={"API"}
-          disabled={disabled}
-          required
-          {...text("apiUrl")}
-          placeholder={"find a p2p server . . ."}
-          autoFocus
-        />
+            triggerNextStep({
+              value: originId
+            });
+          }}
+        >
+          <LabeledInput
+            label={"API"}
+            disabled={disabled}
+            required
+            {...text("apiUrl")}
+            placeholder={"find a p2p server . . ."}
+            autoFocus
+          />
 
-        <LabeledInput
-          disabled={disabled}
-          label={"STR"}
-          required
-          {...text("echoString")}
-          placeholder={"put anything here . . ."}
-          autoFocus
-        />
+          <LabeledInput
+            disabled={disabled}
+            label={"STR"}
+            required
+            {...text("echoString")}
+            placeholder={"put anything here . . ."}
+            autoFocus
+          />
 
-        <FillButton disabled={disabled}>Submit</FillButton>
-      </StyledColumnForm>
-      {error.length > 0 && <div style={{ color: "red" }}>ERROR: {error}</div>}
+          <FillButton disabled={disabled}>Submit</FillButton>
+        </StyledColumnForm>
+      )}
+
+      <div style={{ color: "red" }}>
+        {error.length > 0 && <span>ERROR: {error}</span>}
+        {ipfsInitError && (
+          <span>ERROR: {ipfsInitError.message || ipfsInitError}</span>
+        )}
+      </div>
       {success.length > 0 && (
         <div>
           Message sent. Will take ~3 minutes for it to register -

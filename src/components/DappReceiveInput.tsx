@@ -38,8 +38,8 @@ export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
   return (
     <Container>
       <StyledColumnForm
-        onSubmit={async e => {
-          e.preventDefault();
+        onSubmit={async event => {
+          event.preventDefault();
           setDisabled(true);
 
           const signatureProvider = new JsSignatureProvider(keys);
@@ -49,12 +49,17 @@ export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
 
             const api = new Api({ rpc, signatureProvider });
 
-            const [txId, blockNum] = formState.values.txString.split('.NEMOTX.')
+            const [txId, blockNum] = formState.values.txString.split(
+              ".NEMOTX."
+            );
 
-            const result = await api.rpc.history_get_transaction(txId, parseInt(blockNum));
-            
+            const result = await api.rpc.history_get_transaction(
+              txId,
+              parseInt(blockNum)
+            );
+
             // (formState.values.txString);
-            
+
             // Sending money
             // await api.transact(
             //   {
@@ -103,13 +108,13 @@ export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
 
             debug(result);
 
-            const [nemoTx] = result.trx.trx.actions
+            const [nemoTx] = result.trx.trx.actions;
 
-            setSuccess("sent");
-          } catch (error) {
-            console.error(e);
-            if (e instanceof RpcError)
-              console.log(JSON.stringify(e.json, null, 2));
+            setSuccess(`IPFS URL: ${nemoTx.data.str}`);
+          } catch (err) {
+            console.error(err);
+            if (err instanceof RpcError)
+              console.log(JSON.stringify(err.json, null, 2));
 
             setError("Try a differrent P2P server...");
           }
@@ -138,6 +143,7 @@ export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
         <FillButton disabled={disabled}>Submit</FillButton>
       </StyledColumnForm>
       {error.length > 0 && <div style={{ color: "red" }}>ERROR: {error}</div>}
+      {success.length > 0 && <div>{success}</div>}
     </Container>
   );
 };
