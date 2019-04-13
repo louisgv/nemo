@@ -3,22 +3,25 @@ import styled from "styled-components";
 
 import { Api, JsonRpc, RpcError } from "eosjs";
 import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
+import copy from "copy-to-clipboard";
 
 import {
-  StyledInput,
   StyledColumn,
   StyledColumnForm,
   LabeledInput,
-  FillButton
+  FillButton,
+  Divider,
+  StyledLabel
 } from "../_theme";
-import { strings } from "../i18n";
+
 import { useFormState } from "react-use-form-state";
+import { eosVault } from "../_data";
 
 const debug = require("debug")("DappSendInput");
 
 interface TestInputFields {
   echoString: string;
-  serverString: string;
+  apiUrl: string;
 }
 
 const Container = styled(StyledColumn)`
@@ -27,12 +30,15 @@ const Container = styled(StyledColumn)`
 `;
 
 export const DappSendInput = ({ triggerNextStep }: any) => {
+  const { keys, account, apiUrl } = eosVault;
+
   const [disabled, setDisabled] = useState(false);
   const [formState, { text }] = useFormState<TestInputFields>({
-    serverString: "https://api.jungle.alohaeos.com:443"
+    apiUrl
   });
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [originId, setOriginId] = useState("");
 
   return (
     <Container>
@@ -42,22 +48,11 @@ export const DappSendInput = ({ triggerNextStep }: any) => {
           setDisabled(true);
 
           // Jungle testnet keys
-          const keys = [
-            "5JjfJTnv7auXdk3QskJ79SiXo3dfJHhkH785AF7P7KedhyHkbLG",
-            "5J74G7maytuLsujt5Bn14b3ifbHbgVtxVBU6aDBkpXsobdw4g3w",
-            "5JdVxGhEgV481QDMS1PMDjhoQRdyuBssFnqjRnVWurpjgDeRb5z",
-            "5JWmbWCHjMD59QUnwrmvCxTeYgc7PxVRVf4dYNtj7Zs7BjM2XnA"
-          ];
-
-          const account = {
-            captain: "nemotestero3",
-            producer: "nemotestero4"
-          };
 
           const signatureProvider = new JsSignatureProvider(keys);
 
           try {
-            const rpc = new JsonRpc(formState.values.serverString);
+            const rpc = new JsonRpc(formState.values.apiUrl);
 
             const api = new Api({ rpc, signatureProvider });
 
@@ -65,7 +60,7 @@ export const DappSendInput = ({ triggerNextStep }: any) => {
               {
                 actions: [
                   {
-                    account: "nemoeosmark1",
+                    account: account.contract,
                     name: "echo",
                     authorization: [
                       {
@@ -87,6 +82,10 @@ export const DappSendInput = ({ triggerNextStep }: any) => {
 
             debug(result);
 
+            // const blockNum = result.processed.block_num;
+
+            setOriginId(`${result.transaction_id}.NEMOTX.${result.processed.block_num}`);
+
             setSuccess("sent");
           } catch (error) {
             console.error(e);
@@ -96,14 +95,16 @@ export const DappSendInput = ({ triggerNextStep }: any) => {
             setError("Try a differrent P2P server...");
           }
 
-          triggerNextStep();
+          triggerNextStep({
+            value: originId
+          });
         }}
       >
         <LabeledInput
-          label={"P2P URL"}
+          label={"API"}
           disabled={disabled}
           required
-          {...text("serverString")}
+          {...text("apiUrl")}
           placeholder={"find a p2p server . . ."}
           autoFocus
         />
@@ -129,6 +130,13 @@ export const DappSendInput = ({ triggerNextStep }: any) => {
           >
             https://jungle.eosweb.net/account/nemoeosmark1
           </a>
+          <Divider />
+          <StyledLabel> Give this id to the producer: </StyledLabel>
+          <br />
+          {originId}
+          <FillButton onClick={() => copy(originId)}>
+            Click to Copy Transaction ID
+          </FillButton>
         </div>
       )}
     </Container>

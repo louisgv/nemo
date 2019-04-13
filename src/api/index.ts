@@ -1,5 +1,6 @@
 import { testCatchPayload } from "./sample";
 import { createCatchPayload } from "./catch";
+import { eosVault } from "../_data"
 
 const origin = {
   capture: {

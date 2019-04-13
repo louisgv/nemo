@@ -13,6 +13,7 @@
     "@types/styled-components": "^4.1.8",
     "autoscroll-react": "^3.2.0",
     "case": "^1.6.1",
+    "copy-to-clipboard": "^3.1.0",
     "debug": "^4.1.1",
     "eosjs": "^20.0.1-a2c7836.0",
     "epcis-js": "^0.1.0",

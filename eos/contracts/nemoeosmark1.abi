@@ -14,6 +14,14 @@
                 {
                     "name": "id",
                     "type": "uint64"
+                },
+                {
+                    "name": "receipt",
+                    "type": "checksum256"
+                },
+                {
+                    "name": "tax_receipt",
+                    "type": "checksum256"
                 }
             ]
         },
@@ -44,7 +52,7 @@
                     "type": "name"
                 },
                 {
-                    "name": "data_hash",
+                    "name": "data",
                     "type": "string"
                 },
                 {
@@ -52,8 +60,16 @@
                     "type": "asset"
                 },
                 {
-                    "name": "submitTax",
+                    "name": "submit_tax",
                     "type": "asset"
+                },
+                {
+                    "name": "receipt",
+                    "type": "checksum256"
+                },
+                {
+                    "name": "tax_receipt",
+                    "type": "checksum256"
                 }
             ]
         },
@@ -80,7 +96,7 @@
                     "type": "name"
                 },
                 {
-                    "name": "data_hash",
+                    "name": "data",
                     "type": "string"
                 },
                 {

@@ -32,7 +32,7 @@ public:
   }
   
   [[eosio::action]]
-  void submit(name seller, const std::string& data_hash, const asset& price) {
+  void submit(name seller, const std::string& data, const asset& price) {
 
     auto sym = price.symbol;
     check( sym.is_valid(), "invalid symbol name" );
@@ -44,9 +44,9 @@ public:
     table.emplace(get_self(), [&](auto& nemotx) {
       nemotx.id = table.available_primary_key();
       nemotx.seller = seller;
-      nemotx.data_hash = data_hash;
+      nemotx.data = data;
       nemotx.price = price;
-      nemotx.submitTax = asset( 0.0010 , symbol(symbol_code("EOS"), 4));
+      nemotx.submit_tax = asset( 0.0010 , symbol(symbol_code("EOS"), 4));
     });
   }
   
@@ -90,7 +90,7 @@ emplace with diffBalance * 2
     // print(balance)
   
   [[eosio::action]]
-  void claim(name buyer, uint64_t id) {
+  void claim(name buyer, uint64_t id, checksum256 receipt, checksum256 tax_receipt) {
     require_auth( buyer );
     
     nemotable table(get_self(), get_first_receiver().value);
@@ -102,6 +102,8 @@ emplace with diffBalance * 2
 
     table.modify(iterator, get_self(), [&](auto& nemotx) {
       nemotx.buyer = buyer;
+      nemotx.receipt = receipt;
+      nemotx.tax_receipt = tax_receipt;
     });
   }
 
@@ -118,9 +120,13 @@ private:
     
     name seller;
     name buyer;
-    std::string data_hash;
+    
+    std::string data;
     asset price;
-    asset submitTax;
+    asset submit_tax;
+
+    checksum256 receipt;
+    checksum256 tax_receipt;
 
     auto primary_key() const { return id; }
   };

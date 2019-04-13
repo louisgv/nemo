@@ -154,3 +154,6 @@ export const StyledSelect = styled(Select)`
   }
 `;
 
+export const StyledLabel = styled.label`
+  font-weight: 700;
+`
