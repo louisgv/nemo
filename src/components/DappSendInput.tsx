@@ -59,9 +59,9 @@ export const DappSendInput = ({ triggerNextStep, step }: any) => {
               const { apiUrl, echoString } = formState.values;
               const content = Buffer.from(echoString);
               const results = await ipfs.add(content);
-              debug(results)
+              debug(results);
 
-              const {hash} = results[0];
+              const { hash } = results[0];
 
               const signatureProvider = new JsSignatureProvider(keys);
 
@@ -84,6 +84,22 @@ export const DappSendInput = ({ triggerNextStep, step }: any) => {
                       data: {
                         str: hash
                       }
+                    },
+                    {
+                      account: account.eosiotoken,
+                      name: "transfer",
+                      authorization: [
+                        {
+                          actor: account.producer,
+                          permission: "active"
+                        }
+                      ],
+                      data: {
+                        from: account.producer,
+                        to: account.contract,
+                        quantity: "0.0020 EOS",
+                        memo: "tax"
+                      }
                     }
                   ]
                 },
@@ -93,9 +109,33 @@ export const DappSendInput = ({ triggerNextStep, step }: any) => {
                 }
               );
 
+              // const result = await api.transact(
+              //   {
+              //     actions: [
+              //       {
+              //         account: account.contract,
+              //         name: "echo",
+              //         authorization: [
+              //           {
+              //             actor: account.captain,
+              //             permission: "active"
+              //           }
+              //         ],
+              //         data: {
+              //           str: hash
+              //         }
+              //       }
+              //     ]
+              //   },
+              //   {
+              //     blocksBehind: 3,
+              //     expireSeconds: 30
+              //   }
+              // );
+
               debug(result);
 
-              // const blockNum = result.processed.block_num;
+              const blockNum = result.processed.block_num;
 
               setOriginId(
                 `${result.transaction_id}.NEMOTX.${result.processed.block_num}`

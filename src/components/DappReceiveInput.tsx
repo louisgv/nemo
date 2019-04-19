@@ -57,6 +57,7 @@ export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
               txId,
               parseInt(blockNum)
             );
+            
 
             // (formState.values.txString);
 

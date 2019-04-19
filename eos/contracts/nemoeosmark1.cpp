@@ -26,8 +26,8 @@ public:
     
     auto iterator = table.find(id);
     
-    // check(iterator->buyer.length() > 0, "Buyer is set");
-    // check(iterator->buyer.length() == 0, "Buyer is not set");
+    check(iterator->buyer.length() > 0, "Buyer is set");
+    check(iterator->buyer.length() == 0, "Buyer is not set");
     
   }
   
