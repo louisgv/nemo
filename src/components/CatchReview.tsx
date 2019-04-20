@@ -38,7 +38,9 @@ const QuantityItem = styled(ReviewInput)`
 export const CatchReview = ({ triggerNextStep, steps }: any) => {
   const { add_catchArea } = steps;
 
-  const { apiUrl, ipfsRepo } = api.dapp.dappVault;
+  const { apiUrl } = api.dapp.dappVault;
+
+  const { ipfs, isIpfsReady, ipfsInitError } = useIpfs();
 
   const [catchCache, setCatchCache] = useCatchCacheState();
 
@@ -53,11 +55,7 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [originId, setOriginId] = useState("");
-
-  const { ipfs, isIpfsReady, ipfsInitError } = useIpfs({
-    repo: ipfsRepo,
-    silent: true
-  });
+  const [ipfsHash, setIpfsHash] = useState("");
 
   const { quantityList, ...catchCacheRest } = catchCache;
 
@@ -73,6 +71,10 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
   // console.log(formState.values)
 
   // console.log(Object.keys(formState.values))
+
+  if (!quantityList) {
+    return <div>Cache Cleaned . . .</div>;
+  }
 
   return (
     <Container>
@@ -98,13 +100,15 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
               // Take the hash and send it to the EOS table
 
               // Get the blockhash and blockid, combine and Output the hash to the user
-              const nemoTxHash = await api.dapp.sendCatchEvent(
+              const catchResult = await api.dapp.sendCatchEvent(
                 dappFormState.values,
                 ipfs,
                 epcisDoc
               );
 
-              setOriginId(nemoTxHash);
+              setIpfsHash(catchResult.ipfsHash);
+              setOriginId(catchResult.originId);
+
               setSuccess("sent");
               break;
             default:
@@ -188,7 +192,7 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
       </div>
       {success.length > 0 && (
         <div>
-          Message sent. Will take ~3 minutes for it to register -
+          Catch event posted. Will take ~3 minutes for it to register -
           <a
             href="https://jungle.eosweb.net/account/nemoeosmark1"
             target="_blank"
@@ -196,12 +200,21 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
             https://jungle.eosweb.net/account/nemoeosmark1
           </a>
           <Divider />
-          <StyledLabel> Give this Claim Code to the producer: </StyledLabel>
-          <br />
-          {originId}
-          <FillButton onClick={() => copy(originId)}>
-            Click to Copy Claim Code
-          </FillButton>
+          <StyledLabel>
+            {" "}
+            You can check the epcis data on IPFS here -{" "}
+          </StyledLabel>
+          <a href={`https://ipfs.io/ipfs/${ipfsHash}`} target="_blank">
+            {`https://ipfs.io/ipfs/${ipfsHash}`}
+          </a>
+          {/* 
+            <StyledLabel> Give this Claim Code to the producer: </StyledLabel>
+            <br />
+            {originId}
+            <FillButton onClick={() => copy(originId)}>
+              Click to Copy Claim Code
+            </FillButton> 
+          */}
         </div>
       )}
     </Container>

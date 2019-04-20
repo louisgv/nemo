@@ -26,7 +26,7 @@ const Container = styled(StyledColumn)`
 `;
 
 export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
-  const { keys, account, apiUrl } = dappVault;
+  const { keys, apiUrl } = dappVault;
 
   const [disabled, setDisabled] = useState(false);
   const [formState, { text }] = useFormState<TestInputFields>({

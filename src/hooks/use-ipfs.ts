@@ -1,20 +1,38 @@
 import { useState, useEffect } from 'react'
+import api from "../api";
 
 const debug = require("debug")("use-ipfs");
 
 const { Ipfs } = window as any
 
+const w = window as any
+
+const ipfs = new Ipfs({
+  repo: api.dapp.dappVault.ipfsRepo,
+  silent: true
+})
+
+ipfs.once('ready', () => {
+  w.ipfsReady = true
+})
+
 const initIpfs = (ipfs: any) => new Promise((resolve, reject) => {
-  ipfs.once('ready', () => resolve(ipfs))
+  if (w.ipfsReady) {
+    resolve()
+  }
+
+  ipfs.once('ready', () => {
+    w.ipfsReady = true
+    resolve()
+  })
+
   ipfs.once('error', (err: any) => reject(err))
 })
 
 export function useIpfs(opts?: any) {
-  const ipfs = new Ipfs(opts)
 
   const [isIpfsReady, setIpfsReady] = useState(false)
   const [ipfsInitError, setIpfsInitError] = useState(null as any)
-
 
   useEffect(() => {
     startIpfs()

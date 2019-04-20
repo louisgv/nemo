@@ -25,7 +25,7 @@ export const encodeNemoTXValue = (id: string, blockNum: any) => `${id}.NEMOTX.${
 
 export const decodeNemoTXValue = (tx: string) => tx.split('.NEMOTX.')
 
-export const getCatchEvent = async ({ verifyId, txId, apiUrl }: any, ipfs: any) => {
+export const claimCatchEvent = async ({ txId, apiUrl }: any, ipfs: any) => {
 
   // debug()
   const { account, table, keys } = dappVault;
@@ -36,28 +36,108 @@ export const getCatchEvent = async ({ verifyId, txId, apiUrl }: any, ipfs: any) 
 
   const api = new Api({ rpc, signatureProvider });
 
-  const [verifyTxId, blockNum] = decodeNemoTXValue(verifyId)
+  const tableData = await rpc.get_table_rows({
+    json: true,                 // Get the response as json
+    code: account.contract,           // Contract that we target
+    scope: account.contract,           // Account that owns the data
+    table,          // Table name
+    lower_bound: txId,      // Table primary key value
+    limit: 1,                   // Here we limit to 1 to get only the
+    show_payer: false,         // Optional: Show ram payer
+  })
 
-  const [verifyTx, tableRow] = await Promise.all([
-    api.rpc.history_get_transaction(
-      verifyTxId,
-      parseInt(blockNum)
-    ),
-    rpc.get_table_rows({
-      json: true,                 // Get the response as json
-      code: account.contract,           // Contract that we target
-      scope: account.contract,           // Account that owns the data
-      table,          // Table name
-      lower_bound: txId,      // Table primary key value
-      limit: 1,                   // Here we limit to 1 to get only the
-      show_payer: false,         // Optional: Show ram payer
-    })
-  ])
+  debug(tableData);
+  // result.trx.trx.actions;
 
-  debug(verifyTx, tableRow);
+  const [{
+    buyer,
+    seller,
+    price,
+    tax,
+    value
+  }] = tableData.rows
 
-  // const [nemoTx] = result.trx.trx.actions;
+  if (buyer.length > 0) {
+    throw new Error('Record is already claimed')
+  }
 
+  const result = await api.transact(
+    {
+      actions: [
+        {
+          account: account.eosiotoken,
+          name: "transfer",
+          authorization: [
+            {
+              actor: account.producer,
+              permission: "active"
+            }
+          ],
+          data: {
+            from: account.producer,
+            to: seller,
+            quantity: price,
+            memo: `payment for ${value}`
+          }
+        },
+        {
+          account: account.eosiotoken,
+          name: "transfer",
+          authorization: [
+            {
+              actor: account.producer,
+              permission: "active"
+            }
+          ],
+          data: {
+            from: account.producer,
+            to: account.contract,
+            quantity: tax,
+            memo: `tax for ${value}`
+          }
+        }
+      ]
+    },
+    {
+      blocksBehind: 3,
+      expireSeconds: 30
+    }
+  );
+
+  const receipt = encodeNemoTXValue(result.transaction_id, result.processed.block_num)
+
+  const claimResult = await api.transact(
+    {
+      actions: [
+        {
+          account: account.contract,
+          name: "claim",
+          authorization: [
+            {
+              actor: account.producer,
+              permission: "active"
+            }
+          ],
+          data: {
+            buyer: account.producer,
+            id: txId,
+            receipt
+          }
+        }
+      ]
+    },
+    {
+      blocksBehind: 3,
+      expireSeconds: 30
+    }
+  );
+
+  const epcisDataBuffer = await ipfs.cat(value)
+
+  return {
+    epcisData: epcisDataBuffer.toString('utf8'),
+    originId: encodeNemoTXValue(claimResult.transaction_id, claimResult.processed.block_num)
+  }
 }
 
 export const sendCatchEvent = async ({
@@ -104,5 +184,8 @@ export const sendCatchEvent = async ({
     }
   );
 
-  return encodeNemoTXValue(result.transaction_id, result.processed.block_num)
+  return {
+    ipfsHash: hash,
+    originId: encodeNemoTXValue(result.transaction_id, result.processed.block_num)
+  }
 };

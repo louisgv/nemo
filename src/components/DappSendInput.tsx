@@ -31,10 +31,7 @@ const Container = styled(StyledColumn)`
 `;
 
 export const DappSendInput = ({ triggerNextStep, step }: any) => {
-  const { ipfs, isIpfsReady, ipfsInitError } = useIpfs({
-    repo: "/nemo",
-    silent: true
-  });
+  const { ipfs, isIpfsReady, ipfsInitError } = useIpfs();
 
   const { keys, account, apiUrl } = dappVault;
 

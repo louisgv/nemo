@@ -102,7 +102,7 @@ emplace with diffBalance * 2
     auto iterator = table.find(id);
     check(iterator != table.end(), "Record does not exist");
     
-    check(iterator->buyer.length() > 0, "Record is already claimed");
+    check(iterator->buyer.length() == 0, "Record is already claimed");
 
     table.modify(iterator, get_self(), [&](auto& nemotx) {
       nemotx.buyer = buyer;
