@@ -23,7 +23,7 @@ export const appendTrigger = (p: any, i: number, order: Array<string>) => {
     }
   } else {
     p.options = p.options.map((o: any, j: number) => {
-      if(p.triggers) {
+      if (p.triggers) {
         o.trigger = p.triggers[j]
       } else {
         o.trigger = trigger;
@@ -41,16 +41,16 @@ export const createOptionLabel = (value: string) => ({
 });
 
 export const createPromptArray = (order: Array<string>, structure: any) =>
-order.reduce((acc, id: string, i, src) => {
-  if (i < src.length - 1) {
-    acc.push(appendTrigger(
-      {
-        id,
-        ...(structure[id] || { hideInput: true })
-      },
-      i,
-      order
-    ) as never);
-  }
-  return acc;
-}, []);
+  order.reduce((acc, id: string, i, src) => {
+    if (i < src.length - 1) {
+      acc.push(appendTrigger(
+        {
+          id,
+          ...(structure[id] || { hideInput: true })
+        },
+        i,
+        order
+      ) as never);
+    }
+    return acc;
+  }, []);

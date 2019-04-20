@@ -8,7 +8,6 @@ import { Header } from "./components/Header";
 
 import { theme, RefreshButton } from "./_theme";
 import { localStorageKey, createSteps, useLanguageState, useProfileState } from "./_data";
-import { sendCatchEvent } from "./api";
 import { strings, languages } from "./i18n";
 
 const Container = styled.div`

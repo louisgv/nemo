@@ -15,7 +15,7 @@ import {
 } from "../_theme";
 
 import { useFormState } from "react-use-form-state";
-import { eosVault } from "../_data";
+import { dappVault } from "../api/dapp";
 import { useIpfs } from "../hooks/use-ipfs";
 
 const debug = require("debug")("DappSendInput");
@@ -36,7 +36,7 @@ export const DappSendInput = ({ triggerNextStep, step }: any) => {
     silent: true
   });
 
-  const { keys, account, apiUrl } = eosVault;
+  const { keys, account, apiUrl } = dappVault;
 
   const [disabled, setDisabled] = useState(false);
   const [formState, { text }] = useFormState<TestInputFields>({
@@ -135,7 +135,7 @@ export const DappSendInput = ({ triggerNextStep, step }: any) => {
 
               debug(result);
 
-              const blockNum = result.processed.block_num;
+              // const blockNum = result.processed.block_num;
 
               setOriginId(
                 `${result.transaction_id}.NEMOTX.${result.processed.block_num}`

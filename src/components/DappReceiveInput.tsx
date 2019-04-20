@@ -11,7 +11,7 @@ import {
   FillButton
 } from "../_theme";
 import { useFormState } from "react-use-form-state";
-import { eosVault } from "../_data";
+import { dappVault } from "../api/dapp";
 
 const debug = require("debug")("DappReceiveInput");
 
@@ -26,7 +26,7 @@ const Container = styled(StyledColumn)`
 `;
 
 export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
-  const { keys, account, apiUrl } = eosVault;
+  const { keys, account, apiUrl } = dappVault;
 
   const [disabled, setDisabled] = useState(false);
   const [formState, { text }] = useFormState<TestInputFields>({
@@ -57,7 +57,6 @@ export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
               txId,
               parseInt(blockNum)
             );
-            
 
             // (formState.values.txString);
 
@@ -129,7 +128,6 @@ export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
           required
           {...text("apiUrl")}
           placeholder={"find a p2p server . . ."}
-          autoFocus
         />
 
         <LabeledInput
@@ -138,7 +136,6 @@ export const DappReceiveInput = ({ triggerNextStep, previousStep }: any) => {
           required
           {...text("txString")}
           placeholder={"put Transaction ID here . . ."}
-          autoFocus
         />
 
         <FillButton disabled={disabled}>Submit</FillButton>

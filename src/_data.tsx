@@ -6,29 +6,13 @@ import { createSetupCaptainProfilePrompt } from "./data/setupCaptainProfilePromp
 import createPersistedState from "use-persisted-state";
 import { createSelectOptionList } from "./core/utils";
 import { createTestPrompt } from "./data/testPrompt";
+import { createReceivePrompt } from "./data/receivePrompt";
 
 const isDebug = localStorage.getItem("debug");
 
 // import { IDialogue } from "./react-app-env";
 
 // https://github.com/Semantic-Org/Semantic-UI-React/blob/master/docs/src/examples/modules/Dropdown/common.js
-
-// Jungle testnet keys
-export const eosVault = {
-  apiUrl: "https://api.jungle.alohaeos.com:443",
-  keys: [
-    "5JjfJTnv7auXdk3QskJ79SiXo3dfJHhkH785AF7P7KedhyHkbLG",
-    "5J74G7maytuLsujt5Bn14b3ifbHbgVtxVBU6aDBkpXsobdw4g3w",
-    "5JdVxGhEgV481QDMS1PMDjhoQRdyuBssFnqjRnVWurpjgDeRb5z",
-    "5JWmbWCHjMD59QUnwrmvCxTeYgc7PxVRVf4dYNtj7Zs7BjM2XnA"
-  ],
-  account: {
-    eosiotoken: "eosio.token",
-    contract: "nemoeosmark1",
-    captain: "nemotestero3",
-    producer: "nemotestero4"
-  }
-}
 
 export const fishes = [
   "atlanticCod",
@@ -146,6 +130,7 @@ export const createSteps = (isProfileSetup: boolean) => [
     hideInput: true,
     options: [
       ...(isDebug ? ["test"] : []),
+      "receive",
       "catch",
       "landing",
       "sale",
@@ -168,6 +153,7 @@ export const createSteps = (isProfileSetup: boolean) => [
     message: () => strings.prompt_end,
     end: true
   },
+  ...createReceivePrompt(),
   ...createSalePrompt(),
   ...createCatchPrompt(),
   ...createLandingPrompt(),

@@ -15,24 +15,28 @@ public:
   }
 
   [[eosio::action]]
-  void test(uint64_t id, const asset& submitTax) {
+  void test(uint64_t id, const std::string& receipt) {
     require_auth( get_self() );
 
-    auto sym = submitTax.symbol;
-    check( sym.is_valid(), "invalid symbol name" );
-    check( submitTax.is_valid(), "invalid quantity" );
+    // auto sym = submitTax.symbol;
+    // check( sym.is_valid(), "invalid symbol name" );
+    // check( submitTax.is_valid(), "invalid quantity" );
     
     nemotable table(get_self(), get_first_receiver().value);
     
     auto iterator = table.find(id);
     
-    check(iterator->buyer.length() > 0, "Buyer is set");
-    check(iterator->buyer.length() == 0, "Buyer is not set");
+    table.modify(iterator, get_self(), [&](auto& nemotx) {
+      nemotx.receipt = receipt;
+    });
+    
+    // check(iterator->buyer.length() > 0, "Buyer is set");
+    // check(iterator->buyer.length() == 0, "Buyer is not set");
     
   }
   
   [[eosio::action]]
-  void submit(name seller, const std::string& data, const asset& price) {
+  void submit(name seller, const std::string& value, const asset& price) {
 
     auto sym = price.symbol;
     check( sym.is_valid(), "invalid symbol name" );
@@ -44,9 +48,9 @@ public:
     table.emplace(get_self(), [&](auto& nemotx) {
       nemotx.id = table.available_primary_key();
       nemotx.seller = seller;
-      nemotx.data = data;
+      nemotx.value = value;
       nemotx.price = price;
-      nemotx.submit_tax = asset( 0.0010 , symbol(symbol_code("EOS"), 4));
+      nemotx.tax = asset( 50 , symbol(symbol_code("EOS"), 4));
     });
   }
   
@@ -90,7 +94,7 @@ emplace with diffBalance * 2
     // print(balance)
   
   [[eosio::action]]
-  void claim(name buyer, uint64_t id, checksum256 receipt, checksum256 tax_receipt) {
+  void claim(name buyer, uint64_t id, const std::string& receipt) {
     require_auth( buyer );
     
     nemotable table(get_self(), get_first_receiver().value);
@@ -103,7 +107,6 @@ emplace with diffBalance * 2
     table.modify(iterator, get_self(), [&](auto& nemotx) {
       nemotx.buyer = buyer;
       nemotx.receipt = receipt;
-      nemotx.tax_receipt = tax_receipt;
     });
   }
 
@@ -115,23 +118,22 @@ emplace with diffBalance * 2
 
 
 private:
-  struct [[eosio::table("nemotablemk1")]] nemotx {
+  struct [[eosio::table("nemotablemk2")]] nemotx {
     uint64_t id;
     
     name seller;
     name buyer;
     
-    std::string data;
     asset price;
-    asset submit_tax;
-
-    checksum256 receipt;
-    checksum256 tax_receipt;
+    asset tax;
+    // ipfs hash:
+    std::string value;
+    std::string receipt;
 
     auto primary_key() const { return id; }
   };
   
-  typedef multi_index<"nemotablemk1"_n, nemotx> nemotable;
+  typedef multi_index<"nemotablemk2"_n, nemotx> nemotable;
   
   // struct [[eosio::table]] account {
   //   asset    balance;
