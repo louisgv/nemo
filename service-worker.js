@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/nemo/precache-manifest.4ae37dcbb3740cad7ce44e7d9b27e77a.js"
+  "/nemo/precache-manifest.5a534cd8668b6ebf5e8b4eafa420cba5.js"
 );
 
 workbox.clientsClaim();
