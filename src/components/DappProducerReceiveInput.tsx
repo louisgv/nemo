@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import copy from "copy-to-clipboard";
 
-import { Api, JsonRpc, RpcError } from "eosjs";
-import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
+import { RpcError } from "eosjs";
 
 import {
   StyledColumn,
@@ -11,7 +10,7 @@ import {
   LabeledInput,
   FillButton,
   Divider,
-  StyledLabel
+  StyledLabel,
 } from "../_theme";
 import { useFormState } from "react-use-form-state";
 import { dappVault, claimCatchEvent } from "../api/dapp";
@@ -171,8 +170,8 @@ export const DappProducerReceiveInput = ({
         </div>
       )}
       <FillButton
+        background="red"
         disabled={disabled}
-        style={{ background: "red" }}
         onClick={onFinish}
       >
         Finalize/Cancel

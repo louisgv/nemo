@@ -14,7 +14,8 @@ export const theme = {
   botBubbleColor: "#00b0ff",
   botFontColor: "#fff",
   userBubbleColor: "#fff",
-  userFontColor: "#4a4a4a"
+  userFontColor: "#4a4a4a",
+  dangerColor: "red"
 };
 
 const CircleButton = styled.button`
@@ -67,6 +68,9 @@ export const LabeledInput = styled(({ className, label, ...rest }: any) => (
   }
   input {
     width: 75%;
+    :disabled {
+      cursor: not-allowed;
+    }
   }
 `;
 
@@ -90,10 +94,14 @@ export const ReviewInput = styled(LabeledInput)`
   }
 `;
 
-export const StyledButton = styled.button`
+interface BackgroundButtonProps {
+  readonly background?: string;
+};
+
+export const StyledButton = styled.button<BackgroundButtonProps>`
   cursor: pointer;
   border: none;
-  background: ${p => p.theme.botBubbleColor};
+  background: ${p => p.background || p.theme.botBubbleColor};
   color: ${p => p.theme.botFontColor};
   height: 30px;
 
@@ -103,6 +111,11 @@ export const StyledButton = styled.button`
 
   :disabled {
     background: ${p => p.theme.userFontColor};
+  }
+
+  :disabled:hover {
+    cursor: not-allowed;
+    opacity: 1;
   }
 `;
 

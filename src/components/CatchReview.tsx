@@ -93,29 +93,41 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
             fishCode
           });
 
+          const sendToEOS = async () => {
+            // Take the epcisDoc and send it to IPFS, grab the resulting hash
+
+            // Take the hash and send it to the EOS table
+
+            // Get the blockhash and blockid, combine and Output the hash to the user
+            const catchResult = await api.dapp.sendCatchEvent(
+              dappFormState.values,
+              ipfs,
+              epcisDoc
+            );
+
+            setIpfsHash(catchResult.ipfsHash);
+            setOriginId(catchResult.originId);
+
+            setSuccess("sent");
+          };
+
+          const sendPromise = []
+
           switch (sendMethod) {
+            case "both":
+              sendPromise.push(sendToEOS())
+              sendPromise.push(api.freepcis.sendCatchEvent(epcisDoc))
+              break;
             case "ipfs-eos":
-              // Take the epcisDoc and send it to IPFS, grab the resulting hash
-
-              // Take the hash and send it to the EOS table
-
-              // Get the blockhash and blockid, combine and Output the hash to the user
-              const catchResult = await api.dapp.sendCatchEvent(
-                dappFormState.values,
-                ipfs,
-                epcisDoc
-              );
-
-              setIpfsHash(catchResult.ipfsHash);
-              setOriginId(catchResult.originId);
-
-              setSuccess("sent");
+              sendPromise.push(sendToEOS())
               break;
             default:
             case "freepcis":
-              await api.freepcis.sendCatchEvent(epcisDoc);
+              sendPromise.push(api.freepcis.sendCatchEvent(epcisDoc))
               break;
           }
+
+          await Promise.all(sendPromise)
 
           setCatchCache({
             ...catchCache,
@@ -174,13 +186,22 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
         />
 
         {isIpfsReady && (
-          <FillButton
-            disabled={disabled || catchCache.sent}
-            style={{ background: "sandybrown" }}
-            onClick={() => setSendMethod("ipfs-eos")}
-          >
-            Send to EOS
-          </FillButton>
+          <>
+            <FillButton
+              background={'sandybrown'}
+              disabled={disabled || catchCache.sent}
+              onClick={() => setSendMethod("ipfs-eos")}
+            >
+              Send to EOS
+            </FillButton>
+            <FillButton
+              background={'darkorchid'}
+              disabled={disabled || catchCache.sent}
+              onClick={() => setSendMethod("both")}
+            >
+              Send to FreEPCIS and EOS
+            </FillButton>
+          </>
         )}
       </StyledColumnForm>
 
