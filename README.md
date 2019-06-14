@@ -1,52 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Inspiration
 
-## Available Scripts
+We found that a lot of data that the Vessel Captain need to log are repetitive data that can be automated/prefilled before the journey, as well as data captured from mobile device or the internet. We seek to help them log their journey more intuitively.  
 
-In the project directory, you can run:
+## What it does
 
-### `npm start`
+Nemo is a chat interface that automate a lot of the manual process of writing a log book. The UX is tailored for a smooth and intuitive mobile experience for data entry. We incentive the act of data entry via rewarding micro-interaction, as well as giving actionable warnings and data validation such that data entry for Vessel Captain becomes fast, clean and enjoyable!
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Nemo is also built on top of a fully localizable architecture. The hackathon demo feature 3 demo lanuage: EN (US), VN (Vietnamese), and RS (Serbian). But wait, there's more! Although Nemo's user interface language is localized for the captain's nationality, the root key of each data piece are separated, allowing inter-operable across language via the FAO 3A_Code (This feature is demoed briefly in the current MVP of Nemo).
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Challenges we ran into
 
-### `npm test`
+We don't know anything about how data-entry are being handled by current vessel captain. We struggle a lot when designing our front-end, but thanks to the insight from our mentor Neil Aeschliman, we managed to deliver something adequate.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Accomplishments that we're proud of
 
-### `npm run build`
+Hacking on an unfamiliar domain and managed to deliver a solution that fit some of the challenge.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## What I learned
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+A lot about the operation of fishery captain, what data they need to log and how to streamline the data. Creating an entire chat bot and the architecture for localization across language. A lot about FAO code as well.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## What's next for SeaTrace
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-# nemo-dapp
-
-How to test:
-+ Go to Nemo's test contract account: https://jungle.eosweb.net/account/nemoeosmark1 
-+ Press TEST for nemo
-+ Put any string in there
-+ Send
+We will definitely polish the application as well as making it native compliant so that it can be used in the ocean if there's interest of using it in the field.
