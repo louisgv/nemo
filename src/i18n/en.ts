@@ -101,6 +101,7 @@ export const en = {
 
   addNew: "Add new",
 
+  csv: "Upload csv 📁",
   receive: "Buy ⭐",
   catch: "Catch 🐟",
   transport: "Transport 🚢",
@@ -110,6 +111,8 @@ export const en = {
   test: "TEST 🙉",
   
   nothing: "I'm good 😁",
+
+  prompt_csv: "Let's get this done!",
 
   prompt_nothing: "Smooth sailing 💨",
 

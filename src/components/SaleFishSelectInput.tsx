@@ -21,6 +21,9 @@ export const SaleFishSelectInput = ({ triggerNextStep, steps } : any) => {
 
   const fishStore = JSON.parse(localStorage.getItem("FISH_STORE") as any) || { catches: [] };
 
+  const [disabled, setDisabled] = useState(false);
+  const [fish, setFish] = useState(fishStore.catches[0] ? fishStore.catches[0].value : null);
+
   if(!fishStore.catches[0]) {
     setTimeout(()=>{
       localStorage.removeItem(localStorageKey.chatCache);
@@ -38,9 +41,6 @@ export const SaleFishSelectInput = ({ triggerNextStep, steps } : any) => {
       </div>
     )
   }
-
-  const [disabled, setDisabled] = useState(false);
-  const [fish, setFish] = useState(fishStore.catches[0].value);
 
   return (
     <StyledSelect

@@ -22,6 +22,12 @@ const Container = styled.div`
 const StyledChatBot = styled(ChatBot)`
   width: 90%;
   height: 90%;
+
+  .rsc-container {
+    width: 100%;
+    height: 100%;
+  }
+
   .rsc-os-options {
     display: flex;
     flex-flow: wrap;
@@ -30,7 +36,9 @@ const StyledChatBot = styled(ChatBot)`
 
   .rsc-os-option-element {
     display: flex;
-    height: 1em;
+    height: 3em;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
