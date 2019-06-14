@@ -1,13 +1,15 @@
 {
-  "main.css": "/nemo/static/css/main.395e0b71.chunk.css",
-  "main.js": "/nemo/static/js/main.41fa5f83.chunk.js",
-  "main.js.map": "/nemo/static/js/main.41fa5f83.chunk.js.map",
-  "runtime~main.js": "/nemo/static/js/runtime~main.8e962d31.js",
-  "runtime~main.js.map": "/nemo/static/js/runtime~main.8e962d31.js.map",
-  "static/js/2.d8262df2.chunk.js": "/nemo/static/js/2.d8262df2.chunk.js",
-  "static/js/2.d8262df2.chunk.js.map": "/nemo/static/js/2.d8262df2.chunk.js.map",
-  "index.html": "/nemo/index.html",
-  "precache-manifest.8521dcb540548312f6362726836a2661.js": "/nemo/precache-manifest.8521dcb540548312f6362726836a2661.js",
-  "service-worker.js": "/nemo/service-worker.js",
-  "static/css/main.395e0b71.chunk.css.map": "/nemo/static/css/main.395e0b71.chunk.css.map"
+  "files": {
+    "main.css": "/nemo/static/css/main.da3020f0.chunk.css",
+    "main.js": "/nemo/static/js/main.ffb1e3d2.chunk.js",
+    "main.js.map": "/nemo/static/js/main.ffb1e3d2.chunk.js.map",
+    "runtime~main.js": "/nemo/static/js/runtime~main.03aedfcd.js",
+    "runtime~main.js.map": "/nemo/static/js/runtime~main.03aedfcd.js.map",
+    "static/js/2.c0514682.chunk.js": "/nemo/static/js/2.c0514682.chunk.js",
+    "static/js/2.c0514682.chunk.js.map": "/nemo/static/js/2.c0514682.chunk.js.map",
+    "index.html": "/nemo/index.html",
+    "precache-manifest.2d6b1d0716453a9d82f50d517836db0d.js": "/nemo/precache-manifest.2d6b1d0716453a9d82f50d517836db0d.js",
+    "service-worker.js": "/nemo/service-worker.js",
+    "static/css/main.da3020f0.chunk.css.map": "/nemo/static/css/main.da3020f0.chunk.css.map"
+  }
 }
