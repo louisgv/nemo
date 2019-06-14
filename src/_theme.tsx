@@ -14,7 +14,8 @@ export const theme = {
   botBubbleColor: "#00b0ff",
   botFontColor: "#fff",
   userBubbleColor: "#fff",
-  userFontColor: "#4a4a4a"
+  userFontColor: "#4a4a4a",
+  dangerColor: "red"
 };
 
 const CircleButton = styled.button`
@@ -31,6 +32,12 @@ const CircleButton = styled.button`
     outline: none;
   }
 `;
+
+export const StyledColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
 
 export const RefreshButton = () => (
   <CircleButton>
@@ -55,11 +62,15 @@ export const LabeledInput = styled(({ className, label, ...rest }: any) => (
   </div>
 ))`
   display: inline-flex;
+  width: 100%;
   label {
     width: 25%;
   }
   input {
     width: 75%;
+    :disabled {
+      cursor: not-allowed;
+    }
   }
 `;
 
@@ -83,17 +94,35 @@ export const ReviewInput = styled(LabeledInput)`
   }
 `;
 
-export const StyledButton = styled.button`
+interface BackgroundButtonProps {
+  readonly background?: string;
+};
 
+export const StyledButton = styled.button<BackgroundButtonProps>`
+  cursor: pointer;
   border: none;
-  background: ${p => p.theme.botBubbleColor};
+  background: ${p => p.background || p.theme.botBubbleColor};
   color: ${p => p.theme.botFontColor};
   height: 30px;
+
+  :hover {
+    opacity: 0.7;
+  }
 
   :disabled {
     background: ${p => p.theme.userFontColor};
   }
+
+  :disabled:hover {
+    cursor: not-allowed;
+    opacity: 1;
+  }
 `;
+
+export const FillButton = styled(StyledButton)`
+  margin-top: 1em;
+  width: 100%;
+`
 
 export const StyledSubmitButton = styled((props: any) => (
   <StyledButton {...props}>
@@ -138,3 +167,6 @@ export const StyledSelect = styled(Select)`
   }
 `;
 
+export const StyledLabel = styled.label`
+  font-weight: 700;
+`

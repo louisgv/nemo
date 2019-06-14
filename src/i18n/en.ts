@@ -100,13 +100,22 @@ export const en = {
   months: "Month",
 
   addNew: "Add new",
+
+  receive: "Buy ⭐",
   catch: "Catch 🐟",
   transport: "Transport 🚢",
   landing: "Landing ⚓",
-  sale: "Sale 💰",
+  sale: "Sell 💰",
+
+  test: "TEST 🙉",
+  
   nothing: "I'm good 😁",
 
   prompt_nothing: "Smooth sailing 💨",
+
+  prompt_test: "WELCOME TO THE TESTING FLOW . . .",
+
+  prompt_receive: "Let's buy that data record 🌐",
 
   prompt_catch: "Let's get this done ⚡",
 

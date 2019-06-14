@@ -4,6 +4,7 @@
   "homepage": "https://louisgv.ga/nemo",
   "private": true,
   "dependencies": {
+    "@types/debug": "^4.1.3",
     "@types/jest": "24.0.0",
     "@types/luxon": "^1.11.1",
     "@types/node": "10.12.24",
@@ -12,6 +13,9 @@
     "@types/styled-components": "^4.1.8",
     "autoscroll-react": "^3.2.0",
     "case": "^1.6.1",
+    "copy-to-clipboard": "^3.1.0",
+    "debug": "^4.1.1",
+    "eosjs": "^20.0.1-a2c7836.0",
     "epcis-js": "^0.1.0",
     "luxon": "^1.11.4",
     "react": "^16.8.1",

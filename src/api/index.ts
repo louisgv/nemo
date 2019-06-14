@@ -1,31 +1,7 @@
-import { testCatchPayload } from "./sample";
-import { createCatchPayload } from "./catch";
+import * as dapp from './dapp'
+import * as freepcis from './freepcis'
 
-const origin = {
-  capture: {
-    uri: 'https://cors-anywhere.herokuapp.com/'+ ('http://www.freepcis.com/server/nemo/capture'),
-    auth: {
-      username: 'nemo',
-      password: 'test001'
-    }
-  }
+export default {
+  dapp,
+  freepcis
 }
-
-export const sendCatchEvent = async (catchData : any) => {
-
-  const headers = new Headers()
-
-  const {uri, auth} = origin.capture;
-  
-  headers.set('Authorization', 'Basic ' + btoa(auth.username + ":" + auth.password));
-  headers.set('Content-Type', 'text/xml');
-  
-  const body = await createCatchPayload(catchData)
-  const response = await fetch(uri,{
-    method: 'POST',
-    headers,
-    body
-  })
-
-  console.log(response)
-};

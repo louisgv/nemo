@@ -1,15 +1,13 @@
 import React from "react";
 import { CatchFishTypeInput } from "../components/CatchFishTypeInput";
-import { appendTrigger, createOptionLabel } from "../core/utils";
+import { createOptionLabel, createPromptArray } from "../core/utils";
 import { FishDataConfirm } from "../components/FishDataConfirm";
-
-import { strings } from "../i18n";
 
 import { CatchQuantityInput } from "../components/CatchQuantityInput";
 import { CatchDurationInput } from "../components/CatchDurationInput";
 import { CatchReview } from "../components/CatchReview";
 
-const prompOrder = [
+const promptOrder = [
   "prompt_catch",
 
   "prompt_catchFishType",
@@ -33,7 +31,7 @@ const prompOrder = [
   "add_catchReview",
 
   "prompt_catchCongrat",
-  
+
   "prompt_anotherOne"
 ];
 
@@ -61,7 +59,7 @@ const promptStructure = {
 
   add_catchArea: {
     hideInput: true,
-    options: ["61", "71", "67", "77"].map(createOptionLabel),
+    options: ["61", "71", "67", "77"].map(createOptionLabel)
   },
 
   add_catchQuantityDone: {
@@ -91,16 +89,4 @@ const promptStructure = {
 } as any;
 
 export const createCatchPrompt = () =>
-  prompOrder.reduce((acc, id: string, i, src) => {
-    if (i < src.length - 1) {
-      acc.push(appendTrigger(
-        {
-          id,
-          ...(promptStructure[id] || { hideInput: true })
-        },
-        i,
-        prompOrder
-      ) as never);
-    }
-    return acc;
-  }, []);
+  createPromptArray(promptOrder, promptStructure);

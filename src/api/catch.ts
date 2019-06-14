@@ -1,7 +1,6 @@
 import { DateTime } from "luxon";
 import { upper } from "case";
 import { productionMethodCodeMap } from "../_data";
-import { gearAbbreviationMap } from "../data/gear";
 
 const getCoordinate = () =>
   new Promise(resolve => {
