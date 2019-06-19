@@ -1,10 +1,9 @@
 import React, { useState, useRef } from "react";
 import styled from "styled-components";
-import { durationList, useCatchCacheState } from "../_data";
 import { createSelectOptionList } from "../core/utils";
 
 import FileDrop from "react-file-drop";
-import { FillButton } from "../_theme";
+import { FillButton, Divider } from "../_theme";
 
 import fileReaderStream from "filereader-stream";
 import neatCsv from "neat-csv";
@@ -13,6 +12,9 @@ import { createCsvDemo1Payload } from "../api/csvDemo1";
 import { Accordion, AccordionPanel, Box, Heading } from "grommet";
 import { Grommet } from "grommet";
 import { grommet } from "grommet/themes";
+import api from "../api";
+
+type SentStateType = 'default' | 'sending' | 'sent'
 
 const StyledGrommet = styled(Grommet)`
   width: 100%;
@@ -21,7 +23,7 @@ const StyledGrommet = styled(Grommet)`
 const DataContainer = styled.div`
   max-height: 30vh;
   overflow-y: auto;
-`
+`;
 
 const FileDropContainer = styled.div`
   position: relative;
@@ -110,11 +112,9 @@ const CodeContainer = styled.code`
 export const CsvFileInput = ({ triggerNextStep }: any) => {
   const fileInputRef = useRef(null);
 
-  const options = createSelectOptionList(durationList);
-
   const [disabled, setDisabled] = useState(false);
 
-  const [catchCache, setCatchCache] = useCatchCacheState({});
+  const [sent, setSent] = useState<SentStateType>('default');
 
   const [epcisXmlList, setEpcisXmlList] = useState([]);
 
@@ -177,6 +177,20 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
                   ))}
                 </Accordion>
               </DataContainer>
+
+              <Divider />
+              <FillButton
+                disabled={sent !== 'default'}
+                onClick={async () => {
+                  setSent('sending')
+                  await Promise.all(
+                    epcisXmlList.map(d => api.freepcis.sendCatchEvent(d))
+                  );
+                  setSent('sent')
+                }}
+              >
+                { sent === 'sending' ? 'Sending...' : sent === 'sent' ? 'Data sent!' : 'Send to FreEPCIS'}
+              </FillButton>
             </StyledGrommet>
           )}
         </>
