@@ -85,7 +85,7 @@ export const createCatchPayload = async ({
   return `
   <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
     schemaVersion="1.1" 
-    creationDate="${creationDate}" 
+    creationDate="2001-12-17T09:30:47Z" 
     xmlns:eecc="http://ns.eecc.info/epcis"
     xmlns:sbdh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 

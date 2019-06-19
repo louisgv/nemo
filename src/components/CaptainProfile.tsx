@@ -121,7 +121,7 @@ export const CaptainProfile = () => {
   const springRef = useRef(null);
   const { size, ...rest } = useSpring({
     ref: springRef,
-    config: config.stiff,
+    // config: config.stiff,
     from: {
       size: "2%",
       opacity: 0

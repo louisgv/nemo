@@ -1,5 +1,3 @@
-const debug = require("debug")("DappSendInput");
-
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useFormState } from "react-use-form-state";
@@ -24,6 +22,8 @@ import {
 import api from "../api";
 import { createCatchPayload } from "../api/catch";
 import { useIpfs } from "../hooks/use-ipfs";
+
+const debug = require("debug")("DappSendInput");
 
 const Container = styled(animated.div)`
   width: 100%;

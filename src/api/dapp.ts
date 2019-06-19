@@ -1,6 +1,7 @@
-const debug = require("debug")("api.dapp");
 import { Api, JsonRpc, RpcError } from "eosjs";
 import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
+
+const debug = require("debug")("api.dapp");
 
 // Jungle testnet keys
 export const dappVault = {

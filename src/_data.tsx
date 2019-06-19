@@ -7,6 +7,7 @@ import createPersistedState from "use-persisted-state";
 import { createSelectOptionList } from "./core/utils";
 import { createTestPrompt } from "./data/testPrompt";
 import { createReceivePrompt } from "./data/receivePrompt";
+import { createCsvPrompt } from "./data/csvPrompt";
 
 const isDebug = localStorage.getItem("debug");
 
@@ -130,6 +131,7 @@ export const createSteps = (isProfileSetup: boolean) => [
     hideInput: true,
     options: [
       ...(isDebug ? ["test"] : []),
+      "csv",
       "receive",
       "catch",
       "landing",
@@ -153,6 +155,7 @@ export const createSteps = (isProfileSetup: boolean) => [
     message: () => strings.prompt_end,
     end: true
   },
+  ...createCsvPrompt(),
   ...createReceivePrompt(),
   ...createSalePrompt(),
   ...createCatchPrompt(),
