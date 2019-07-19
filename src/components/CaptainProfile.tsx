@@ -11,7 +11,7 @@ import styled from "styled-components";
 import { Close } from "styled-icons/material/Close";
 import { useProfileState, localStorageKey } from "../_data";
 import { useFormState } from "react-use-form-state";
-import { StyledSubmitButton, LabeledInput, StyledColumnForm, StyledButton, RowDiv as RowDiv, ReviewInput } from "../_theme";
+import { StyledSubmitButton, LabeledInput, StyledColumnForm, StyledButton, RowDiv, ReviewInput } from "../_theme";
 
 const data = [
   {

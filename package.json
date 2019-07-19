@@ -17,6 +17,7 @@
     "debug": "^4.1.1",
     "eosjs": "^20.0.1-a2c7836.0",
     "epcis-js": "^0.1.0",
+    "file-saver": "^2.0.2",
     "filereader-stream": "^2.0.0",
     "grommet": "^2.7.1",
     "luxon": "^1.16.0",

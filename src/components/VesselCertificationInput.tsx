@@ -1,20 +1,18 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { useFormState } from "react-use-form-state";
-import { animated } from "react-spring";
+import React, { useState } from 'react'
+import styled from 'styled-components'
+import { useFormState } from 'react-use-form-state'
+import { animated } from 'react-spring'
 
-import { upper } from "case";
+import { useCaptainProfileState } from '../_data'
+import { strings } from '../i18n'
 
-import { useCaptainProfileState } from "../_data";
-import { strings } from "../i18n";
-
-import { StyledInput, StyledSubmitButton, LabeledInput } from "../_theme";
+import { StyledSubmitButton, LabeledInput } from '../_theme'
 
 interface CertificationStandardFormFields {
-  standard: string;
-  agency: string;
-  value: string;
-  identification: string;
+  standard: string
+  agency: string
+  value: string
+  identification: string
 }
 
 const Container = styled(animated.div)`
@@ -28,7 +26,7 @@ const Container = styled(animated.div)`
   .select-input {
     margin-left: 0.5em;
   }
-`;
+`
 
 const StyledForm = styled.form`
   margin-top: 1em;
@@ -37,24 +35,24 @@ const StyledForm = styled.form`
   justify-content: space-between;
   align-items: flex-end;
   width: 100%;
-`;
+`
 
 const StyledHeaderLabel = styled.span`
   color: ${p => p.theme.botBubbleColor};
   font-weight: bold;
-`;
+`
 
 const CertificationInput = styled(LabeledInput)`
   width: 100%;
   margin-bottom: 0.5em;
-`;
+`
 
 export const VesselCertificationInput = ({ triggerNextStep, steps }: any) => {
-  const [profile, setProfile] = useCaptainProfileState({});
+  const [profile, setProfile] = useCaptainProfileState({})
 
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(false)
 
-  const [formState, { text }] = useFormState<CertificationStandardFormFields>();
+  const [formState, { text }] = useFormState<CertificationStandardFormFields>()
 
   return (
     <Container>
@@ -62,27 +60,26 @@ export const VesselCertificationInput = ({ triggerNextStep, steps }: any) => {
 
       <StyledForm
         onSubmit={e => {
-          e.preventDefault();
+          e.preventDefault()
 
-          setDisabled(true);
+          setDisabled(true)
 
           setProfile({
-            ... profile,
+            ...profile,
             vesselCertification: {
-              ...formState.values,
-              standard: "MSC"
-            },
+            ...formState.values,
+              standard: 'MSC'
+            }
           })
 
-          triggerNextStep();
-        }}
-      >
+          triggerNextStep()
+        }}>
         <CertificationInput
           disabled={disabled}
           required
           label={strings.form_certificationAgencyLabel}
           placeholder={strings.form_certificationAgencyPlaceholder}
-          {...text("agency")}
+          {...text('agency')}
         />
 
         <CertificationInput
@@ -90,7 +87,7 @@ export const VesselCertificationInput = ({ triggerNextStep, steps }: any) => {
           required
           label={strings.form_certificationValueLabel}
           placeholder={strings.form_certificationValuePlaceholder}
-          {...text("value")}
+          {...text('value')}
         />
 
         <CertificationInput
@@ -98,11 +95,11 @@ export const VesselCertificationInput = ({ triggerNextStep, steps }: any) => {
           required
           label={strings.form_certificationIdentificationLabel}
           placeholder={strings.form_certificationIdentificationPlaceholder}
-          {...text("identification")}
+          {...text('identification')}
         />
 
         <StyledSubmitButton disabled={disabled} />
       </StyledForm>
     </Container>
-  );
-};
+  )
+}
