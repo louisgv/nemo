@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useFormState } from "react-use-form-state";
 import { animated } from "react-spring";
-import copy from "copy-to-clipboard";
 
 import {
   useCatchCacheState,
@@ -23,7 +22,7 @@ import api from "../api";
 import { createCatchPayload } from "../api/catch";
 import { useIpfs } from "../hooks/use-ipfs";
 
-const debug = require("debug")("DappSendInput");
+// const debug = require("debug")("DappSendInput");
 
 const Container = styled(animated.div)`
   width: 100%;
@@ -52,9 +51,9 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
 
   const [sendMethod, setSendMethod] = useState("");
 
-  const [error, setError] = useState("");
+  const [error] = useState("");
   const [success, setSuccess] = useState("");
-  const [originId, setOriginId] = useState("");
+  const [, setOriginId] = useState("");
   const [ipfsHash, setIpfsHash] = useState("");
 
   const { quantityList, ...catchCacheRest } = catchCache;
@@ -217,6 +216,7 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
           <a
             href="https://jungle.eosweb.net/account/nemoeosmark1"
             target="_blank"
+            rel="noopener noreferrer"
           >
             https://jungle.eosweb.net/account/nemoeosmark1
           </a>
@@ -225,7 +225,7 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
             {" "}
             You can check the epcis data on IPFS here -{" "}
           </StyledLabel>
-          <a href={`https://ipfs.io/ipfs/${ipfsHash}`} target="_blank">
+          <a href={`https://ipfs.io/ipfs/${ipfsHash}`} target="_blank" rel="noopener noreferrer">
             {`https://ipfs.io/ipfs/${ipfsHash}`}
           </a>
           {/* 

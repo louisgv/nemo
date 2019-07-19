@@ -1,7 +1,6 @@
 import React from 'react'
 import { SaleFishSelectInput } from "../components/SaleFishSelectInput";
 import { numberValidator, appendTrigger } from "../core/utils";
-import { SaleDetail } from '../components/SaleDetail';
 
 const salePromptOrder = [
   "prompt_sale",

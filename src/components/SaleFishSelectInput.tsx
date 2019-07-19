@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
-import { fao3AMap, localStorageKey } from "../_data";
-import { RefreshButton } from "../_theme";
+import { localStorageKey } from "../_data";
 
 const StyledSelect = styled(Select)`
   width: 100%;
@@ -17,7 +16,7 @@ const StyledSelect = styled(Select)`
   }
 `;
 
-export const SaleFishSelectInput = ({ triggerNextStep, steps } : any) => {
+export const SaleFishSelectInput = ({ triggerNextStep } : any) => {
 
   const fishStore = JSON.parse(localStorage.getItem("FISH_STORE") as any) || { catches: [] };
 

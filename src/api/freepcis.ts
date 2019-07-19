@@ -1,6 +1,8 @@
+const freeEpcisUrl = 'http://www.freepcis.com/server/nemo/capture'
+
 export const freepcisVault = {
   capture: {
-    uri: 'https://cors-anywhere.herokuapp.com/'+ ('http://www.freepcis.com/server/nemo/capture'),
+    uri: 'https://cors-anywhere.herokuapp.com/'+ freeEpcisUrl,
     auth: {
       username: 'nemo',
       password: 'test001'

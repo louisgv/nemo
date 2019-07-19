@@ -5,7 +5,7 @@ import { animated } from "react-spring";
 
 import { useCaptainProfileState, useProfileState, localStorageKey } from "../_data";
 
-import { StyledSubmitButton, LabeledInput, ReviewInput } from "../_theme";
+import { StyledSubmitButton, ReviewInput } from "../_theme";
 
 const Container = styled(animated.div)`
   width: 100%;

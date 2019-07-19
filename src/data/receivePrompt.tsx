@@ -1,5 +1,5 @@
 import React from "react";
-import { createOptionLabel, createPromptArray } from "../core/utils";
+import { createPromptArray } from "../core/utils";
 import { DappProducerReceiveInput } from "../components/DappProducerReceiveInput";
 
 const promptOrder = [

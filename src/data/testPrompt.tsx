@@ -1,8 +1,5 @@
 import React from "react";
-import { createOptionLabel, createPromptArray } from "../core/utils";
-import { DappSendInput } from "../components/DappSendInput";
-import { DappReceiveInput } from "../components/DappReceiveInput";
-import { PrintValue } from "../components/PrintValue";
+import { createPromptArray } from "../core/utils";
 import { CsvFileInput } from "../components/CsvFileInput";
 
 const promptOrder = [

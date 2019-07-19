@@ -17,7 +17,7 @@ import { dappVault, claimCatchEvent } from "../api/dapp";
 import { useIpfs } from "../hooks/use-ipfs";
 import api from "../api";
 
-const debug = require("debug")("DappProducerReceiveInput");
+// const debug = require("debug")("DappProducerReceiveInput");
 
 interface TestInputFields {
   verifyId: string;
@@ -127,6 +127,7 @@ export const DappProducerReceiveInput = ({
           <a
             href="https://jungle.eosweb.net/account/nemoeosmark1"
             target="_blank"
+            rel="noopener noreferrer" 
           >
             https://jungle.eosweb.net/account/nemoeosmark1
           </a>
@@ -135,6 +136,7 @@ export const DappProducerReceiveInput = ({
           <a
             href="https://jungle.eosweb.net/account/nemotestero4"
             target="_blank"
+            rel="noopener noreferrer" 
           >
             https://jungle.eosweb.net/account/nemotestero4
           </a>

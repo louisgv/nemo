@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
-import { useFormState } from "react-use-form-state";
 
 import { useCaptainProfileState } from "../_data";
 import { StyledSubmitButton } from "../_theme";
@@ -119,7 +118,7 @@ export const FishingGearInput = ({triggerNextStep}: any) => {
           setPartThreeOptions(getGearKeyList(gearTree[partOne][value]));
         }}
         value={partTwo}
-        disabled={disabled || partTwoOptions.length == 0}
+        disabled={disabled || partTwoOptions.length === 0}
         options={partTwoOptions}
         classes={{
           selectControl: "select-control",
@@ -132,7 +131,7 @@ export const FishingGearInput = ({triggerNextStep}: any) => {
         onChange={setPartThree}
         onInputClear={()=>setPartThree('')}
         value={partThree}
-        disabled={disabled || partThreeOptions.length == 0}
+        disabled={disabled || partThreeOptions.length === 0}
         options={partThreeOptions}
         classes={{
           selectControl: "select-control",

@@ -1,22 +1,26 @@
-import React, { useState, useRef } from "react";
-import styled from "styled-components";
-import { durationList, useCatchCacheState } from "../_data";
-import { createSelectOptionList } from "../core/utils";
+import React, { useState, useRef } from 'react'
+import styled from 'styled-components'
 
-import FileDrop from "react-file-drop";
-import { FillButton } from "../_theme";
+import { DateTime } from 'luxon'
 
-import fileReaderStream from "filereader-stream";
-import neatCsv from "neat-csv";
-import { csvDemo1Header } from "../data/csvConfig";
-import { createCsvDemo1Payload } from "../api/csvDemo1";
-import { Accordion, AccordionPanel, Box, Heading } from "grommet";
-import { Grommet } from "grommet";
-import { grommet } from "grommet/themes";
+import FileDrop from 'react-file-drop'
+import { FillButton, Divider } from '../_theme'
+
+import fileReaderStream from 'filereader-stream'
+import neatCsv from 'neat-csv'
+import { csvDemo1Header } from '../data/csvConfig'
+import { createCsvDemo1Payload, createAggregatedXmlDemo } from '../api/csvDemo1'
+import { Accordion, AccordionPanel, Box, Heading } from 'grommet'
+import { Grommet } from 'grommet'
+import { grommet } from 'grommet/themes'
+import api from '../api'
+import { saveAs } from 'file-saver'
+
+type SentStateType = 'default' | 'sending' | 'sent'
 
 const StyledGrommet = styled(Grommet)`
   width: 100%;
-`;
+`
 
 const DataContainer = styled.div`
   max-height: 30vh;
@@ -81,63 +85,63 @@ const FileDropContainer = styled.div`
     color: ${p => p.theme.headerBgColor};
     box-shadow: 0 0 13px 3px ${p => p.theme.headerBgColor};
   }
-`;
+`
 
 const HiddenContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
-`;
+`
 
 const HiddenFileInput = styled.div`
   display: none;
-`;
+`
 
 const FileDropText = styled.div`
   padding: 1em;
-`;
+`
 
 const AccordionContent = styled(Box)`
   height: 20vh;
   overflow-y: auto;
-`;
+`
 
 const CodeContainer = styled.code`
   white-space: pre-wrap;
   font-size: smaller;
-`;
+`
 
 export const CsvFileInput = ({ triggerNextStep }: any) => {
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef(null)
 
-  const options = createSelectOptionList(durationList);
+  const [disabled, setDisabled] = useState(false)
 
-  const [disabled, setDisabled] = useState(false);
+  const [sent, setSent] = useState<SentStateType>('default')
 
-  const [catchCache, setCatchCache] = useCatchCacheState({});
+  const [epcisXmlList, setEpcisXmlList] = useState([])
 
-  const [epcisXmlList, setEpcisXmlList] = useState([]);
+  const [aggregatedXml, setAggregatedXml] = useState(null)
 
   const processFile = async ([file]: any) => {
-    console.log(file);
+    if (!file) return
 
-    if (!file) return;
-
-    if (file.name.split(".").pop() !== "csv") {
-      return;
+    if (file.name.split('.').pop() !== 'csv') {
+      return
     }
 
-    const readerStream = fileReaderStream(file);
-    const [headerData, ...csvRowList] = await neatCsv(readerStream, {
+    const readerStream = fileReaderStream(file)
+    const [, ...csvRowList] = await neatCsv(readerStream, {
       headers: csvDemo1Header
-    });
+    }) as any
 
-    console.log(csvRowList);
+    console.log(csvRowList)
 
-    const parsedData = await Promise.all(csvRowList.map(createCsvDemo1Payload));
+    const parsedData = await Promise.all(csvRowList.map(createCsvDemo1Payload))
 
-    setEpcisXmlList(parsedData);
-  };
+    setEpcisXmlList(parsedData)
+
+    setAggregatedXml(await createAggregatedXmlDemo(csvRowList))
+  }
 
   return (
     <FileDropContainer>
@@ -145,9 +149,7 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
         <>
           <HiddenContainer onClick={() => fileInputRef.current.click()}>
             <FileDrop onDrop={processFile}>
-              <FileDropText>
-                Drop your CSV file here, or tap the box to select a file.
-              </FileDropText>
+              <FileDropText>Drop your CSV file here, or tap the box to select a file.</FileDropText>
             </FileDrop>
             <HiddenFileInput>
               <input
@@ -155,7 +157,7 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
                 accept=".csv"
                 type="file"
                 onChange={evt => {
-                  processFile(evt.target.files);
+                  processFile(evt.target.files)
                 }}
               />
             </HiddenFileInput>
@@ -163,8 +165,7 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
           {epcisXmlList.length > 0 && (
             <StyledGrommet theme={grommet}>
               <Heading size="small" level={2}>
-                {epcisXmlList.length} event{epcisXmlList.length > 0 && "s"}{" "}
-                found:
+                {epcisXmlList.length} event{epcisXmlList.length > 0 && 's'} found:
               </Heading>
               <DataContainer>
                 <Accordion multiple margin="small">
@@ -177,6 +178,33 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
                   ))}
                 </Accordion>
               </DataContainer>
+
+              <Divider />
+              <FillButton
+                disabled={sent !== 'default'}
+                onClick={async () => {
+                  setSent('sending')
+                  await Promise.all(epcisXmlList.map(d => api.freepcis.sendCatchEvent(d)))
+                  setSent('sent')
+                }}>
+                {sent === 'sending' ? 'Sending...' : sent === 'sent' ? 'Data sent!' : 'Send to FreEPCIS'}
+              </FillButton>
+
+              {aggregatedXml && (
+                <FillButton
+                  background={'lime'}
+                  disabled={disabled}
+                  onClick={() => {
+                    const blob = new Blob([aggregatedXml], { type: 'application/xml;charet=ustf-8' })
+                    const dt = DateTime.local()
+
+                    const creationDate = dt.toISO()
+
+                    saveAs(blob, `GDST-EPCIS-${creationDate}.xml`)
+                  }}>
+                  Download Aggregated XML
+                </FillButton>
+              )}
             </StyledGrommet>
           )}
         </>
@@ -185,12 +213,11 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
       <FillButton
         disabled={disabled}
         onClick={() => {
-          setDisabled(true);
-          triggerNextStep();
-        }}
-      >
+          setDisabled(true)
+          triggerNextStep()
+        }}>
         Finalize
       </FillButton>
     </FileDropContainer>
-  );
-};
+  )
+}
