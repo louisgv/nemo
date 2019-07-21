@@ -1,7 +1,6 @@
 import { DateTime } from "luxon";
-import { upper } from "case";
 
-const parseDate = (s) => DateTime.fromFormat(s, 'dd/MM/yy').toISO()
+// const parseDate = (s) => DateTime.fromFormat(s, 'dd/MM/yy').toISO()
 
 const createSender = ({ informationProviderID, informationProviderContactName, informationProviderEmail }) => `
 <sbdh:Sender>

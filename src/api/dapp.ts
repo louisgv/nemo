@@ -1,4 +1,4 @@
-import { Api, JsonRpc, RpcError } from "eosjs";
+import { Api, JsonRpc } from "eosjs";
 import { JsSignatureProvider } from "eosjs/dist/eosjs-jssig";
 
 const debug = require("debug")("api.dapp");
