@@ -130,7 +130,7 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
     }
 
     const readerStream = fileReaderStream(file)
-    const [headerData, ...csvRowList] = await neatCsv(readerStream, {
+    const [, ...csvRowList] = await neatCsv(readerStream, {
       headers: csvDemo1Header
     })
 

@@ -17,7 +17,7 @@ import { dappVault, claimCatchEvent } from "../api/dapp";
 import { useIpfs } from "../hooks/use-ipfs";
 import api from "../api";
 
-const debug = require("debug")("DappProducerReceiveInput");
+// const debug = require("debug")("DappProducerReceiveInput");
 
 interface TestInputFields {
   verifyId: string;

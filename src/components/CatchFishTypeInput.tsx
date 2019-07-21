@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Select from "react-styled-select";
-import { fao3AMap, fishes, fishOptionList, useCatchCacheState } from "../_data";
-import { StyledInput, StyledSubmitButton } from "../_theme";
+import { fishOptionList, useCatchCacheState } from "../_data";
+import { StyledSubmitButton } from "../_theme";
 
 const StyledSelect = styled(Select)`
   width: 85%;
@@ -25,11 +25,11 @@ const StyledForm = styled.form`
 `;
 
 
-export const CatchFishTypeInput = ({ triggerNextStep, steps } : any) => {
+export const CatchFishTypeInput = ({ triggerNextStep } : any) => {
   const options = fishOptionList;
   const [disabled, setDisabled] = useState(false);
   const [value, setValue] = useState(options[0].value);
-  const [catchCache, setCatchCache] = useCatchCacheState({})
+  const [, setCatchCache] = useCatchCacheState({})
   
   return (
     <StyledForm

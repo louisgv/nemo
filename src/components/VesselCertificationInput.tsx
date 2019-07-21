@@ -67,7 +67,7 @@ export const VesselCertificationInput = ({ triggerNextStep, steps }: any) => {
           setProfile({
             ...profile,
             vesselCertification: {
-            ...formState.values,
+              ...formState.values,
               standard: 'MSC'
             }
           })

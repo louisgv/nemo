@@ -63,7 +63,7 @@ export const VesselCaptainNameInput = ({ triggerNextStep, steps }: any) => {
           setDisabled(true);
 
           setProfile({
-            ... profile,
+            ...profile,
             captain: {
               firstName,
               middleName,
