@@ -132,7 +132,7 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
     const readerStream = fileReaderStream(file)
     const [, ...csvRowList] = await neatCsv(readerStream, {
       headers: csvDemo1Header
-    })
+    }) as any
 
     console.log(csvRowList)
 
