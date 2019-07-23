@@ -214,11 +214,11 @@ export const CatchReview = ({ triggerNextStep, steps }: any) => {
         <div>
           Catch event posted. Will take ~3 minutes for it to register -
           <a
-            href="https://jungle.eosweb.net/account/nemoeosmark1"
+            href="https://jungle.eosx.io/account/nemoeosmark1?mode=contract&sub=tables"
             target="_blank"
             rel="noopener noreferrer"
           >
-            https://jungle.eosweb.net/account/nemoeosmark1
+            https://jungle.eosx.io/account/nemoeosmark1?mode=contract&sub=tables
           </a>
           <Divider />
           <StyledLabel>

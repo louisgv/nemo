@@ -30,7 +30,7 @@ export const CatchDurationInput = ({ triggerNextStep }: any) => {
 
   const [disabled, setDisabled] = useState(false);
 
-  const [formState, { number, select }] = useFormState<
+  const [formState, { number, raw }] = useFormState<
     CatchDurationFormFields
   >({
     durationType: durationList[0]
@@ -65,10 +65,7 @@ export const CatchDurationInput = ({ triggerNextStep }: any) => {
       <DurationValueInput required disabled={disabled} {...number("durationValue")} />
 
       <DurationTypeSelect
-        onChange={(value: string) =>
-          select("durationType").onChange({ target: { value } })
-        }
-        value={select("durationType").value}
+        {...raw("durationType")}     
         disabled={disabled}
         options={options}
         classes={{
