@@ -2,6 +2,8 @@ import { DateTime } from "luxon";
 
 // const parseDate = (s) => DateTime.fromFormat(s, 'dd/MM/yy').toISO()
 
+const parseUom = (s: string) => s && s[0].toLowerCase() === 'l' ? 'LBR' : 'KGM'
+
 const createSender = ({ informationProviderID, informationProviderContactName, informationProviderEmail }) => `
 <sbdh:Sender>
     <sbdh:Identifier>${informationProviderID}</sbdh:Identifier>
@@ -77,7 +79,7 @@ const createFishCatchEvent = (data: CsvPayloadFields) => `
             <quantityElement> 
                 <epcClass>${data.seafoodID}</epcClass> <!-- #10 GDST KDE Seafood Identifier -->
                 <quantity>${data.seafoodQuantity}</quantity> <!-- #11 GDST KDE Weight/Commodity -->
-                <uom>${data.seafoodUOM}</uom> <!-- SIMP UOM is KG -->
+                <uom>${parseUom(data.seafoodUOM)}</uom> <!-- SIMP UOM is KG -->
             </quantityElement>
         </quantityList>
         <ilmd>
@@ -134,14 +136,14 @@ const createProcessEvent = (data: CsvPayloadFields) => `
             <quantityElement> 
                 <epcClass>${data.inputSeafoodID}</epcClass>
                 <quantity>${data.inputSeafoodQuantity}</quantity>
-                <uom>${data.inputSeafoodUOM}</uom>
+                <uom>${parseUom(data.inputSeafoodUOM)}</uom>
             </quantityElement>
         </inputQuantityList>
         <outputQuantityList>
             <quantityElement>
                 <epcClass>${data.outputProductID}</epcClass> 
                 <quantity>${data.outputQuantity}</quantity>
-                <uom>${data.outputUOM}</uom>
+                <uom>${parseUom(data.outputUOM)}</uom>
             </quantityElement>
         </outputQuantityList> 
         <bizStep>urn:epcglobal:cbv:bizstep:commissioning</bizStep>
@@ -232,9 +234,9 @@ export const createAggregatedXmlDemo = async (dataList: [CsvPayloadFields]) => {
             <sbdh:DocumentIdentification> <!-- Meets minimum GDST Wild Caught BUL KDE 4.0 and CTEs  -->
                 <sbdh:Standard>GDST</sbdh:Standard> 
                 <sbdh:TypeVersion>4.0</sbdh:TypeVersion>
+                <sbdh:InstanceIdentifier>100002</sbdh:InstanceIdentifier>
                 <sbdh:Type>Wild</sbdh:Type>
                 <sbdh:CreationDateAndTime>${creationDate}</sbdh:CreationDateAndTime>
-                <sbdh:InstanceIdentifier>100002</sbdh:InstanceIdentifier>
             </sbdh:DocumentIdentification>
         </sbdh:StandardBusinessDocumentHeader>
         <extension>
