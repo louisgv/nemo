@@ -105,6 +105,17 @@ const createFishCatchEvent = (data: CsvPayloadFields) => `
                     <certificationIdentification>${data.landingAuthorization}</certificationIdentification>
                 </certification>
             </cbvmda:certificationList>
+            <cbvmda:unloadingPort>${data.unloadingPort}</cbvmda:unloadingPort>
+            <gdst:landingDateStart>${data.landingDateStart}</gdst:landingDateStart>
+            <gdst:landingDateEnd>${data.landingDateEnd}</gdst:landingDateEnd>
+            <gdst:harvestCertification>${data.harvestCertification}</gdst:harvestCertification>
+            <gdst:harvestCertificationCoC>${data.harvestCertificationCoC}</gdst:harvestCertificationCoC>
+            <gdst:FIP>${data.FIP}</gdst:FIP>
+            <gdst:ISSF>${data.ISSF}</gdst:ISSF>
+            <gdst:ratingsScore>${data.ratingsScore}</gdst:ratingsScore>
+            <gdst:ratingsScheme>${data.ratingsScheme}</gdst:ratingsScheme>
+            <gdst:vesselTransponder>${data.vesselTransponder}</gdst:vesselTransponder>
+            <gdst:vesselRegistryLink>${data.vesselRegistryLink}</gdst:vesselRegistryLink>
         </ilmd>
     </extension>
     <!-- EXTENSION -->
@@ -147,6 +158,7 @@ const createProcessEvent = (data: CsvPayloadFields) => `
             <cbvmda:bestbeforeDate>${data.bestBeforeDate}</cbvmda:bestbeforeDate>
             <cbvmda:storageStateCode>${data.storageStateCode}</cbvmda:storageStateCode>
             <cbvmda:firstFreezeDate>${data.firstFreezeDate}</cbvmda:firstFreezeDate>
+            <cbvmda:countryOfOrigin>${data.countryOfOrigin}</cbvmda:countryOfOrigin>
         </ilmd>
         <!-- EXTENSION -->
         <gdst:visibilityEvent>${data.transformationVisibilityEvent}</gdst:visibilityEvent>
@@ -205,7 +217,7 @@ export const createAggregatedXmlDemo = async (dataList: [CsvPayloadFields]) => {
     return `
 <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:sbdh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" schemaVersion="0" creationDate="2001-12-17T09:30:47Z" 
+    xmlns:sbdh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" schemaVersion="1.2" creationDate="2001-12-17T09:30:47Z" 
     xsi:schemaLocation="urn:epcglobal:epcis:xsd:1  http://www.gs1si.org/BMS/epcis/1_2/EPCglobal-epcis-1_2.xsd" 
     xmlns:cbvmda="urn:epcglobal:cbv:mda"
     xmlns:gdst="https://traceability-dialogue.org/epcis">
@@ -222,6 +234,7 @@ export const createAggregatedXmlDemo = async (dataList: [CsvPayloadFields]) => {
                 <sbdh:TypeVersion>4.0</sbdh:TypeVersion>
                 <sbdh:Type>Wild</sbdh:Type>
                 <sbdh:CreationDateAndTime>${creationDate}</sbdh:CreationDateAndTime>
+                <sbdh:InstanceIdentifier>100002</sbdh:InstanceIdentifier>
             </sbdh:DocumentIdentification>
         </sbdh:StandardBusinessDocumentHeader>
         <extension>
