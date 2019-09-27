@@ -9,7 +9,8 @@ import { FillButton, Divider } from '../_theme'
 import fileReaderStream from 'filereader-stream'
 import neatCsv from 'neat-csv'
 import { csvDemo1Header } from '../data/csvConfig'
-import { createCsvDemo1Payload, createAggregatedXmlDemo } from '../api/csvDemo1'
+import { createCatchAndProcessXml } from "../api/csvToXml/createCatchAndProcessXml"
+import { createAggregatedXml } from "../api/csvToXml/createAggregatedXml"
 import { Accordion, AccordionPanel, Box, Heading } from 'grommet'
 import { Grommet } from 'grommet'
 import { grommet } from 'grommet/themes'
@@ -136,11 +137,11 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
 
     console.log(csvRowList)
 
-    const parsedData = await Promise.all(csvRowList.map(createCsvDemo1Payload))
+    const parsedData = await Promise.all(csvRowList.map(createCatchAndProcessXml))
 
     setEpcisXmlList(parsedData)
 
-    setAggregatedXml(await createAggregatedXmlDemo(csvRowList))
+    setAggregatedXml(await createAggregatedXml(csvRowList))
   }
 
   return (

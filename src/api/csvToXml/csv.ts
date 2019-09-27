@@ -1,10 +1,9 @@
-import { DateTime } from "luxon";
 
 // const parseDate = (s) => DateTime.fromFormat(s, 'dd/MM/yy').toISO()
 
 const parseUom = (s: string) => s && s[0].toLowerCase() === 'l' ? 'LBR' : 'KGM'
 
-const createSender = ({ informationProviderID, informationProviderContactName, informationProviderEmail }) => `
+export const createSender = ({ informationProviderID, informationProviderContactName, informationProviderEmail }) => `
 <sbdh:Sender>
     <sbdh:Identifier>${informationProviderID}</sbdh:Identifier>
     <sbdh:ContactInformation>
@@ -14,7 +13,7 @@ const createSender = ({ informationProviderID, informationProviderContactName, i
 </sbdh:Sender>
 `
 
-const createReceiver = ({ destinationID, destinationContactName, destinationEmail }) => `
+export const createReceiver = ({ destinationID, destinationContactName, destinationEmail }) => `
 <sbdh:Receiver>
     <sbdh:Identifier>${destinationID}</sbdh:Identifier>
     <sbdh:ContactInformation>
@@ -24,7 +23,7 @@ const createReceiver = ({ destinationID, destinationContactName, destinationEmai
 </sbdh:Receiver>
 `
 
-const createFishVocab = ({ seafoodID, speciesCode, speciesScientificName, tradeItemDescription, informationProviderID, tradeItemConditionCode }) => `
+export const createFishVocab = ({ seafoodID, speciesCode, speciesScientificName, tradeItemDescription, informationProviderID, tradeItemConditionCode }) => `
 <VocabularyElement id="${seafoodID}"> 
     <attribute id="urn:epcglobal:cbv:mda#speciesForFisheryStatisticsPurposesCode">${speciesCode}</attribute>
     <attribute id="urn:epcglobal:cbv:mda#speciesForFisheryStatisticsPurposesName">${speciesScientificName}</attribute>
@@ -39,13 +38,13 @@ const createVocabEl = ({ id, ...props }) => `
 </VocabularyElement>
 `
 
-const createOutputProductVocab = (data: CsvPayloadFields) => createVocabEl({
+export const createOutputProductVocab = (data: CsvAggregatedPayloadFields) => createVocabEl({
     id: data.outputProductID,
     informationProvider: data.informationProviderID,
     descriptionShort: data.outputProductName
 })
 
-const createLocationVocab = (data: CsvPayloadFields) => createVocabEl({
+export const createLocationVocab = (data: CsvAggregatedPayloadFields) => createVocabEl({
     id: data.processorID,
     informationProvider: data.informationProviderID,
     name: data.processorOwnerName,
@@ -59,7 +58,7 @@ const createLocationVocab = (data: CsvPayloadFields) => createVocabEl({
     email: data.processorContactEmail
 })
 
-const createFishCatchEvent = (data: CsvPayloadFields) => `
+export const createFishCatchEvent = (data: CsvAggregatedPayloadFields) => `
 <ObjectEvent> <!-- V1 Fishing/Catch Event (represents one catch, if multiple creat multiple events and IDs) -->
     <eventTime>${data.eventDateV1}</eventTime> <!-- Reflects when the catch event is recorded, not actually when fish are caught -->
     <eventTimeZoneOffset>${data.eventTimeZoneOffsetV1}</eventTimeZoneOffset>
@@ -127,7 +126,7 @@ const createFishCatchEvent = (data: CsvPayloadFields) => `
 </ObjectEvent>
 `
 
-const createProcessEvent = (data: CsvPayloadFields) => `
+export const createProcessEvent = (data: CsvAggregatedPayloadFields) => `
 <extension> <!-- V2 Process Into Loins -->
     <TransformationEvent>
         <eventTime>${data.eventDateV2}</eventTime>
@@ -170,174 +169,4 @@ const createProcessEvent = (data: CsvPayloadFields) => `
 </extension>
 `
 
-export const createAggregatedXmlDemo = async (dataList: [CsvPayloadFields]) => {
-    const dt = DateTime.local();
 
-    const creationDate = dt.toISO();
-
-    // Use the 1st row for sender and receiver
-    const {
-        informationProviderID, informationProviderContactName, informationProviderEmail, destinationID, destinationContactName, destinationEmail
-    } = dataList[0]
-
-    const fishIdSet = new Set()
-    const fishVocabList = dataList.filter(({ seafoodID }) => {
-        if (fishIdSet.has(seafoodID)) return false
-        fishIdSet.add(seafoodID)
-        return true
-    })
-
-    const outputProductIdSet = new Set()
-    const outputProductVocabList = dataList.filter(({ outputProductID }) => {
-        if (outputProductIdSet.has(outputProductID)) return false
-        outputProductIdSet.add(outputProductID)
-        return true
-    })
-
-    /**
-     *  
-        id: processorID,
-        informationProvider: informationProviderID,
-        name: processorOwnerName,
-        streetAddressOne: processorAddress1,
-        streetAddressTwo: processorAddress2,
-        city: processorCity,
-        state: processorState,
-        postalCode: processorPostalCode,
-        countryCode: processorCountryCode,
-        contact: processorContactName,
-        email: processorContactEmail
-     */
-
-    const locationIdSet = new Set()
-    const locationVocabList = dataList.filter(({ processorID }) => {
-        if (locationIdSet.has(processorID)) return false
-        locationIdSet.add(processorID)
-        return true
-    })
-
-    return `
-<epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:sbdh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" schemaVersion="1.2" creationDate="2001-12-17T09:30:47Z" 
-    xsi:schemaLocation="urn:epcglobal:epcis:xsd:1  http://www.gs1si.org/BMS/epcis/1_2/EPCglobal-epcis-1_2.xsd" 
-    xmlns:cbvmda="urn:epcglobal:cbv:mda"
-    xmlns:gdst="https://traceability-dialogue.org/epcis">
-    <EPCISHeader>
-        <sbdh:StandardBusinessDocumentHeader>
-            <sbdh:HeaderVersion>1.0</sbdh:HeaderVersion>
-
-            ${createSender({ informationProviderID, informationProviderContactName, informationProviderEmail })}
-
-            ${createReceiver({ destinationID, destinationContactName, destinationEmail })}
-
-            <sbdh:DocumentIdentification> <!-- Meets minimum GDST Wild Caught BUL KDE 4.0 and CTEs  -->
-                <sbdh:Standard>GDST</sbdh:Standard> 
-                <sbdh:TypeVersion>4.0</sbdh:TypeVersion>
-                <sbdh:InstanceIdentifier>100002</sbdh:InstanceIdentifier>
-                <sbdh:Type>Wild</sbdh:Type>
-                <sbdh:CreationDateAndTime>${creationDate}</sbdh:CreationDateAndTime>
-            </sbdh:DocumentIdentification>
-        </sbdh:StandardBusinessDocumentHeader>
-        <extension>
-            <EPCISMasterData>
-                <VocabularyList> 
-                    <Vocabulary type="urn:epcglobal:epcis:vtype:EPCClass">
-                        <VocabularyElementList>
-
-                            ${fishVocabList.map(createFishVocab).join('\n')}
-
-                            ${outputProductVocabList.map(createOutputProductVocab).join('\n')}
-
-                        </VocabularyElementList>
-                    </Vocabulary>
-                    <Vocabulary type="urn:epcglobal:epcis:vtype:Location">
-                        <VocabularyElementList>
-                            ${locationVocabList.map(createLocationVocab).join('\n')}
-                        </VocabularyElementList>
-                    </Vocabulary>           
-                </VocabularyList>
-            </EPCISMasterData>
-        </extension>
-    </EPCISHeader>
-        <EPCISBody>
-        <EventList>
-            ${dataList.map(createFishCatchEvent).join('\n')}
-
-            ${dataList.map(createProcessEvent).join('\n')}
-            </EventList>
-    </EPCISBody>
-</epcis:EPCISDocument>
-`
-}
-
-export const createCsvDemo1Payload = async (data: CsvPayloadFields) => {
-    const dt = DateTime.local();
-
-    const creationDate = dt.toISO();
-
-    // const { latitude, longitude } = (await getCoordinate()) as any;
-
-    // const quantityElementList = generateQuantityElementList(
-    //   fishCode,
-    //   quantityList
-    // );
-
-    // const vesselCaptainName = upper(`${lastName}_${firstName}`, ",");
-
-    // const productionMethodCode = productionMethodCodeMap[productionMethod];
-
-    // const vesselID = upper(vesselIdType) + "." + vesselIdString;
-
-    // const vesselFlagState = upper(language);
-
-    return `
-<epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xmlns:sbdh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" schemaVersion="0" creationDate="2001-12-17T09:30:47Z" 
-    xsi:schemaLocation="urn:epcglobal:epcis:xsd:1  http://www.gs1si.org/BMS/epcis/1_2/EPCglobal-epcis-1_2.xsd" 
-    xmlns:cbvmda="urn:epcglobal:cbv:mda"
-    xmlns:gdst="https://traceability-dialogue.org/epcis">
-    <EPCISHeader>
-        <sbdh:StandardBusinessDocumentHeader>
-            <sbdh:HeaderVersion>1.0</sbdh:HeaderVersion>
-
-            ${createSender(data)}
-
-            ${createReceiver(data)}
-
-            <sbdh:DocumentIdentification> <!-- Meets minimum GDST Wild Caught BUL KDE 4.0 and CTEs  -->
-                <sbdh:Standard>GDST</sbdh:Standard> 
-                <sbdh:TypeVersion>4.0</sbdh:TypeVersion>
-                <sbdh:Type>Wild</sbdh:Type>
-                <sbdh:CreationDateAndTime>${creationDate}</sbdh:CreationDateAndTime>
-            </sbdh:DocumentIdentification>
-        </sbdh:StandardBusinessDocumentHeader>
-        <extension>
-            <EPCISMasterData>
-                <VocabularyList> 
-                    <Vocabulary type="urn:epcglobal:epcis:vtype:EPCClass">
-                        <VocabularyElementList>
-                            ${createFishVocab(data)}
-
-                            ${createOutputProductVocab(data)}
-                        </VocabularyElementList>
-                    </Vocabulary>
-                    <Vocabulary type="urn:epcglobal:epcis:vtype:Location">
-                        <VocabularyElementList>
-                            ${createLocationVocab(data)}    
-                        </VocabularyElementList>
-                    </Vocabulary>           
-                </VocabularyList>
-            </EPCISMasterData>
-        </extension>
-    </EPCISHeader>
-        <EPCISBody>
-        <EventList>
-            ${createFishCatchEvent(data)}
-            ${createProcessEvent(data)}
-            </EventList>
-    </EPCISBody>
-</epcis:EPCISDocument>
-`
-};
