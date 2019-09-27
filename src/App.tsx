@@ -1,14 +1,21 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-import ChatBot from "react-simple-chatbot";
+import ChatBot from 'react-simple-chatbot'
 
-import styled, { ThemeProvider } from "styled-components";
+import styled, { ThemeProvider } from 'styled-components'
 
-import { Header } from "./components/Header";
+import { Header } from './components/Header'
 
-import { theme, RefreshButton } from "./_theme";
-import { localStorageKey, createSteps, useLanguageState, useProfileState } from "./_data";
-import { strings, languages } from "./i18n";
+import { theme, RefreshButton } from './_theme'
+import {
+  localStorageKey,
+  createSteps,
+  useLanguageState,
+  useProfileState
+} from './_data'
+import { strings, languages } from './i18n'
+
+import { version } from '../package.json'
 
 const Container = styled.div`
   width: 100vw;
@@ -17,7 +24,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-`;
+`
 
 const StyledChatBot = styled(ChatBot)`
   width: 90%;
@@ -40,37 +47,45 @@ const StyledChatBot = styled(ChatBot)`
     justify-content: center;
     align-items: center;
   }
-`;
+`
 
+const VersionContainer = styled.span`
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 10px;
+  opacity: 0.7;
+`
 
-export const App = ({props} : any) => {
+export const App = ({ props }: any) => {
   const [hasEnded, setHasEnded] = useState(false)
-  
+
   const [language, setLanguage] = useLanguageState(languages[0].value)
 
-  const [profile] = useProfileState({ completed: false });
-  const isProfileSetup = !!profile.completed;
+  const [profile] = useProfileState({ completed: false })
+  const isProfileSetup = !!profile.completed
 
-  strings.setLanguage(language);
+  strings.setLanguage(language)
 
-  const steps = createSteps(isProfileSetup);
+  const steps = createSteps(isProfileSetup)
 
-  const handleLanguageChanged =(newLanguage: string)=> {
-    if (language === newLanguage) return;
+  const handleLanguageChanged = (newLanguage: string) => {
+    if (language === newLanguage) return
 
-    setLanguage(newLanguage);
-    
-    localStorage.removeItem(localStorageKey.chatCache);
-    
-    window.location.reload();
+    setLanguage(newLanguage)
+
+    localStorage.removeItem(localStorageKey.chatCache)
+
+    window.location.reload()
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Container>
         {hasEnded && <RefreshButton />}
+        <VersionContainer>nemo@{version}</VersionContainer>
         <StyledChatBot
-          { ... props}
+          {...props}
           headerComponent={
             <Header
               key={language}
@@ -79,17 +94,17 @@ export const App = ({props} : any) => {
             />
           }
           enableMobileAutoFocus
-          botAvatar={"assets/avatar.png"}
+          botAvatar={'assets/avatar.png'}
           hideUserAvatar
           cache={isProfileSetup}
           cacheName={localStorageKey.chatCache}
-          userAvatar={"assets/captain.png"}
+          userAvatar={'assets/captain.png'}
           placeholder={strings.placeholder}
           userDelay={0}
           steps={steps}
-          handleEnd={()=> setHasEnded(true)}
+          handleEnd={() => setHasEnded(true)}
         />
       </Container>
     </ThemeProvider>
-  ) 
+  )
 }
