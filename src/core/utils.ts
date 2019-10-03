@@ -14,7 +14,7 @@ export const numberValidator = (value: number) => {
 };
 
 export const appendTrigger = (p: any, i: number, order: Array<string>) => {
-  const trigger = order[i + 1];
+  const trigger = p.trigger || order[i + 1];
 
   if (!p.options) {
     p.trigger = trigger;

@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 import { createSender, createReceiver, createFishVocab, createOutputProductVocab, createLocationVocab, createFishCatchEvent, createProcessEvent } from "./csv";
-export const createCatchAndProcessXml = async (data: CsvAggregatedPayloadFields) => {
+export const createSingleCatchAndProcessXml = async (data: CsvAggregatedPayloadFields) => {
     const dt = DateTime.local();
     const creationDate = dt.toISO();
     // const { latitude, longitude } = (await getCoordinate()) as any;

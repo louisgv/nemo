@@ -9,8 +9,8 @@ import { FillButton, Divider } from '../_theme'
 import fileReaderStream from 'filereader-stream'
 import neatCsv from 'neat-csv'
 import { csvDemo1Header } from '../data/csvConfig'
-import { createCatchAndProcessXml } from "../api/csvToXml/createCatchAndProcessXml"
-import { createAggregatedXml } from "../api/csvToXml/createAggregatedXml"
+import { createSingleCatchAndProcessXml } from '../api/csvToXml/createSingleCatchAndProcessXml'
+import { createAggregatedXml } from '../api/csvToXml/createAggregatedCatchAndProcessXml'
 import { Accordion, AccordionPanel, Box, Heading } from 'grommet'
 import { Grommet } from 'grommet'
 import { grommet } from 'grommet/themes'
@@ -112,7 +112,13 @@ const CodeContainer = styled.code`
   font-size: smaller;
 `
 
-export const CsvFileInput = ({ triggerNextStep }: any) => {
+export const CsvFileInput = ({
+  triggerNextStep,
+  submitHandler = api.freepcis.sendCatchEvent,
+  singleParser = createSingleCatchAndProcessXml,
+  aggregatedParser = createAggregatedXml,
+  headers = csvDemo1Header
+}: any) => {
   const fileInputRef = useRef(null)
 
   const [disabled, setDisabled] = useState(false)
@@ -131,17 +137,25 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
     }
 
     const readerStream = fileReaderStream(file)
-    const [, ...csvRowList] = await neatCsv(readerStream, {
-      headers: csvDemo1Header
-    }) as any
+    const [, ...csvRowList] = (await neatCsv(readerStream, {
+      headers
+    })) as any
 
     console.log(csvRowList)
 
-    const parsedData = await Promise.all(csvRowList.map(createCatchAndProcessXml))
+    const parsedData = await Promise.all(
+      csvRowList.map(singleParser)
+    )
 
     setEpcisXmlList(parsedData)
 
-    setAggregatedXml(await createAggregatedXml(csvRowList))
+    setAggregatedXml(await aggregatedParser(csvRowList))
+  }
+
+  const  onSubmit = async () => {
+    setSent('sending')
+    await Promise.all(epcisXmlList.map(submitHandler))
+    setSent('sent')
   }
 
   return (
@@ -150,7 +164,9 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
         <>
           <HiddenContainer onClick={() => fileInputRef.current.click()}>
             <FileDrop onDrop={processFile}>
-              <FileDropText>Drop your CSV file here, or tap the box to select a file.</FileDropText>
+              <FileDropText>
+                Drop your CSV file here, or tap the box to select a file.
+              </FileDropText>
             </FileDrop>
             <HiddenFileInput>
               <input
@@ -166,7 +182,8 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
           {epcisXmlList.length > 0 && (
             <StyledGrommet theme={grommet}>
               <Heading size="small" level={2}>
-                {epcisXmlList.length} event{epcisXmlList.length > 0 && 's'} found:
+                {epcisXmlList.length} event{epcisXmlList.length > 0 && 's'}{' '}
+                found:
               </Heading>
               <DataContainer>
                 <Accordion multiple margin="small">
@@ -181,14 +198,12 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
               </DataContainer>
 
               <Divider />
-              <FillButton
-                disabled={sent !== 'default'}
-                onClick={async () => {
-                  setSent('sending')
-                  await Promise.all(epcisXmlList.map(d => api.freepcis.sendCatchEvent(d)))
-                  setSent('sent')
-                }}>
-                {sent === 'sending' ? 'Sending...' : sent === 'sent' ? 'Data sent!' : 'Send to FreEPCIS'}
+              <FillButton disabled={sent !== 'default'} onClick={onSubmit}>
+                {sent === 'sending'
+                  ? 'Sending...'
+                  : sent === 'sent'
+                  ? 'Data sent!'
+                  : 'Send to FreEPCIS'}
               </FillButton>
 
               {aggregatedXml && (
@@ -196,7 +211,9 @@ export const CsvFileInput = ({ triggerNextStep }: any) => {
                   background={'lime'}
                   disabled={disabled}
                   onClick={() => {
-                    const blob = new Blob([aggregatedXml], { type: 'application/xml;charet=ustf-8' })
+                    const blob = new Blob([aggregatedXml], {
+                      type: 'application/xml;charet=ustf-8'
+                    })
                     const dt = DateTime.local()
 
                     const creationDate = dt.toISO()
