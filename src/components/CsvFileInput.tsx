@@ -8,15 +8,14 @@ import { FillButton, Divider } from '../_theme'
 
 import fileReaderStream from 'filereader-stream'
 import neatCsv from 'neat-csv'
-import { csvAggregatedCatchProcessHeader, csvAggregationDisaggregationHeader } from '../data/csvConfig'
-import { createSingleCatchAndProcessXml } from '../api/csvToXml/createSingleCatchAndProcessXml'
-import { createAggregatedCatchAndProcessXml } from '../api/csvToXml/createAggregatedCatchAndProcessXml'
+import { csvAggregatedCatchProcessHeader, csvAggregationDisaggregationHeader } from '../api/csvToXml/csvHeader'
+import { createSingleCatchAndProcessXml, createAggregatedCatchAndProcessXml } from '../api/csvToXml/catchAndProcessXml'
 import { Accordion, AccordionPanel, Box, Heading } from 'grommet'
 import { Grommet } from 'grommet'
 import { grommet } from 'grommet/themes'
 import api from '../api'
 import { saveAs } from 'file-saver'
-import { createAggregationDisaggregationXml } from '../api/csvToXml/createAggregationDisaggregationXml'
+import { createAggregatedAggregationDisaggregationXml } from '../api/csvToXml/aggregationDisaggregationXml'
 
 type SentStateType = 'default' | 'sending' | 'sent'
 
@@ -287,7 +286,7 @@ export const CatchAndProcessCsvInput = () => (
 
 export const AggregationDisaggregationCsvInput = () => (
   <CsvFileInput
-    aggregatedParser={createAggregationDisaggregationXml}
+    aggregatedParser={createAggregatedAggregationDisaggregationXml}
     fileLabel="AggregationDisaggregation"
     headers={csvAggregationDisaggregationHeader}
   />
