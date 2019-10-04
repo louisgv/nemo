@@ -275,19 +275,21 @@ export const CsvFileInput = ({
   )
 }
 
-export const CatchAndProcessCsvInput = () => (
+export const CatchAndProcessCsvInput = (props) => (
   <CsvFileInput
     singleParser={createSingleCatchAndProcessXml}
     aggregatedParser={createAggregatedCatchAndProcessXml}
     fileLabel="CatchAndProcess"
     headers={csvAggregatedCatchProcessHeader}
+    {...props}
   />
 )
 
-export const AggregationDisaggregationCsvInput = () => (
+export const AggregationDisaggregationCsvInput = (props) => (
   <CsvFileInput
     aggregatedParser={createAggregatedAggregationDisaggregationXml}
     fileLabel="AggregationDisaggregation"
     headers={csvAggregationDisaggregationHeader}
+    {...props}
   />
 )
