@@ -1,6 +1,9 @@
 import React from 'react'
 import { createPromptArray, createOptionLabel } from '../core/utils'
-import { CsvFileInput } from '../components/CsvFileInput'
+import {
+  CatchAndProcessCsvInput,
+  AggregationDisaggregationCsvInput
+} from '../components/CsvFileInput'
 
 const promptOrder = [
   'prompt_csv',
@@ -19,14 +22,14 @@ const promptStructure = {
     triggers: ['comp_catchProcess', 'comp_aggregationDisaggregation']
   },
   comp_catchProcess: {
-    component: <CsvFileInput />,
+    component: <CatchAndProcessCsvInput />,
     hideInput: true,
     replace: false,
     waitAction: true,
     trigger: 'prompt_anotherOne'
   },
   comp_aggregationDisaggregation: {
-    component: <CsvFileInput />,
+    component: <AggregationDisaggregationCsvInput />,
     hideInput: true,
     replace: false,
     waitAction: true,

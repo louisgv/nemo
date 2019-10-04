@@ -1,4 +1,4 @@
-interface CsvAggregatedPayloadFields {
+interface CsvCatchProcessPayloadFields {
   informationProviderID: string
   informationProviderContactName: string
   informationProviderEmail: string

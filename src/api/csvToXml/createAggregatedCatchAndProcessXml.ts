@@ -7,9 +7,9 @@ import {
   createLocationVocab,
   createFishCatchEvent,
   createProcessEvent
-} from './csv'
+} from '.'
 
-export const createAggregatedXml = async (dataList: [CsvAggregatedPayloadFields]) => {
+export const createAggregatedCatchAndProcessXml = async (dataList: [CsvCatchProcessPayloadFields]) => {
   const dt = DateTime.local()
   const creationDate = dt.toISO()
   // Use the 1st row for sender and receiver

@@ -1,18 +1,28 @@
-import { DateTime } from "luxon";
-import { createSender, createReceiver, createFishVocab, createOutputProductVocab, createLocationVocab, createFishCatchEvent, createProcessEvent } from "./csv";
-export const createSingleCatchAndProcessXml = async (data: CsvAggregatedPayloadFields) => {
-    const dt = DateTime.local();
-    const creationDate = dt.toISO();
-    // const { latitude, longitude } = (await getCoordinate()) as any;
-    // const quantityElementList = generateQuantityElementList(
-    //   fishCode,
-    //   quantityList
-    // );
-    // const vesselCaptainName = upper(`${lastName}_${firstName}`, ",");
-    // const productionMethodCode = productionMethodCodeMap[productionMethod];
-    // const vesselID = upper(vesselIdType) + "." + vesselIdString;
-    // const vesselFlagState = upper(language);
-    return `
+import { DateTime } from 'luxon'
+import {
+  createSender,
+  createReceiver,
+  createFishVocab,
+  createOutputProductVocab,
+  createLocationVocab,
+  createFishCatchEvent,
+  createProcessEvent
+} from '.'
+export const createSingleCatchAndProcessXml = async (
+  data: CsvCatchProcessPayloadFields
+) => {
+  const dt = DateTime.local()
+  const creationDate = dt.toISO()
+  // const { latitude, longitude } = (await getCoordinate()) as any;
+  // const quantityElementList = generateQuantityElementList(
+  //   fishCode,
+  //   quantityList
+  // );
+  // const vesselCaptainName = upper(`${lastName}_${firstName}`, ",");
+  // const productionMethodCode = productionMethodCodeMap[productionMethod];
+  // const vesselID = upper(vesselIdType) + "." + vesselIdString;
+  // const vesselFlagState = upper(language);
+  return `
 <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
     xmlns:sbdh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" schemaVersion="0" creationDate="2001-12-17T09:30:47Z" 
@@ -60,5 +70,5 @@ export const createSingleCatchAndProcessXml = async (data: CsvAggregatedPayloadF
             </EventList>
     </EPCISBody>
 </epcis:EPCISDocument>
-`;
-};
+`
+}

@@ -8,14 +8,15 @@ import { FillButton, Divider } from '../_theme'
 
 import fileReaderStream from 'filereader-stream'
 import neatCsv from 'neat-csv'
-import { csvDemo1Header } from '../data/csvConfig'
+import { csvAggregatedCatchProcessHeader, csvAggregationDisaggregationHeader } from '../data/csvConfig'
 import { createSingleCatchAndProcessXml } from '../api/csvToXml/createSingleCatchAndProcessXml'
-import { createAggregatedXml } from '../api/csvToXml/createAggregatedCatchAndProcessXml'
+import { createAggregatedCatchAndProcessXml } from '../api/csvToXml/createAggregatedCatchAndProcessXml'
 import { Accordion, AccordionPanel, Box, Heading } from 'grommet'
 import { Grommet } from 'grommet'
 import { grommet } from 'grommet/themes'
 import api from '../api'
 import { saveAs } from 'file-saver'
+import { createAggregationDisaggregationXml } from '../api/csvToXml/createAggregationDisaggregationXml'
 
 type SentStateType = 'default' | 'sending' | 'sent'
 
@@ -112,22 +113,99 @@ const CodeContainer = styled.code`
   font-size: smaller;
 `
 
+const AggregatedXmlDownload = ({
+  disabled,
+  fileLabel,
+  eventCount = 0,
+  aggregatedXml = null
+}) => {
+  return (
+    aggregatedXml && (
+      <>
+        <Accordion margin="small">
+          <AccordionPanel label={`Total ${eventCount} EPCIS Events`}>
+            <AccordionContent>
+              <CodeContainer>{aggregatedXml}</CodeContainer>
+            </AccordionContent>
+          </AccordionPanel>
+        </Accordion>
+
+        <FillButton
+          background={'lime'}
+          disabled={disabled}
+          onClick={() => {
+            const blob = new Blob([aggregatedXml], {
+              type: 'application/xml;charet=ustf-8'
+            })
+            const dt = DateTime.local()
+
+            const creationDate = dt.toISO()
+
+            saveAs(blob, `GDST-EPCIS-${fileLabel}-${creationDate}.xml`)
+          }}>
+          Download Aggregated XML
+        </FillButton>
+      </>
+    )
+  )
+}
+
+const EpcisEventList = ({ epcisXmlList = [] }) => {
+  const [sent, setSent] = useState<SentStateType>('default')
+
+  const onSubmit = async () => {
+    setSent('sending')
+    await Promise.all(epcisXmlList.map(api.freepcis.sendCatchEvent))
+    setSent('sent')
+  }
+
+  return (
+    epcisXmlList.length > 0 && (
+      <>
+        <Heading size="small" level={2}>
+          {epcisXmlList.length} event{epcisXmlList.length > 0 && 's'} found:
+        </Heading>
+        <DataContainer>
+          <Accordion multiple margin="small">
+            {epcisXmlList.map((d, i) => (
+              <AccordionPanel key={i} label={`Event #${i + 1}`}>
+                <AccordionContent>
+                  <CodeContainer>{d}</CodeContainer>
+                </AccordionContent>
+              </AccordionPanel>
+            ))}
+          </Accordion>
+        </DataContainer>
+
+        <Divider />
+        <FillButton disabled={sent !== 'default'} onClick={onSubmit}>
+          {sent === 'sending'
+            ? 'Sending...'
+            : sent === 'sent'
+            ? 'Data sent!'
+            : 'Send to FreEPCIS'}
+        </FillButton>
+      </>
+    )
+  )
+}
+
 export const CsvFileInput = ({
   triggerNextStep,
-  submitHandler = api.freepcis.sendCatchEvent,
-  singleParser = createSingleCatchAndProcessXml,
-  aggregatedParser = createAggregatedXml,
-  headers = csvDemo1Header
+  singleParser,
+  aggregatedParser,
+  fileLabel,
+  headers
 }: any) => {
   const fileInputRef = useRef(null)
 
   const [disabled, setDisabled] = useState(false)
 
-  const [sent, setSent] = useState<SentStateType>('default')
-
   const [epcisXmlList, setEpcisXmlList] = useState([])
 
   const [aggregatedXml, setAggregatedXml] = useState(null)
+
+  const [eventCount, setEventCount] = useState(0)
 
   const processFile = async ([file]: any) => {
     if (!file) return
@@ -142,20 +220,14 @@ export const CsvFileInput = ({
     })) as any
 
     console.log(csvRowList)
+    if (singleParser) {
+      setEpcisXmlList(await Promise.all(csvRowList.map(singleParser)))
+    }
 
-    const parsedData = await Promise.all(
-      csvRowList.map(singleParser)
-    )
-
-    setEpcisXmlList(parsedData)
-
-    setAggregatedXml(await aggregatedParser(csvRowList))
-  }
-
-  const  onSubmit = async () => {
-    setSent('sending')
-    await Promise.all(epcisXmlList.map(submitHandler))
-    setSent('sent')
+    if (aggregatedParser) {
+      setAggregatedXml(await aggregatedParser(csvRowList))
+      setEventCount(csvRowList.length)
+    }
   }
 
   return (
@@ -179,52 +251,16 @@ export const CsvFileInput = ({
               />
             </HiddenFileInput>
           </HiddenContainer>
-          {epcisXmlList.length > 0 && (
-            <StyledGrommet theme={grommet}>
-              <Heading size="small" level={2}>
-                {epcisXmlList.length} event{epcisXmlList.length > 0 && 's'}{' '}
-                found:
-              </Heading>
-              <DataContainer>
-                <Accordion multiple margin="small">
-                  {epcisXmlList.map((d, i) => (
-                    <AccordionPanel key={i} label={`Event #${i + 1}`}>
-                      <AccordionContent>
-                        <CodeContainer>{d}</CodeContainer>
-                      </AccordionContent>
-                    </AccordionPanel>
-                  ))}
-                </Accordion>
-              </DataContainer>
+          <StyledGrommet theme={grommet}>
+            <EpcisEventList epcisXmlList={epcisXmlList} />
 
-              <Divider />
-              <FillButton disabled={sent !== 'default'} onClick={onSubmit}>
-                {sent === 'sending'
-                  ? 'Sending...'
-                  : sent === 'sent'
-                  ? 'Data sent!'
-                  : 'Send to FreEPCIS'}
-              </FillButton>
-
-              {aggregatedXml && (
-                <FillButton
-                  background={'lime'}
-                  disabled={disabled}
-                  onClick={() => {
-                    const blob = new Blob([aggregatedXml], {
-                      type: 'application/xml;charet=ustf-8'
-                    })
-                    const dt = DateTime.local()
-
-                    const creationDate = dt.toISO()
-
-                    saveAs(blob, `GDST-EPCIS-${creationDate}.xml`)
-                  }}>
-                  Download Aggregated XML
-                </FillButton>
-              )}
-            </StyledGrommet>
-          )}
+            <AggregatedXmlDownload
+              disabled={disabled}
+              fileLabel={fileLabel}
+              eventCount={eventCount}
+              aggregatedXml={aggregatedXml}
+            />
+          </StyledGrommet>
         </>
       )}
 
@@ -239,3 +275,20 @@ export const CsvFileInput = ({
     </FileDropContainer>
   )
 }
+
+export const CatchAndProcessCsvInput = () => (
+  <CsvFileInput
+    singleParser={createSingleCatchAndProcessXml}
+    aggregatedParser={createAggregatedCatchAndProcessXml}
+    fileLabel="CatchAndProcess"
+    headers={csvAggregatedCatchProcessHeader}
+  />
+)
+
+export const AggregationDisaggregationCsvInput = () => (
+  <CsvFileInput
+    aggregatedParser={createAggregationDisaggregationXml}
+    fileLabel="AggregationDisaggregation"
+    headers={csvAggregationDisaggregationHeader}
+  />
+)
