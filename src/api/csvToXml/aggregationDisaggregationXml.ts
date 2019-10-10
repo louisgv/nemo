@@ -48,7 +48,6 @@ export const createAggregatedAggregationDisaggregationXml = async (
   const d = dList[0]
   return `
   <?xml version="1.0" encoding="UTF-8"?>
-  <!-- Created September 24, 2019 Thomas Burke, tburke@ift.org mobile +1.404.820.7558-->
   <!-- GDST Basic Interoperability CSV File Nemo Converter - Aggregation / Disaggregation -->
   <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 

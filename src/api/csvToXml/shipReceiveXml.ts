@@ -12,7 +12,6 @@ export const createShipReceiveXml = async (
   const d = dList[0]
   return `
   <?xml version="1.0" encoding="UTF-8"?> 
-<!-- Updated June 7, 2019 Andrew Kennedy, akennedy@ift.org mobile +1.919.280.1024-->
 <!-- GDST Basic Interoperability CSV File Nemo Converter -->
 <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
