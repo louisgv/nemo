@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/nemo/static/css/main.da3020f0.chunk.css",
-    "main.js": "/nemo/static/js/main.1c25b3c8.chunk.js",
-    "main.js.map": "/nemo/static/js/main.1c25b3c8.chunk.js.map",
+    "main.js": "/nemo/static/js/main.97955b59.chunk.js",
+    "main.js.map": "/nemo/static/js/main.97955b59.chunk.js.map",
     "runtime-main.js": "/nemo/static/js/runtime-main.702856fd.js",
     "runtime-main.js.map": "/nemo/static/js/runtime-main.702856fd.js.map",
-    "static/js/2.105a2cb5.chunk.js": "/nemo/static/js/2.105a2cb5.chunk.js",
-    "static/js/2.105a2cb5.chunk.js.map": "/nemo/static/js/2.105a2cb5.chunk.js.map",
+    "static/js/2.f13b170a.chunk.js": "/nemo/static/js/2.f13b170a.chunk.js",
+    "static/js/2.f13b170a.chunk.js.map": "/nemo/static/js/2.f13b170a.chunk.js.map",
     "index.html": "/nemo/index.html",
-    "precache-manifest.719e0f185c72a5e67a135edf4a1e6e15.js": "/nemo/precache-manifest.719e0f185c72a5e67a135edf4a1e6e15.js",
+    "precache-manifest.d4dd055f9a8510856a9330b5c936950b.js": "/nemo/precache-manifest.d4dd055f9a8510856a9330b5c936950b.js",
     "service-worker.js": "/nemo/service-worker.js",
     "static/css/main.da3020f0.chunk.css.map": "/nemo/static/css/main.da3020f0.chunk.css.map"
   }
