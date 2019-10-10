@@ -15,7 +15,7 @@ import {
 } from './_data'
 import { strings, languages } from './i18n'
 
-import { version } from '../package.json'
+import { version, repository } from '../package.json'
 
 const Container = styled.div`
   width: 100vw;
@@ -49,7 +49,7 @@ const StyledChatBot = styled(ChatBot)`
   }
 `
 
-const VersionContainer = styled.span`
+const VersionContainer = styled.a`
   position: absolute;
   bottom: 5px;
   right: 5px;
@@ -83,7 +83,12 @@ export const App = ({ props }: any) => {
     <ThemeProvider theme={theme}>
       <Container>
         {hasEnded && <RefreshButton />}
-        <VersionContainer>nemo@{version}</VersionContainer>
+        <VersionContainer
+          href={repository}
+          target="_blank"
+          rel="noopener noreferrer">
+          nemo@{version}
+        </VersionContainer>
         <StyledChatBot
           {...props}
           headerComponent={

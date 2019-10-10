@@ -59,6 +59,12 @@ export const csvAggregationDisaggregationHeader = [
   ...csvEventLevelDataHeader
 ]
 
+export const csvShipReceiveHeader = [
+  ...csvMasterDataHeader,
+  ...csvLocationDataHeader,
+  ...csvEventLevelDataHeader
+]
+
 export const csvAggregatedCatchProcessHeader = [
   'informationProviderID',
   'informationProviderContactName',

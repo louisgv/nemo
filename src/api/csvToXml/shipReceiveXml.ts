@@ -1,9 +1,45 @@
-import { parseUom } from '.'
 
 const createSingleShipReceiveEvent = (
   d: CsvShipReceivePayloadFields
 ) => {
-  return ``
+  return `
+  <ObjectEvent> <!-- V1 Shipping  -->
+    <eventTime>${d.eventTimeV1}</eventTime>
+    <eventTimeZoneOffset>${d.eventTimeZoneOffsetV1}</eventTimeZoneOffset>
+    <epcList>
+        <epc>${d.palletId}</epc> <!-- Container ID or Pallet ID, either an SSCC or User Specified URL -->
+    </epcList>
+    <action>OBSERVE</action>
+    <bizStep>urn:epcglobal:cbv:bizstep:shipping</bizStep>
+    <disposition>urn:epcglobal:cbv:disp:in_transit</disposition>
+    <readPoint>
+        <id>${d.readPoint1}</id> <!-- Actual Location where event is captured, either a geo location or GLN -->
+    </readPoint>
+    <bizLocation>
+        <id>${d.bizLocation1}</id> <!-- Typically the GLN of a shipper or User Specified URL for location -->
+    </bizLocation>
+    <bizTransactionList> <!-- Customer PO, Shipper Invoice -->
+        <bizTransaction type="urn:epcglobal:cbv:btt:po">${d.po}</bizTransaction>
+        <bizTransaction type="urn:epcglobal:cbv:btt:inv">${d.invoice}</bizTransaction>
+        <bizTransaction type="urn:gdst:btt:cert">${d.certificate}</bizTransaction> <!-- LPCO Trans Type, type, permit num -->
+    </bizTransactionList>
+    <extension>
+        <sourceList> <!-- Ship from/to legal entities for chain of custody and physical locations  -->
+            <source type="urn:epcglobal:cbv:sdt:owning_party">urn:epc:id:pgln:${d.shipFromParty}</source> <!-- Legal Entity selling the product -->
+            <source type="urn:epcglobal:cbv:sdt:location">urn:epc:id:sgln:${d.shipFromLocation}</source> <!-- Physical Location where product is shipped from -->
+        </sourceList>
+        <destinationList>
+            <source type="urn:epcglobal:cbv:sdt:owning_party">urn:epc:id:pgln:${d.shipToParty}</source> <!-- Legal Entity buying the product -->
+            <source type="urn:epcglobal:cbv:sdt:location">urn:epc:id:sgln:${d.shipToLocation}</source> <!-- Physical Location where product is shipped to -->
+        </destinationList>
+    </extension>
+    
+    <!-- EXTENSION -->
+    <gdst:productOwner>urn:epc:id:pgln:${d.legalEntitySellingProduct}</gdst:productOwner> <!-- PGLN of company who owned products when event occurred. In the case of a transaction, it is the seller. -->
+    <cbvmda:informationProvider>urn:epc:id:pgln:${d.legalEntitySellingProduct}</cbvmda:informationProvider> <!-- PGLN of company who input the data. -->
+    
+    </ObjectEvent>
+`
 }
 
 export const createShipReceiveXml = async (
@@ -129,6 +165,7 @@ export const createShipReceiveXml = async (
     </EPCISHeader>
     <EPCISBody>
         <EventList>
+            ${dList.map(createSingleShipReceiveEvent).join('\n')}
             <ObjectEvent> <!-- V1 Shipping  -->
                 <eventTime>${d.eventTimeV1}</eventTime>
                 <eventTimeZoneOffset>${d.eventTimeZoneOffsetV1}</eventTimeZoneOffset>

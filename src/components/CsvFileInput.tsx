@@ -8,7 +8,7 @@ import { FillButton, Divider } from '../_theme'
 
 import fileReaderStream from 'filereader-stream'
 import neatCsv from 'neat-csv'
-import { csvAggregatedCatchProcessHeader, csvAggregationDisaggregationHeader } from '../api/csvToXml/csvHeader'
+import { csvAggregatedCatchProcessHeader, csvAggregationDisaggregationHeader, csvShipReceiveHeader } from '../api/csvToXml/csvHeader'
 import { createSingleCatchAndProcessXml, createAggregatedCatchAndProcessXml } from '../api/csvToXml/catchAndProcessXml'
 import { Accordion, AccordionPanel, Box, Heading } from 'grommet'
 import { Grommet } from 'grommet'
@@ -16,6 +16,7 @@ import { grommet } from 'grommet/themes'
 import api from '../api'
 import { saveAs } from 'file-saver'
 import { createAggregatedAggregationDisaggregationXml } from '../api/csvToXml/aggregationDisaggregationXml'
+import { createShipReceiveXml } from '../api/csvToXml/shipReceiveXml'
 
 type SentStateType = 'default' | 'sending' | 'sent'
 
@@ -290,6 +291,15 @@ export const AggregationDisaggregationCsvInput = (props) => (
     aggregatedParser={createAggregatedAggregationDisaggregationXml}
     fileLabel="AggregationDisaggregation"
     headers={csvAggregationDisaggregationHeader}
+    {...props}
+  />
+)
+
+export const ShipReceiveCsvInput = (props) => (
+  <CsvFileInput
+    aggregatedParser={createShipReceiveXml}
+    fileLabel="ShipReceive"
+    headers={csvShipReceiveHeader}
     {...props}
   />
 )
