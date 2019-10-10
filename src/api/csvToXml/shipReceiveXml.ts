@@ -46,9 +46,7 @@ export const createShipReceiveXml = async (
   dList: [CsvShipReceivePayloadFields]
 ) => {
   const d = dList[0]
-  return `
-  <?xml version="1.0" encoding="UTF-8"?> 
-<!-- GDST Basic Interoperability CSV File Nemo Converter -->
+  return `<!-- GDST Basic Interoperability CSV File Nemo Converter -->
 <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:sbdh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader"

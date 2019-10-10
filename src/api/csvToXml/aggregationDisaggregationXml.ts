@@ -46,10 +46,8 @@ export const createAggregatedAggregationDisaggregationXml = async (
   dList: [CsvAggregationDisaggregationPayloadFields]
 ) => {
   const d = dList[0]
-  return `
-  <?xml version="1.0" encoding="UTF-8"?>
-  <!-- GDST Basic Interoperability CSV File Nemo Converter - Aggregation / Disaggregation -->
-  <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
+  return `<!-- GDST Basic Interoperability CSV File Nemo Converter - Aggregation / Disaggregation -->
+<epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
       xmlns:sbdh="http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader" 
       schemaVersion="0" 
@@ -186,6 +184,6 @@ export const createAggregatedAggregationDisaggregationXml = async (
             ${dList.map(createSingleAggregationDisaggregationEvent).join('\n')}
           </EventList>
       </EPCISBody>
-  </epcis:EPCISDocument>
+</epcis:EPCISDocument>
 `
 }
