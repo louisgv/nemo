@@ -1,6 +1,6 @@
 {
   "name": "nemo",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage": "https://louisgv.ga/nemo",
   "repository": "louisgv/nemo",
   "private": true,
@@ -42,7 +42,7 @@
     "uuid": "^3.3.3"
   },
   "scripts": {
-    "predeploy": "yarn version && craco build",
+    "predeploy": "yarn version && react-scripts build",
     "deploy": "npx gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",

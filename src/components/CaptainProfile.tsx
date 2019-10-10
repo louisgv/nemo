@@ -1,20 +1,21 @@
-import React, { useState, useRef } from "react";
-import {
-  useSpring,
-  useChain,
-  config,
-  animated
-} from "react-spring";
-import styled from "styled-components";
+import React, { useState, useRef } from 'react'
+import { useSpring, useChain, config, animated } from 'react-spring'
+import styled from 'styled-components'
 
-import { Close } from "styled-icons/material/Close";
-import { useProfileState, localStorageKey } from "../_data";
-import { useFormState } from "react-use-form-state";
-import { StyledSubmitButton, StyledColumnForm, StyledButton, RowDiv, ReviewInput } from "../_theme";
+import { Close } from 'styled-icons/material/Close'
+import { useProfileState, localStorageKey } from '../_data'
+import { useFormState } from 'react-use-form-state'
+import {
+  StyledSubmitButton,
+  StyledColumnForm,
+  StyledButton,
+  RowDiv,
+  ReviewInput
+} from '../_theme'
 
 export const CaptainProfileIcon = () => {
-  return <div>Profile Icon</div>;
-};
+  return <div>Profile Icon</div>
+}
 
 const Container = styled(animated.div)`
   position: absolute;
@@ -34,8 +35,7 @@ const Container = styled(animated.div)`
   z-index: 1001;
   top: 0;
   right: 0;
-`;
-
+`
 
 const ProfileIcon = styled(animated.div)`
   border-radius: 100%;
@@ -48,7 +48,7 @@ const ProfileIcon = styled(animated.div)`
   cursor: pointer;
 
   z-index: 1000;
-`;
+`
 
 const CloseProfileModalButton = styled(ProfileIcon)`
   background: white;
@@ -60,57 +60,57 @@ const CloseProfileModalButton = styled(ProfileIcon)`
   svg {
     fill: #ff0081;
   }
-`;
+`
 
 const ItemContainer = styled(animated.div)`
   margin: 3em 3em;
-`;
+`
 
 const StyledForm = styled(StyledColumnForm)`
   margin-top: 1em;
-`;
+`
 
 export const CaptainProfile = () => {
-  const [open, setOpen] = useState(false);
-  const [profile, setProfile] = useProfileState({});
+  const [open, setOpen] = useState(false)
+  const [profile, setProfile] = useProfileState({})
 
-  const { completed, ...profileFormRest } = profile;
+  const { completed, ...profileFormRest } = profile
 
   const [formState, { text }] = useFormState<CaptainProfileReviewFormFields>({
     ...profileFormRest
-  });
+  })
 
-  const springRef = useRef(null);
+  const springRef = useRef(null)
   const { size, ...rest } = useSpring({
     ref: springRef,
     // config: config.stiff,
     from: {
-      size: "2%",
+      size: '2%',
       opacity: 0
     },
     to: {
-      size: open ? "100%" : "2%",
+      size: open ? '100%' : '2%',
       opacity: open ? 1 : 0
     }
-  }) as any;
+  }) as any
 
-  const transRef = useRef(null);
+  const transRef = useRef(null)
 
-  const closeButtonRef = useRef(null);
+  const closeButtonRef = useRef(null)
 
   const closeButtonPopin = useSpring({
     ref: closeButtonRef,
     config: config.stiff,
-    from: { opacity: 0, transform: "scale(0)" },
-    to: { opacity: open ? 1 : 0, transform: open ? "scale(1)" : "scale(0)" }
-  });
+    from: { opacity: 0, transform: 'scale(0)' },
+    to: { opacity: open ? 1 : 0, transform: open ? 'scale(1)' : 'scale(0)' }
+  })
 
   useChain(
     open
       ? [springRef, closeButtonRef, transRef]
       : [closeButtonRef, transRef, springRef],
     [0, open ? 0.1 : 0.6]
-  );
+  )
 
   return (
     <>
@@ -118,8 +118,7 @@ export const CaptainProfile = () => {
       <Container style={{ ...rest, width: size, height: size }}>
         <CloseProfileModalButton
           style={closeButtonPopin}
-          onClick={() => setOpen(false)}
-        >
+          onClick={() => setOpen(false)}>
           <Close />
         </CloseProfileModalButton>
         <ItemContainer>
@@ -131,16 +130,15 @@ export const CaptainProfile = () => {
 
           <StyledForm
             onSubmit={e => {
-              e.preventDefault();
+              e.preventDefault()
 
               setProfile({
                 ...formState.values,
                 completed: true
-              });
+              })
 
-              setOpen(false);
-            }}
-          >
+              setOpen(false)
+            }}>
             {Object.keys(formState.values).map(k => (
               <ReviewInput key={k} label={k} {...text(k as any)} />
             ))}
@@ -148,11 +146,10 @@ export const CaptainProfile = () => {
             <RowDiv>
               <StyledButton
                 onClick={e => {
-                  e.preventDefault();
-                  localStorage.removeItem(localStorageKey.chatCache);
-                  window.location.reload();
-                }}
-              >
+                  e.preventDefault()
+                  localStorage.removeItem(localStorageKey.chatCache)
+                  window.location.reload()
+                }}>
                 Clear chat cache
               </StyledButton>
               <StyledSubmitButton />
@@ -161,5 +158,5 @@ export const CaptainProfile = () => {
         </ItemContainer>
       </Container>
     </>
-  );
-};
+  )
+}

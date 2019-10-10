@@ -112,7 +112,11 @@ export const en = {
   
   nothing: "I'm good 😁",
 
-  prompt_csv: "Let's get this done!",
+  prompt_csv: "Which event is this?",
+  csv_catchProcess: "🐟 Catching and Processing",
+  csv_aggregationDisaggregation: "🔼 Aggregation and Disaggregation",
+  csv_shipReceive: "📨 Ship and Receive",
+  csv_transshipment: "🔄 Transshipment",
 
   prompt_nothing: "Smooth sailing 💨",
 
