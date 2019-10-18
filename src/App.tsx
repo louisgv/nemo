@@ -35,6 +35,10 @@ const StyledChatBot = styled(ChatBot)`
     height: 100%;
   }
 
+  .rsc-content {
+    max-height: 50%;
+  }
+
   .rsc-os-options {
     display: flex;
     flex-flow: wrap;
@@ -51,7 +55,7 @@ const StyledChatBot = styled(ChatBot)`
 
 const VersionContainer = styled.span`
   position: absolute;
-  bottom: 5px;
+  top: 5px;
   right: 5px;
   font-size: 10px;
   opacity: 0.7;
