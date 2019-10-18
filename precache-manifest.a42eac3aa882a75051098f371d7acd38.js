@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "17eb8ccf2e3efb1b1d7df2ea6feb7fb0",
+    "revision": "942670713b04c4316ba26255040f07b4",
     "url": "/nemo/index.html"
   },
   {
-    "revision": "86b637e48a4e7b5dea3b",
+    "revision": "3cd55db6ec5018d7146a",
     "url": "/nemo/static/css/main.da3020f0.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/nemo/static/js/2.f13b170a.chunk.js"
   },
   {
-    "revision": "86b637e48a4e7b5dea3b",
-    "url": "/nemo/static/js/main.97955b59.chunk.js"
+    "revision": "3cd55db6ec5018d7146a",
+    "url": "/nemo/static/js/main.28ce9e8a.chunk.js"
   },
   {
     "revision": "c0384b9b9820a6703834",
