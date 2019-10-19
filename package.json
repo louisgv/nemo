@@ -4,6 +4,7 @@
   "homepage": "https://louisgv.ga/nemo",
   "repository": "https://github.com/louisgv/nemo",
   "private": true,
+  "license": "MIT",
   "dependencies": {
     "@types/debug": "^4.1.5",
     "@types/jest": "24.0.18",
