@@ -80,7 +80,11 @@ Typings for custom data, such as CSV header.
 
 2. Run `yarn` in the root `nemo` folder.
 
-Once it is done, you can modify any file locally and run `yarn start`, `yarn test` or `yarn build` just like in a generated project.
+3. Run `yarn start`
+
+4. Head to `localhost:3000` in your browser
+
+Once it is done, you can start working on nemo and see the change reflected instantly.
 
 ## Contributing to E2E (end to end) tests
 
