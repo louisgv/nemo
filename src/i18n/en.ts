@@ -118,6 +118,8 @@ export const en = {
   csv_shipReceive: "📨 Ship and Receive",
   csv_transshipment: "🔄 Transshipment",
 
+  csv_boltonEpcisTools: "🅱 Bolton EPCIS Tools",
+
   prompt_nothing: "Smooth sailing 💨",
 
   prompt_test: "WELCOME TO THE TESTING FLOW . . .",

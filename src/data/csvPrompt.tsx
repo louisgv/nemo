@@ -4,14 +4,14 @@ import {
   CatchAndProcessCsvInput,
   AggregationDisaggregationCsvInput
 } from '../components/CsvFileInput'
+import { BoltonEpcisToolsInput } from '../components/BoltonEpcisToolsInput'
 
 const promptOrder = [
   'prompt_csv',
   'add_csvType',
   'comp_catchProcess',
   'comp_aggregationDisaggregation',
-  'comp_shipReceive',
-  'comp_transshipment',
+  'comp_boltonEpcisTools',
   'prompt_anotherOne'
 ]
 
@@ -21,14 +21,12 @@ const promptStructure = {
     options: [
       'csv_catchProcess',
       'csv_aggregationDisaggregation',
-      'csv_shipReceive',
-      'csv_transshipment'
+      'csv_boltonEpcisTools'
     ].map(createOptionLabel),
     triggers: [
       'comp_catchProcess',
       'comp_aggregationDisaggregation',
-      'comp_shipReceive',
-      'comp_transshipment'
+      'comp_boltonEpcisTools'
     ]
   },
   comp_catchProcess: {
@@ -45,15 +43,9 @@ const promptStructure = {
     waitAction: true,
     trigger: 'prompt_anotherOne'
   },
-  comp_shipReceive: {
-    component: <AggregationDisaggregationCsvInput />,
-    hideInput: true,
-    replace: false,
-    waitAction: true,
-    trigger: 'prompt_anotherOne'
-  },
-  comp_transshipment: {
-    component: <AggregationDisaggregationCsvInput />,
+
+  comp_boltonEpcisTools: {
+    component: <BoltonEpcisToolsInput />,
     hideInput: true,
     replace: false,
     waitAction: true,
