@@ -8,8 +8,15 @@ import { FillButton, Divider } from '../_theme'
 
 import fileReaderStream from 'filereader-stream'
 import neatCsv from 'neat-csv'
-import { csvAggregatedCatchProcessHeader, csvAggregationDisaggregationHeader, csvShipReceiveHeader } from '../api/csvToXml/csvHeader'
-import { createSingleCatchAndProcessXml, createAggregatedCatchAndProcessXml } from '../api/csvToXml/catchAndProcessXml'
+import {
+  csvAggregatedCatchProcessHeader,
+  csvAggregationDisaggregationHeader,
+  csvShipReceiveHeader
+} from '../api/csvToXml/csvHeader'
+import {
+  createSingleCatchAndProcessXml,
+  createAggregatedCatchAndProcessXml
+} from '../api/csvToXml/catchAndProcessXml'
 import { Accordion, AccordionPanel, Box, Heading } from 'grommet'
 import { Grommet } from 'grommet'
 import { grommet } from 'grommet/themes'
@@ -29,13 +36,19 @@ const DataContainer = styled.div`
   overflow-y: auto;
 `
 
-const FileDropContainer = styled.div`
+export const FileDropContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+`
+
+const HiddenContainer = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
 
   .file-drop {
     /* relatively position the container bc the contents are absolute */
@@ -89,12 +102,6 @@ const FileDropContainer = styled.div`
   }
 `
 
-const HiddenContainer = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-`
-
 const HiddenFileInput = styled.div`
   display: none;
 `
@@ -113,6 +120,29 @@ const CodeContainer = styled.code`
   font-size: smaller;
 `
 
+export const XmlDownloadButton = ({
+  disabled = false,
+  fileLabel,
+  xml = '',
+  downloadText = 'Download Aggregated XML'
+}) => (
+  <FillButton
+    background={'limegreen'}
+    disabled={disabled}
+    onClick={() => {
+      const blob = new Blob([xml], {
+        type: 'application/xml;charet=ustf-8'
+      })
+      const dt = DateTime.local()
+
+      const creationDate = dt.toISO()
+
+      saveAs(blob, `GDST-EPCIS-${fileLabel}-${creationDate}.xml`)
+    }}>
+    {downloadText}
+  </FillButton>
+)
+
 const AggregatedXmlDownload = ({
   disabled,
   fileLabel,
@@ -130,21 +160,11 @@ const AggregatedXmlDownload = ({
           </AccordionPanel>
         </Accordion>
 
-        <FillButton
-          background={'lime'}
+        <XmlDownloadButton
+          fileLabel={fileLabel}
+          xml={aggregatedXml}
           disabled={disabled}
-          onClick={() => {
-            const blob = new Blob([aggregatedXml], {
-              type: 'application/xml;charet=ustf-8'
-            })
-            const dt = DateTime.local()
-
-            const creationDate = dt.toISO()
-
-            saveAs(blob, `GDST-EPCIS-${fileLabel}-${creationDate}.xml`)
-          }}>
-          Download Aggregated XML
-        </FillButton>
+        />
       </>
     )
   )
@@ -190,6 +210,32 @@ const EpcisEventList = ({ epcisXmlList = [] }) => {
   )
 }
 
+export const CsvFileDrop = ({
+  processFile,
+  dropText = 'Drop your CSV file here, or tap the box to select a file.',
+  className=''
+}) => {
+  const fileInputRef = useRef(null)
+
+  return (
+    <HiddenContainer onClick={() => fileInputRef.current.click()} className={className}>
+      <FileDrop onDrop={processFile}>
+        <FileDropText>{dropText}</FileDropText>
+      </FileDrop>
+      <HiddenFileInput>
+        <input
+          ref={fileInputRef}
+          accept=".csv"
+          type="file"
+          onChange={evt => {
+            processFile(evt.target.files)
+          }}
+        />
+      </HiddenFileInput>
+    </HiddenContainer>
+  )
+}
+
 export const CsvFileInput = ({
   triggerNextStep,
   singleParser,
@@ -197,8 +243,6 @@ export const CsvFileInput = ({
   fileLabel,
   headers
 }: any) => {
-  const fileInputRef = useRef(null)
-
   const [disabled, setDisabled] = useState(false)
 
   const [epcisXmlList, setEpcisXmlList] = useState([])
@@ -234,23 +278,7 @@ export const CsvFileInput = ({
     <FileDropContainer>
       {!disabled && (
         <>
-          <HiddenContainer onClick={() => fileInputRef.current.click()}>
-            <FileDrop onDrop={processFile}>
-              <FileDropText>
-                Drop your CSV file here, or tap the box to select a file.
-              </FileDropText>
-            </FileDrop>
-            <HiddenFileInput>
-              <input
-                ref={fileInputRef}
-                accept=".csv"
-                type="file"
-                onChange={evt => {
-                  processFile(evt.target.files)
-                }}
-              />
-            </HiddenFileInput>
-          </HiddenContainer>
+          <CsvFileDrop processFile={processFile} />
           <StyledGrommet theme={grommet}>
             <EpcisEventList epcisXmlList={epcisXmlList} />
 
@@ -276,7 +304,7 @@ export const CsvFileInput = ({
   )
 }
 
-export const CatchAndProcessCsvInput = (props) => (
+export const CatchAndProcessCsvInput = props => (
   <CsvFileInput
     singleParser={createSingleCatchAndProcessXml}
     aggregatedParser={createAggregatedCatchAndProcessXml}
@@ -286,7 +314,7 @@ export const CatchAndProcessCsvInput = (props) => (
   />
 )
 
-export const AggregationDisaggregationCsvInput = (props) => (
+export const AggregationDisaggregationCsvInput = props => (
   <CsvFileInput
     aggregatedParser={createAggregatedAggregationDisaggregationXml}
     fileLabel="AggregationDisaggregation"
@@ -295,7 +323,7 @@ export const AggregationDisaggregationCsvInput = (props) => (
   />
 )
 
-export const ShipReceiveCsvInput = (props) => (
+export const ShipReceiveCsvInput = props => (
   <CsvFileInput
     aggregatedParser={createShipReceiveXml}
     fileLabel="ShipReceive"
