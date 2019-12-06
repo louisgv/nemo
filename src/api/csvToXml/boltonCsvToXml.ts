@@ -1,5 +1,59 @@
-export const createBoltonXml = () => {
+import neatCsv from 'neat-csv'
+import { createCsvFileReaderStream } from '.'
+import { csvBusinessDocumentHeader } from './csvHeader'
+import { DateTime } from 'luxon'
 
+export const createBusinessDocumentHeaderXml = async (file) => {
+  try {
+    const readerStream = createCsvFileReaderStream(file)
+    const [, ...csvRowList] = (await neatCsv(readerStream, {
+      headers: csvBusinessDocumentHeader
+    })) as any
+
+    const {
+      senderId,
+      senderName,
+      senderEmail,
+      receiverId,
+      receiverName,
+      receiverEmail
+    } = csvRowList[0]
+
+    const dt = DateTime.local()
+    const creationDate = dt.toISO()    
+
+    return `<sbdh:StandardBusinessDocumentHeader>
+    <sbdh:HeaderVersion>1.0</sbdh:HeaderVersion>
+    <sbdh:Sender>
+        <sbdh:Identifier>${senderId}</sbdh:Identifier> <!-- Sending company: Bolton Food SpA -->
+        <sbdh:ContactInformation>
+            <sbdh:Contact>${senderName}</sbdh:Contact>
+            <sbdh:EmailAddress>${senderEmail}</sbdh:EmailAddress>
+        </sbdh:ContactInformation>
+    </sbdh:Sender>
+    <sbdh:Receiver>
+        <sbdh:Identifier>${receiverId}</sbdh:Identifier> <!-- Receiving company: Metro Italy -->
+        <sbdh:ContactInformation>
+            <sbdh:Contact>${receiverName}</sbdh:Contact>
+            <sbdh:EmailAddress>${receiverEmail}</sbdh:EmailAddress>
+        </sbdh:ContactInformation>
+    </sbdh:Receiver>
+    <sbdh:DocumentIdentification>
+        <sbdh:Standard>GS1</sbdh:Standard>
+        <sbdh:TypeVersion>3.0</sbdh:TypeVersion>
+        <sbdh:InstanceIdentifier>9999</sbdh:InstanceIdentifier>
+        <sbdh:Type>Seafood Traceability</sbdh:Type>
+        <sbdh:MultipleType>false</sbdh:MultipleType>
+        <sbdh:CreationDateAndTime>${creationDate}</sbdh:CreationDateAndTime>
+    </sbdh:DocumentIdentification>
+</sbdh:StandardBusinessDocumentHeader>`
+  } catch (error) {
+    console.error(error)
+    return ""
+  }
+}
+
+export const createBoltonXml = () => {
   return `<?xml version="1.0" encoding="UTF-8"?> 
 <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -7,31 +61,7 @@ export const createBoltonXml = () => {
     xmlns:cbvmda="urn:epcglobal:cbv:mda"
     xmlns:gdst="https://traceability-dialogue.org/epcis">
     <EPCISHeader>
-        <sbdh:StandardBusinessDocumentHeader>
-            <sbdh:HeaderVersion>1.0</sbdh:HeaderVersion>
-            <sbdh:Sender>
-                <sbdh:Identifier>urn:epc:id:pgln:8004030.00000</sbdh:Identifier> <!-- Sending company: Bolton Food SpA -->
-                <sbdh:ContactInformation>
-                    <sbdh:Contact>John Doe</sbdh:Contact>
-                    <sbdh:EmailAddress>emailaddress</sbdh:EmailAddress>
-                </sbdh:ContactInformation>
-            </sbdh:Sender>
-            <sbdh:Receiver>
-                <sbdh:Identifier>urn:epc:id:pgln:0637196.000004</sbdh:Identifier> <!-- Receiving company: Metro Italy -->
-                <sbdh:ContactInformation>
-                    <sbdh:Contact>Amy Adams</sbdh:Contact>
-                    <sbdh:EmailAddress>emailaddress</sbdh:EmailAddress>
-                </sbdh:ContactInformation>
-            </sbdh:Receiver>
-            <sbdh:DocumentIdentification>
-                <sbdh:Standard>GS1</sbdh:Standard>
-                <sbdh:TypeVersion>3.0</sbdh:TypeVersion>
-                <sbdh:InstanceIdentifier>9999</sbdh:InstanceIdentifier>
-                <sbdh:Type>Seafood Traceability</sbdh:Type>
-                <sbdh:MultipleType>false</sbdh:MultipleType>
-                <sbdh:CreationDateAndTime>2019-05-05T11:11:52+08:00</sbdh:CreationDateAndTime>
-            </sbdh:DocumentIdentification>
-        </sbdh:StandardBusinessDocumentHeader>
+       
         <extension>
             <EPCISMasterData>
                 <VocabularyList> 

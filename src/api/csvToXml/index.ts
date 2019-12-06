@@ -1,4 +1,15 @@
+import fileReaderStream from 'filereader-stream'
 // const parseDate = (s) => DateTime.fromFormat(s, 'dd/MM/yy').toISO()
+
+export const createCsvFileReaderStream =(file)=> {
+  if (!file) throw new Error("no file")
+
+  if (file.name.split('.').pop() !== 'csv') {
+    throw new Error('not csv')
+  }
+
+  return fileReaderStream(file)
+}
 
 export const parseUom = (s: string) =>
   s && s[0].toLowerCase() === 'l' ? 'LBR' : 'KGM'
