@@ -1,20 +1,30 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-import { FileDropContainer, CsvFileDrop, XmlDownloadButton } from './CsvFileInput'
+import {
+  FileDropContainer,
+  CsvFileDrop,
+  XmlDownloadButton
+} from './CsvFileInput'
 
-import { createAggregatedAggregationDisaggregationXml } from '../api/csvToXml/aggregationDisaggregationXml'
-
-import { csvAggregationDisaggregationHeader } from '../api/csvToXml/csvHeader'
 import { FillButton } from '../_theme'
-import { createBoltonXml } from '../api/csvToXml/boltonCsvToXml'
+import {
+  createBoltonXml,
+  createBusinessDocumentHeaderXml as createBDHXml
+} from '../api/csvToXml/boltonCsvToXml'
 
-const StyledCsvFileDrop = styled(CsvFileDrop)`
+type FileDropProps = {
+  fileValid?: boolean
+}
+
+const StyledCsvFileDrop = styled(CsvFileDrop)<FileDropProps>`
   margin-bottom: 0.5em;
   width: 30%;
   min-width: 250px;
   .file-drop {
     height: 50px;
+    color: ${p =>
+      p.fileValid ? p.theme.headerBgColor : p.theme.userFontColor};
   }
 `
 
@@ -28,39 +38,79 @@ const DropContainer = styled.div`
 
 export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
   const [disabled, setDisabled] = useState(false)
+  const [bdhXml, setBdhXml] = useState('')
+  const [bdhFileName, setBdhFileName] = useState('')
 
-  const processHeader = () => {}
+  const [epcClassXml, setEpcClassXml] = useState('')
+  const [epcClassFileName, setEpcClassFileName] = useState('')
+
+  const [locationXml, setLocationXml] = useState('')
+  const [locationFileName, setLocationFileName] = useState('')
+
+  const [objectEventXml, setObjectEventXml] = useState('')
+  const [objectEventFileName, setObjectEventFileName] = useState('')
+ 
+  const [transformationEventXml, setTransformationEventXml] = useState('')
+  const [transformationEventFileName, setTransformationEventFileName] = useState('')
+
+  const [aggregationEventXml, setAggregationEventXml] = useState('')
+  const [aggregationEventFileName, setAggregationEventFileName] = useState('')
 
   return (
     <FileDropContainer>
       <DropContainer>
         <StyledCsvFileDrop
-          dropText="BusinessDocumentHeader"
-          processFile={processHeader}
+          fileValid={!!bdhXml}
+          dropText={!!bdhXml ? bdhFileName : 'BusinessDocumentHeader'}
+          processFile={async ([file]) => {
+            const newBdhXml = await createBDHXml(file)
+            if (!newBdhXml) return
+
+            setBdhXml(newBdhXml)
+            setBdhFileName(file.name)
+
+            console.log(newBdhXml);
+            
+          }}
         />
         <StyledCsvFileDrop
           dropText="EPCClass"
-          processFile={processHeader}
+          processFile={async ([file]) => {
+            const newBDHXml = await createBDHXml(file)
+            setEpcClassXml(newBDHXml)
+          }}
         />
         <StyledCsvFileDrop
           dropText="Location"
-          processFile={processHeader}
+          processFile={async ([file]) => {
+            const newBDHXml = await createBDHXml(file)
+            setLocationXml(newBDHXml)
+          }}
         />
         <StyledCsvFileDrop
           dropText="ObjectEvent"
-          processFile={processHeader}
+          processFile={async ([file]) => {
+            const newBDHXml = await createBDHXml(file)
+            setObjectEventXml(newBDHXml)
+          }}
         />
         <StyledCsvFileDrop
           dropText="TransformationEvent"
-          processFile={processHeader}
+          processFile={async ([file]) => {
+            const newBDHXml = await createBDHXml(file)
+            setTransformationEventXml(newBDHXml)
+          }}
         />
         <StyledCsvFileDrop
           dropText="AggregationEvent"
-          processFile={processHeader}
+          processFile={async ([file]) => {
+            const newBDHXml = await createBDHXml(file)
+            setAggregationEventXml(newBDHXml)
+          }}
         />
       </DropContainer>
 
-      <XmlDownloadButton fileLabel="Bolton" xml={createBoltonXml()}/>
+      <XmlDownloadButton fileLabel="Bolton" xml={createBoltonXml()} />
 
       <FillButton
         disabled={disabled}

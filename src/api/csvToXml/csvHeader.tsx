@@ -1,3 +1,12 @@
+export const csvBusinessDocumentHeader = [
+  'senderId',
+  'senderName',
+  'senderEmail',
+  'receiverId',
+  'receiverName',
+  'receiverEmail'
+]
+
 export const csvMasterDataHeader = [
   'informationProviderID',
   'informationProviderContact',
