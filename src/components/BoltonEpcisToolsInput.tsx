@@ -11,7 +11,8 @@ import { FillButton } from '../_theme'
 import {
   createBoltonXml,
   createBusinessDocumentHeaderXml as createBDHXml,
-  createEpcClassXml
+  createEpcClassXml,
+  createLocationXml
 } from '../api/csvToXml/boltonCsvToXml'
 
 type FileDropProps = {
@@ -97,7 +98,7 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
           fileValid={!!locationXml}
           dropText={!!locationXml ? locationFileName : 'Location'}
           processFile={async ([file]) => {
-            const newXml = await createBDHXml(file)
+            const newXml = await createLocationXml(file)
             if (!newXml) return
 
             setLocationXml(newXml)

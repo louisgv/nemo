@@ -1,4 +1,29 @@
-export const csvEpcClass = [
+export const csvLocationHeader = [
+  'informationProvider',
+  'id',
+  'name',
+  'unloadingPort',
+  'streetAddressOne',
+  'streetAddressTwo',
+  'city',
+  'state',
+  'postalCode',
+  'countryCode',
+  'latitude',
+  'longitude',
+  'contact',
+  'telephone',
+  'email',
+  'vesselID',
+  'vesselName',
+  'vesselOwnerName',
+  'vesselOrganizationName',
+  'fishingGearTypeCode',
+  'geofencePolygonPolygonPointSeq',
+  'geofencePolygonPolygonPointValue'
+]
+
+export const csvEpcClassHeader = [
   'informationProvider',
   'id',
   'descriptionShort',
@@ -45,7 +70,7 @@ export const csvMasterDataHeader = [
   'additionalTradeItemIdentificationParent'
 ]
 
-export const csvLocationDataHeader = [
+export const csvLocationDataHeaderV0 = [
   'location',
   'name',
   'partyIDTypeCode',
@@ -77,13 +102,13 @@ export const csvEventLevelDataHeader = [
 
 export const csvAggregationDisaggregationHeader = [
   ...csvMasterDataHeader,
-  ...csvLocationDataHeader,
+  ...csvLocationDataHeaderV0,
   ...csvEventLevelDataHeader
 ]
 
 export const csvShipReceiveHeader = [
   ...csvMasterDataHeader,
-  ...csvLocationDataHeader,
+  ...csvLocationDataHeaderV0,
   ...csvEventLevelDataHeader
 ]
 
