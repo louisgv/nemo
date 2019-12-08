@@ -10,7 +10,8 @@ import {
 import { FillButton } from '../_theme'
 import {
   createBoltonXml,
-  createBusinessDocumentHeaderXml as createBDHXml
+  createBusinessDocumentHeaderXml as createBDHXml,
+  createEpcClassXml
 } from '../api/csvToXml/boltonCsvToXml'
 
 type FileDropProps = {
@@ -49,12 +50,23 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
 
   const [objectEventXml, setObjectEventXml] = useState('')
   const [objectEventFileName, setObjectEventFileName] = useState('')
- 
+
   const [transformationEventXml, setTransformationEventXml] = useState('')
-  const [transformationEventFileName, setTransformationEventFileName] = useState('')
+  const [
+    transformationEventFileName,
+    setTransformationEventFileName
+  ] = useState('')
 
   const [aggregationEventXml, setAggregationEventXml] = useState('')
   const [aggregationEventFileName, setAggregationEventFileName] = useState('')
+
+  const isAllXmlValid = () =>
+    !!bdhXml &&
+    !!epcClassXml &&
+    !!locationXml &&
+    !!objectEventXml &&
+    !!transformationEventXml &&
+    !!aggregationEventXml
 
   return (
     <FileDropContainer>
@@ -63,54 +75,87 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
           fileValid={!!bdhXml}
           dropText={!!bdhXml ? bdhFileName : 'BusinessDocumentHeader'}
           processFile={async ([file]) => {
-            const newBdhXml = await createBDHXml(file)
-            if (!newBdhXml) return
+            const newXml = await createBDHXml(file)
+            if (!newXml) return
 
-            setBdhXml(newBdhXml)
+            setBdhXml(newXml)
             setBdhFileName(file.name)
+          }}
+        />
+        <StyledCsvFileDrop
+          fileValid={!!epcClassXml}
+          dropText={!!epcClassXml ? epcClassFileName : 'EPCClass'}
+          processFile={async ([file]) => {
+            const newXml = await createEpcClassXml(file)
+            if (!newXml) return
 
-            console.log(newBdhXml);
-            
+            setEpcClassXml(newXml)
+            setEpcClassFileName(file.name)
           }}
         />
         <StyledCsvFileDrop
-          dropText="EPCClass"
+          fileValid={!!locationXml}
+          dropText={!!locationXml ? locationFileName : 'Location'}
           processFile={async ([file]) => {
-            const newBDHXml = await createBDHXml(file)
-            setEpcClassXml(newBDHXml)
+            const newXml = await createBDHXml(file)
+            if (!newXml) return
+
+            setLocationXml(newXml)
+            setLocationFileName(file.name)
           }}
         />
         <StyledCsvFileDrop
-          dropText="Location"
+          fileValid={!!objectEventXml}
+          dropText={!!objectEventXml ? objectEventFileName : 'ObjectEvent'}
           processFile={async ([file]) => {
-            const newBDHXml = await createBDHXml(file)
-            setLocationXml(newBDHXml)
+            const newXml = await createBDHXml(file)
+            if (!newXml) return
+            setObjectEventXml(newXml)
+            setObjectEventFileName(file.name)
           }}
         />
         <StyledCsvFileDrop
-          dropText="ObjectEvent"
+          fileValid={!!transformationEventXml}
+          dropText={
+            !!transformationEventXml
+              ? transformationEventFileName
+              : 'TransformationEvent'
+          }
           processFile={async ([file]) => {
-            const newBDHXml = await createBDHXml(file)
-            setObjectEventXml(newBDHXml)
+            const newXml = await createBDHXml(file)
+            if (!newXml) return
+            setTransformationEventXml(newXml)
+            setTransformationEventFileName(file.name)
           }}
         />
         <StyledCsvFileDrop
-          dropText="TransformationEvent"
+          fileValid={!!aggregationEventXml}
+          dropText={
+            !!aggregationEventXml
+              ? aggregationEventFileName
+              : 'AggregationEvent'
+          }
           processFile={async ([file]) => {
-            const newBDHXml = await createBDHXml(file)
-            setTransformationEventXml(newBDHXml)
-          }}
-        />
-        <StyledCsvFileDrop
-          dropText="AggregationEvent"
-          processFile={async ([file]) => {
-            const newBDHXml = await createBDHXml(file)
-            setAggregationEventXml(newBDHXml)
+            const newXml = await createBDHXml(file)
+            if (!newXml) return
+            setAggregationEventXml(newXml)
+            setAggregationEventFileName(file.name)
           }}
         />
       </DropContainer>
 
-      <XmlDownloadButton fileLabel="Bolton" xml={createBoltonXml()} />
+      <XmlDownloadButton
+        disabled={isAllXmlValid()}
+        fileLabel="Bolton"
+        xml={createBoltonXml({
+          bdhXml,
+          epcClassXml,
+          locationXml,
+          objectEventXml,
+          transformationEventXml,
+          aggregationEventXml
+        })}
+      />
 
       <FillButton
         disabled={disabled}

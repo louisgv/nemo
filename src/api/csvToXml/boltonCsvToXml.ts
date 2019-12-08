@@ -1,12 +1,127 @@
 import neatCsv from 'neat-csv'
-import { createCsvFileReaderStream } from '.'
-import { csvBusinessDocumentHeader } from './csvHeader'
+import { createCsvFileReaderStream, parseUom } from '.'
+import { csvBusinessDocumentHeader, csvEpcClass } from './csvHeader'
 import { DateTime } from 'luxon'
 
-export const createBusinessDocumentHeaderXml = async (file) => {
+const withIgnoreError = async fx => {
   try {
+    return fx()
+  } catch (error) {
+    console.error(error)
+    return ''
+  }
+}
+
+const parseCsvColumnList = ({ csvData, index, indexKey, itemKeyList }) => {
+  const dataList = []
+
+  const currentData = csvData[index]
+
+  if (itemKeyList.filter(k => !!currentData[k]).length === 0) return dataList
+
+  if (index < csvData.length - 1) {
+    let j = 0
+    do {
+      const nextItem = csvData[index + j]
+      if (
+        itemKeyList.filter((k: string | number) => !!nextItem[k]).length > 0
+      ) {
+        const newItem = {}
+
+        itemKeyList.forEach((k: string | number) => {
+          newItem[k] = nextItem[k] || currentData[k]
+        })
+
+        dataList.push(newItem)
+      }
+      j++
+    } while (!csvData[index + j][indexKey])
+  }
+  return dataList
+}
+
+export const createEpcClassXml = async file =>
+  withIgnoreError(async () => {
     const readerStream = createCsvFileReaderStream(file)
-    const [, ...csvRowList] = (await neatCsv(readerStream, {
+    const parsedData = (await neatCsv(readerStream, {
+      headers: csvEpcClass,
+      skipLines: 3
+    })) as any
+
+    console.log(parsedData)
+
+    const vocabElementListItems = parsedData
+      .map(
+        (
+          {
+            id,
+            informationProvider,
+            speciesForFisheryStatisticsPurposesCode,
+            grossWeightMeasurementValue,
+            grossWeightMeasurementUnitCode,
+            ...optionalAttributeMap
+          },
+          index
+        ) => {
+          if (!id) return ''
+          const optionalAttributeItems = Object.entries(optionalAttributeMap)
+            .filter(([, v]) => !!v)
+            .map(
+              ([k, v]) =>
+                `<attribute id="urn:epcglobal:cbv:mda#${k}">${v}</attribute>`
+            )
+            .join('\n')
+
+          const grossWeightDataList = parseCsvColumnList({
+            csvData: parsedData,
+            index,
+            indexKey: 'id',
+            itemKeyList: [
+              'grossWeightMeasurementValue',
+              'grossWeightMeasurementUnitCode'
+            ]
+          })
+
+          console.log(grossWeightDataList)
+
+          const grossWeightItemsXml = grossWeightDataList
+            .map(
+              ({
+                grossWeightMeasurementUnitCode,
+                grossWeightMeasurementValue
+              }) =>
+                `<measurement measurementUnitCode="${parseUom(
+                  grossWeightMeasurementUnitCode
+                )}">${grossWeightMeasurementValue}</measurement>`
+            )
+            .join('\n')
+
+          const grossWeightXml = !!grossWeightItemsXml
+            ? `<attribute id="urn:epcglobal:cbv:mda#grossWeight">${grossWeightItemsXml}</attribute>`
+            : ''
+
+          return `<VocabularyElement id="${id}">
+  <attribute id="urn:epcglobal:cbv:mda#informationProvider">${informationProvider}</attribute>
+  <attribute id="urn:epcglobal:cbv:mda#speciesForFisheryStatisticsPurposesCode">${speciesForFisheryStatisticsPurposesCode}</attribute>
+  ${optionalAttributeItems}
+  ${grossWeightXml}
+</VocabularyElement>`
+        }
+      )
+      .join('\n')
+
+    return `<Vocabulary type="urn:epcglobal:epcis:vtype:EPCClass">
+    <VocabularyElementList>
+      ${vocabElementListItems}
+    </VocabularyElementList>
+</Vocabulary>
+`
+  })
+
+export const createBusinessDocumentHeaderXml = async file =>
+  withIgnoreError(async () => {
+    const readerStream = createCsvFileReaderStream(file)
+    const [, data] = (await neatCsv(readerStream, {
       headers: csvBusinessDocumentHeader
     })) as any
 
@@ -17,22 +132,33 @@ export const createBusinessDocumentHeaderXml = async (file) => {
       receiverId,
       receiverName,
       receiverEmail
-    } = csvRowList[0]
+    } = data
+
+    if (
+      !senderId ||
+      !senderName ||
+      !senderEmail ||
+      !receiverId ||
+      !receiverName ||
+      !receiverEmail
+    ) {
+      throw new Error('wrong format')
+    }
 
     const dt = DateTime.local()
-    const creationDate = dt.toISO()    
+    const creationDate = dt.toISO()
 
     return `<sbdh:StandardBusinessDocumentHeader>
     <sbdh:HeaderVersion>1.0</sbdh:HeaderVersion>
     <sbdh:Sender>
-        <sbdh:Identifier>${senderId}</sbdh:Identifier> <!-- Sending company: Bolton Food SpA -->
+        <sbdh:Identifier>${senderId}</sbdh:Identifier>
         <sbdh:ContactInformation>
             <sbdh:Contact>${senderName}</sbdh:Contact>
             <sbdh:EmailAddress>${senderEmail}</sbdh:EmailAddress>
         </sbdh:ContactInformation>
     </sbdh:Sender>
     <sbdh:Receiver>
-        <sbdh:Identifier>${receiverId}</sbdh:Identifier> <!-- Receiving company: Metro Italy -->
+        <sbdh:Identifier>${receiverId}</sbdh:Identifier>
         <sbdh:ContactInformation>
             <sbdh:Contact>${receiverName}</sbdh:Contact>
             <sbdh:EmailAddress>${receiverEmail}</sbdh:EmailAddress>
@@ -47,13 +173,16 @@ export const createBusinessDocumentHeaderXml = async (file) => {
         <sbdh:CreationDateAndTime>${creationDate}</sbdh:CreationDateAndTime>
     </sbdh:DocumentIdentification>
 </sbdh:StandardBusinessDocumentHeader>`
-  } catch (error) {
-    console.error(error)
-    return ""
-  }
-}
+  })
 
-export const createBoltonXml = () => {
+export const createBoltonXml = ({
+  bdhXml,
+  epcClassXml,
+  locationXml,
+  objectEventXml,
+  transformationEventXml,
+  aggregationEventXml
+}) => {
   return `<?xml version="1.0" encoding="UTF-8"?> 
 <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -61,44 +190,11 @@ export const createBoltonXml = () => {
     xmlns:cbvmda="urn:epcglobal:cbv:mda"
     xmlns:gdst="https://traceability-dialogue.org/epcis">
     <EPCISHeader>
-       
+       ${bdhXml}
         <extension>
             <EPCISMasterData>
                 <VocabularyList> 
-                    <Vocabulary type="urn:epcglobal:epcis:vtype:EPCClass">
-                        <VocabularyElementList>
-                            <VocabularyElement id="urn:epc:idpat:sgtin:081184900.3003.*"> <!-- Assigned GTIN for Whole Wild Caught Yellowfin Tuna 3 081184900 003 5 -->
-                                <attribute id="urn:epcglobal:cbv:mda#informationProvider">urn:epc:id:pgln:0048000.000001</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#descriptionShort">Yellowfin Tuna</attribute> <!-- Optional -->
-                                <attribute id="urn:epcglobal:cbv:mda#speciesForFisheryStatisticsPurposesName">Thunnus albacares</attribute> <!-- Optional -->
-                                <attribute id="urn:epcglobal:cbv:mda#speciesForFisheryStatisticsPurposesCode">YFT</attribute> <!-- SIMP: Scientific Species Code -->
-                                <attribute id="urn:epcglobal:cbv:mda#tradeItemConditionCode">WHL</attribute> <!-- SIMP: Processing Description, "NRD" -->
-                            </VocabularyElement>
-                            <VocabularyElement id="urn:epc:idpat:sgtin:081184900.2002.*"> <!-- Yellowfin Loins --> <!-- Assigned GTIN for Yellowfin Tuna Loins 2 081184900 002 1 -->
-                                <attribute id="urn:epcglobal:cbv:mda#informationProvider">urn:epc:id:pgln:0048000.000001</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#speciesForFisheriesStatisticsPurposesCode">YFT</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#speciesForFisheryStatisticsPurposesName">Thunnus albacares</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#descriptionShort">Frozen Cooked Yellowfin Tuna Loins Double Clean</attribute> <!-- Bolton's Product Description -->
-                            </VocabularyElement>
-                            <VocabularyElement id="urn:epc:idpat:sgtin:8004030.204175.*"> <!-- Assigned GTIN for Bolton Intermediate Tuna 2 8004030 04175 6 -->
-                                <attribute id="urn:epcglobal:cbv:mda#informationProvider">urn:epc:id:pgln:0048000.000001</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#descriptionShort">RIO M.TONNO E.V.BIO MSC 65G  PZ</attribute> <!-- Individual 65g can of tuna -->
-                                <attribute id="urn:epcglobal:cbv:mda#speciesForFisheriesStatisticsPurposesCode">YFT</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#speciesForFisheryStatisticsPurposesName">Thunnus albacares</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#grossWeight"><measurement measurementUnitCode="KGM">0.065</measurement></attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#additionalTradeItemIdentification">4715M</attribute>
-                            </VocabularyElement>
-                            <VocabularyElement id="urn:epc:idpat:sgtin:8004030.135151.*"> <!-- Assigned GTIN for Finished Good 1 8004030 35151 3 -->
-                                <attribute id="urn:epcglobal:cbv:mda#informationProvider">urn:epc:id:pgln:0048000.000001</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#descriptionShort">RIO M.TONNO E.V.BIO MSC 65G  3+1X1X24</attribute> <!-- Case Contains 96 Cans @ 65g each -->
-                                <attribute id="urn:epcglobal:cbv:mda#speciesForFisheriesStatisticsPurposesCode">YFT</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#speciesForFisheryStatisticsPurposesName">Thunnus albacares</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#preservationTechniqueCode">CANNING</attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#grossWeight"><measurement measurementUnitCode="KGM">6.240</measurement></attribute>
-                                <attribute id="urn:epcglobal:cbv:mda#additionalTradeItemIdentification">35151</attribute>
-                            </VocabularyElement>
-                        </VocabularyElementList>
-                    </Vocabulary>
+                    ${epcClassXml}
                     <Vocabulary type="urn:epcglobal:epcis:vtype:Location">
                         <VocabularyElementList>
                             

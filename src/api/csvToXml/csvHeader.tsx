@@ -1,3 +1,16 @@
+export const csvEpcClass = [
+  'informationProvider',
+  'id',
+  'descriptionShort',
+  'speciesForFisheryStatisticsPurposesName',
+  'speciesForFisheryStatisticsPurposesCode',
+  'tradeItemConditionCode',
+  'additionalTradeItemIdentification',
+  'preservationTechniqueCode',
+  'grossWeightMeasurementValue',
+  'grossWeightMeasurementUnitCode'
+]
+
 export const csvBusinessDocumentHeader = [
   'senderId',
   'senderName',
