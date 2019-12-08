@@ -45,7 +45,7 @@ export const FileDropContainer = styled.div`
   width: 100%;
 `
 
-const HiddenContainer = styled.div`
+const HiddenFileDropContainer = styled.div`
   position: relative;
   width: 100%;
   display: flex;
@@ -218,7 +218,7 @@ export const CsvFileDrop = ({
   const fileInputRef = useRef(null)
 
   return (
-    <HiddenContainer onClick={() => fileInputRef.current.click()} className={className}>
+    <HiddenFileDropContainer onClick={() => fileInputRef.current.click()} className={className}>
       <FileDrop onDrop={processFile}>
         <FileDropText>{dropText}</FileDropText>
       </FileDrop>
@@ -232,7 +232,7 @@ export const CsvFileDrop = ({
           }}
         />
       </HiddenFileInput>
-    </HiddenContainer>
+    </HiddenFileDropContainer>
   )
 }
 
