@@ -68,7 +68,7 @@ export const createSingleCatchAndProcessXml = async (
         <EventList>
             ${createFishCatchEvent(data)}
             ${createProcessEvent(data)}
-            </EventList>
+        </EventList>
     </EPCISBody>
 </epcis:EPCISDocument>
 `
