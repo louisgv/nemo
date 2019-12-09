@@ -13,7 +13,8 @@ import {
   createBusinessDocumentHeaderXml as createBDHXml,
   createEpcClassXml,
   createLocationXml,
-  createObjectEventXml
+  createObjectEventXml,
+  createTransformationEventXml
 } from '../api/csvToXml/boltonCsvToXml'
 
 type FileDropProps = {
@@ -112,7 +113,6 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
           processFile={async ([file]) => {
             const newXml = await createObjectEventXml(file)
             if (!newXml) return
-            console.log(newXml);
             
             setObjectEventXml(newXml)
             setObjectEventFileName(file.name)
@@ -126,8 +126,10 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
               : 'TransformationEvent'
           }
           processFile={async ([file]) => {
-            const newXml = await createBDHXml(file)
+            const newXml = await createTransformationEventXml(file)
             if (!newXml) return
+            console.log(newXml);
+
             setTransformationEventXml(newXml)
             setTransformationEventFileName(file.name)
           }}

@@ -1,3 +1,55 @@
+export const csvAggregationEventHeader = [
+  'action',
+  'bizStep',
+  'informationProvider',
+  'productOwner',
+  'parentID',
+  'eventTime',
+  'eventTimeZoneOffset',
+  'visibilityEvent',
+  'disposition',
+
+  'childEPCs_epc',
+
+  'readPoint_id',
+  'bizLocation_id',
+
+  'extension_childQuantityList_quantityElement_epcClass',
+  'extension_childQuantityList_quantityElement_quantity',
+  'extension_childQuantityList_quantityElement_uom'
+]
+
+export const csvTransformationEventHeader = [
+  'bizStep',
+  'informationProvider',
+  'productOwner',
+  'eventTime',
+  'eventTimeZoneOffset',
+  'visibilityEvent',
+  'disposition',
+
+  'readPoint_id',
+  'bizLocation_id',
+
+  'inputQuantityList_quantityElement_epcClass',
+  'inputQuantityList_quantityElement_quantity',
+  'inputQuantityList_quantityElement_uom',
+
+  'outputQuantityList_quantityElement_epcClass',
+  'outputQuantityList_quantityElement_quantity',
+  'outputQuantityList_quantityElement_uom',
+
+  'ilmd_lotNumber',
+  'ilmd_productionDate',
+  'ilmd_bestBeforeDate',
+  'ilmd_preservationTechniqueCode',
+
+  'ilmd_certificationList_certification_certificationAgency',
+  'ilmd_certificationList_certification_certificationIdentification',
+  'ilmd_certificationList_certification_certificationStandard',
+  'ilmd_certificationList_certification_certificationValue'
+]
+
 export const csvObjectEventHeader = [
   'action',
   'bizStep',
@@ -7,13 +59,18 @@ export const csvObjectEventHeader = [
   'eventTimeZoneOffset',
   'visibilityEvent',
   'disposition',
-  'epcListEpc',
+
+  'epcList_epc',
+
   'readPoint_id',
   'bizLocation_id',
+
   'bizTransactionList_bizTransaction_type',
   'bizTransactionList_bizTransaction_value',
+
   'extension_sourceList_source_type',
   'extension_sourceList_source_value',
+
   'extension_destinationList_destination_type',
   'extension_destinationList_destination_value',
 

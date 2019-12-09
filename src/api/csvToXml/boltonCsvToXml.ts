@@ -4,7 +4,9 @@ import {
   csvBusinessDocumentHeader,
   csvEpcClassHeader,
   csvLocationHeader,
-  csvObjectEventHeader
+  csvObjectEventHeader,
+  csvTransformationEventHeader,
+  csvAggregationEventHeader
 } from './csvHeader'
 import { DateTime } from 'luxon'
 
@@ -45,6 +47,249 @@ const parseCsvColumnList = ({ csvData, index, indexKey, itemKeyList }) => {
   return dataList
 }
 
+export const createAggregationEventXml = file =>
+  withIgnoreError(async () => {
+    const readerStream = createCsvFileReaderStream(file)
+    const parsedData = (await neatCsv(readerStream, {
+      headers: csvAggregationEventHeader,
+      skipLines: 5
+    })) as any
+    return parsedData
+      .map(
+        (
+          {
+            action,
+            bizStep,
+            informationProvider,
+            productOwner,
+            parentID,
+            eventTime,
+            eventTimeZoneOffset,
+            visibilityEvent,
+            disposition,
+            readPoint_id,
+            bizLocation_id,
+            ...rest
+          },
+          index
+        ) => {
+          if (!action || !bizStep || !eventTime || !informationProvider)
+            return ''
+
+          const epcItemsXml = parseCsvColumnList({
+            csvData: parsedData,
+            index,
+            indexKey: 'informationProvider',
+            itemKeyList: ['childEPCs_epc']
+          })
+            .map(d => `<epc>${d.childEPCs_epc}</epc>`)
+            .join('\n')
+
+          const childEPCsXml = !!epcItemsXml
+            ? `<childEPCs>${epcItemsXml}</childEPCs>`
+            : ''
+
+          const childQuantityListItem = parseCsvColumnList({
+            csvData: parsedData,
+            index,
+            indexKey: 'informationProvider',
+            itemKeyList: [
+              'extension_childQuantityList_quantityElement_epcClass',
+              'extension_childQuantityList_quantityElement_quantity',
+              'extension_childQuantityList_quantityElement_uom'
+            ]
+          })
+            .map(
+              d => `<quantityElement><epcClass>${d.extension_childQuantityList_quantityElement_epcClass}</epcClass>
+    <quantity>${d.extension_childQuantityList_quantityElement_quantity}</quantity>
+    <uom>${d.extension_childQuantityList_quantityElement_uom}</uom>
+  </quantityElement>`
+            )
+            .join('\n')
+
+          const childQuantityListXml = !!childQuantityListItem
+            ? `<childQuantityList>${childQuantityListItem}</childQuantityList>`
+            : ''
+
+          const extensionItemsXml = [childQuantityListXml].join('\n')
+
+          const extensionXml = !!extensionItemsXml
+            ? `<extension>${extensionItemsXml}</extension>`
+            : ''
+
+          return `<AggregationEvent>
+  <eventTime>${eventTime}</eventTime> 
+  <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
+  <action>${action}</action>
+  <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
+  <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
+  <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
+  <parentID>${parentID}</parentID> <!--  Pallet ID -->
+
+  <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
+  <gdst:productOwner>${productOwner}</gdst:productOwner>
+  <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider> 
+  
+  <readPoint><id>${readPoint_id}</id></readPoint>
+  <bizLocation><id>${bizLocation_id}</id></bizLocation>
+  ${childEPCsXml}
+  ${extensionXml}
+</AggregationEvent>`
+        }
+      )
+      .join('\n')
+  })
+export const createTransformationEventXml = file =>
+  withIgnoreError(async () => {
+    const readerStream = createCsvFileReaderStream(file)
+    const parsedData = (await neatCsv(readerStream, {
+      headers: csvTransformationEventHeader,
+      skipLines: 4
+    })) as any
+    return parsedData
+      .map(
+        (
+          {
+            bizStep,
+            informationProvider,
+            productOwner,
+            eventTime,
+            eventTimeZoneOffset,
+            visibilityEvent,
+            disposition,
+            readPoint_id,
+            bizLocation_id,
+            ...rest
+          },
+          index
+        ) => {
+          if (!bizStep || !eventTime || !informationProvider) return ''
+
+          const inputQuantityItemXml = parseCsvColumnList({
+            csvData: parsedData,
+            index,
+            indexKey: 'informationProvider',
+            itemKeyList: [
+              'inputQuantityList_quantityElement_epcClass',
+              'inputQuantityList_quantityElement_quantity',
+              'inputQuantityList_quantityElement_uom'
+            ]
+          })
+            .map(
+              d =>
+                `<quantityElement> 
+  <epcClass>${d.inputQuantityList_quantityElement_epcClass}</epcClass>
+  <quantity>${d.inputQuantityList_quantityElement_quantity}</quantity>
+  ${
+    d.inputQuantityList_quantityElement_uom
+      ? `<uom>${d.inputQuantityList_quantityElement_uom}</uom>`
+      : ''
+  }
+</quantityElement>`
+            )
+            .join('\n')
+
+          const inputQuantityListXml = !!inputQuantityItemXml
+            ? `<inputQuantityList>${inputQuantityItemXml}</inputQuantityList>`
+            : ''
+
+          const outputQuantityItemXml = parseCsvColumnList({
+            csvData: parsedData,
+            index,
+            indexKey: 'informationProvider',
+            itemKeyList: [
+              'outputQuantityList_quantityElement_epcClass',
+              'outputQuantityList_quantityElement_quantity',
+              'outputQuantityList_quantityElement_uom'
+            ]
+          })
+            .map(
+              d =>
+                `<quantityElement> 
+    <epcClass>${d.outputQuantityList_quantityElement_epcClass}</epcClass>
+    <quantity>${d.outputQuantityList_quantityElement_quantity}</quantity>
+    ${
+      d.outputQuantityList_quantityElement_uom
+        ? `<uom>${d.outputQuantityList_quantityElement_uom}</uom>`
+        : ''
+    }
+  </quantityElement>`
+            )
+            .join('\n')
+
+          const outputQuantityListXml = !!outputQuantityItemXml
+            ? `<inputQuantityList>${outputQuantityItemXml}</inputQuantityList>`
+            : ''
+
+          const ilmdCbvmdaItemsXml = [
+            'lotNumber',
+            'productionDate',
+            'bestBeforeDate',
+            'preservationTechniqueCode'
+          ]
+            .filter(k => !!rest[`ilmd_${k}`])
+            .map(k => `<cbvmda:${k}>${rest[`ilmd_${k}`]}</cbvmda:${k}>`)
+            .join('\n')
+
+          const ilmdCertificationItemsXml = parseCsvColumnList({
+            csvData: parsedData,
+            index,
+            indexKey: 'informationProvider',
+            itemKeyList: [
+              'ilmd_certificationList_certification_certificationAgency',
+              'ilmd_certificationList_certification_certificationIdentification',
+              'ilmd_certificationList_certification_certificationStandard',
+              'ilmd_certificationList_certification_certificationValue'
+            ]
+          })
+            .map(
+              d => `<certification>
+  <certificationStandard>${d.ilmd_certificationList_certification_certificationStandard}</certificationStandard> 
+  <certificationAgency>${d.ilmd_certificationList_certification_certificationAgency}</certificationAgency>
+  <certificationValue>${d.ilmd_certificationList_certification_certificationValue}</certificationValue>
+  <certificationIdentification>${d.ilmd_certificationList_certification_certificationIdentification}</certificationIdentification>
+</certification>`
+            )
+            .join('\n')
+            .trim()
+
+          const ilmdCertificationXml = !!ilmdCertificationItemsXml
+            ? `<cbvmda:certificationList>${ilmdCertificationItemsXml}</cbvmda:certificationList>`
+            : ''
+          const ilmdItemsXml = [ilmdCbvmdaItemsXml, ilmdCertificationXml]
+            .join('\n')
+            .trim()
+
+          const ilmdXml = !!ilmdItemsXml
+            ? `<ilmd>
+                ${ilmdItemsXml}
+              </ilmd>`
+            : ''
+
+          return `<extension>
+<TransformationEvent>
+  <eventTime>${eventTime}</eventTime> 
+  <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
+  <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
+  <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
+  
+  <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
+  <gdst:productOwner>${productOwner}</gdst:productOwner> 
+  <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider>   
+  
+  <readPoint><id>${readPoint_id}</id></readPoint>
+  <bizLocation><id>${bizLocation_id}</id></bizLocation>
+
+  ${inputQuantityListXml}
+  ${outputQuantityListXml}
+  ${ilmdXml}
+</TransformationEvent>
+</extension>`
+        }
+      )
+      .join('\n')
+  })
+
 export const createObjectEventXml = file =>
   withIgnoreError(async () => {
     const readerStream = createCsvFileReaderStream(file)
@@ -52,9 +297,6 @@ export const createObjectEventXml = file =>
       headers: csvObjectEventHeader,
       skipLines: 5
     })) as any
-
-    console.log(parsedData);
-    
 
     return parsedData
       .map(
@@ -74,7 +316,7 @@ export const createObjectEventXml = file =>
           },
           index
         ) => {
-          if (!action && !eventTime && !informationProvider) return ''
+          if (!action || !eventTime || !informationProvider) return ''
 
           //#region parse basic lists
           const epcItemsXml = parseCsvColumnList({
@@ -83,10 +325,7 @@ export const createObjectEventXml = file =>
             indexKey: 'informationProvider',
             itemKeyList: ['epcList_epc']
           })
-            .map(
-              d =>
-                `<polygonPoint seq="${d.geofencePolygonPolygonPointSeq}">${d.geofencePolygonPolygonPointValue}</polygonPoint>`
-            )
+            .map(d => `<epc>${d.epcList_epc}</epc>`)
             .join('\n')
 
           const epcListXml = !!epcItemsXml
@@ -221,7 +460,8 @@ export const createObjectEventXml = file =>
   <certificationIdentification>${d.extension_ilmd_certificationList_certification_certificationIdentification}</certificationIdentification>
 </certification>`
             )
-            .join('\n').trim()
+            .join('\n')
+            .trim()
 
           const ilmdCertificationXml = !!ilmdCertificationItemsXml
             ? `<cbvmda:certificationList>${ilmdCertificationItemsXml}</cbvmda:certificationList>`
@@ -231,8 +471,10 @@ export const createObjectEventXml = file =>
             ilmdCbvmdaItemsXml,
             ilmdGdstItemsXml,
             ilmdCertificationXml
-          ].join('\n').trim()
-          
+          ]
+            .join('\n')
+            .trim()
+
           const ilmdXml = !!ilmdItemsXml
             ? `<ilmd>
               ${ilmdItemsXml}
@@ -316,7 +558,8 @@ export const createLocationXml = file =>
               d =>
                 `<polygonPoint seq="${d.geofencePolygonPolygonPointSeq}">${d.geofencePolygonPolygonPointValue}</polygonPoint>`
             )
-            .join('\n').trim()
+            .join('\n')
+            .trim()
 
           const geofanceXml = !!polygonItemsXml
             ? `<attribute id="urn:epcglobal:cbv:tr#geofencePolygon">${polygonItemsXml}</attribute>`
@@ -389,7 +632,8 @@ export const createEpcClassXml = file =>
                   grossWeightMeasurementUnitCode
                 )}">${grossWeightMeasurementValue}</measurement>`
             )
-            .join('\n').trim()
+            .join('\n')
+            .trim()
 
           const grossWeightXml = !!grossWeightItemsXml
             ? `<attribute id="urn:epcglobal:cbv:mda#grossWeight">${grossWeightItemsXml}</attribute>`
@@ -504,6 +748,5 @@ export const createBoltonXml = ({
       ${transformationEventXml}
     </EventList>
   </EPCISBody>
-</epcis:EPCISDocument>
-`
+</epcis:EPCISDocument>`
 }
