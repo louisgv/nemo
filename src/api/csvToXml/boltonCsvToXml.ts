@@ -137,6 +137,7 @@ export const createAggregationEventXml = file =>
 </AggregationEvent>`
         }
       )
+      .filter(t => !!t)
       .join('\n')
   })
 export const createTransformationEventXml = file =>
@@ -287,6 +288,7 @@ export const createTransformationEventXml = file =>
 </extension>`
         }
       )
+      .filter(t => !!t)
       .join('\n')
   })
 
@@ -512,6 +514,7 @@ export const createObjectEventXml = file =>
 </ObjectEvent>`
         }
       )
+      .filter(t => !!t)
       .join('\n')
   })
 
