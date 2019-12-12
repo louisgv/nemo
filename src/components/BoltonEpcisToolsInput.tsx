@@ -14,7 +14,8 @@ import {
   createEpcClassXml,
   createLocationXml,
   createObjectEventXml,
-  createTransformationEventXml
+  createTransformationEventXml,
+  createAggregationEventXml
 } from '../api/csvToXml/boltonCsvToXml'
 
 type FileDropProps = {
@@ -113,7 +114,7 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
           processFile={async ([file]) => {
             const newXml = await createObjectEventXml(file)
             if (!newXml) return
-            
+
             setObjectEventXml(newXml)
             setObjectEventFileName(file.name)
           }}
@@ -128,7 +129,7 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
           processFile={async ([file]) => {
             const newXml = await createTransformationEventXml(file)
             if (!newXml) return
-            console.log(newXml);
+            console.log(newXml)
 
             setTransformationEventXml(newXml)
             setTransformationEventFileName(file.name)
@@ -142,7 +143,9 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
               : 'AggregationEvent'
           }
           processFile={async ([file]) => {
-            const newXml = await createBDHXml(file)
+            const newXml = await createAggregationEventXml(file)
+            console.log(newXml)
+
             if (!newXml) return
             setAggregationEventXml(newXml)
             setAggregationEventFileName(file.name)
@@ -151,7 +154,7 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
       </DropContainer>
 
       <XmlDownloadButton
-        disabled={isAllXmlValid()}
+        disabled={!isAllXmlValid()}
         fileLabel="Bolton"
         xml={createBoltonXml({
           bdhXml,
