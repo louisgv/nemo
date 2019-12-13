@@ -118,7 +118,7 @@ export const en = {
   csv_shipReceive: "📨 Ship and Receive",
   csv_transshipment: "🔄 Transshipment",
 
-  csv_boltonEpcisTools: "🅱 Bolton EPCIS Tools",
+  csv_trawlerEpcisTools: "🅱 Trawler EPCIS Tools",
 
   prompt_nothing: "Smooth sailing 💨",
 
