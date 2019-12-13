@@ -9,14 +9,14 @@ import {
 
 import { FillButton } from '../_theme'
 import {
-  createBoltonXml,
+  createTrawlerXml,
   createBusinessDocumentHeaderXml as createBDHXml,
   createEpcClassXml,
   createLocationXml,
   createObjectEventXml,
   createTransformationEventXml,
   createAggregationEventXml
-} from '../api/csvToXml/boltonCsvToXml'
+} from '../api/csvToXml/trawlerCsvToXml'
 
 type FileDropProps = {
   fileValid?: boolean
@@ -41,7 +41,7 @@ const DropContainer = styled.div`
   justify-content: space-around;
 `
 
-export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
+export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
   const [disabled, setDisabled] = useState(false)
   const [bdhXml, setBdhXml] = useState('')
   const [bdhFileName, setBdhFileName] = useState('')
@@ -156,7 +156,7 @@ export const BoltonEpcisToolsInput = ({ triggerNextStep }: any) => {
       <XmlDownloadButton
         disabled={!isAllXmlValid()}
         fileLabel="Bolton"
-        xml={createBoltonXml({
+        xml={createTrawlerXml({
           bdhXml,
           epcClassXml,
           locationXml,

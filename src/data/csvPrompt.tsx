@@ -4,14 +4,14 @@ import {
   CatchAndProcessCsvInput,
   AggregationDisaggregationCsvInput
 } from '../components/CsvFileInput'
-import { BoltonEpcisToolsInput } from '../components/BoltonEpcisToolsInput'
+import { TrawlerEpcisToolsInput } from '../components/TrawlerEpcisToolsInput'
 
 const promptOrder = [
   'prompt_csv',
   'add_csvType',
   'comp_catchProcess',
   'comp_aggregationDisaggregation',
-  'comp_boltonEpcisTools',
+  'comp_trawlerEpcisTools',
   'prompt_anotherOne'
 ]
 
@@ -21,12 +21,12 @@ const promptStructure = {
     options: [
       'csv_catchProcess',
       'csv_aggregationDisaggregation',
-      'csv_boltonEpcisTools'
+      'csv_trawlerEpcisTools'
     ].map(createOptionLabel),
     triggers: [
       'comp_catchProcess',
       'comp_aggregationDisaggregation',
-      'comp_boltonEpcisTools'
+      'comp_trawlerEpcisTools'
     ]
   },
   comp_catchProcess: {
@@ -44,8 +44,8 @@ const promptStructure = {
     trigger: 'prompt_anotherOne'
   },
 
-  comp_boltonEpcisTools: {
-    component: <BoltonEpcisToolsInput />,
+  comp_trawlerEpcisTools: {
+    component: <TrawlerEpcisToolsInput />,
     hideInput: true,
     replace: false,
     waitAction: true,

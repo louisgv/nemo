@@ -716,7 +716,7 @@ export const createBusinessDocumentHeaderXml = file =>
 </sbdh:StandardBusinessDocumentHeader>`
   })
 
-export const createBoltonXml = ({
+export const createTrawlerXml = ({
   bdhXml,
   epcClassXml,
   locationXml,
