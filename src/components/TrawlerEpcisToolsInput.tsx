@@ -18,6 +18,8 @@ import {
   createAggregationEventXml
 } from '../api/csvToXml/trawlerCsvToXml'
 
+const debug = require("debug")("TrawlerEpcisToolsInput");
+
 type FileDropProps = {
   fileValid?: boolean
 }
@@ -81,6 +83,7 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
           processFile={async ([file]) => {
             const newXml = await createBDHXml(file)
             if (!newXml) return
+            debug(newXml)
 
             setBdhXml(newXml)
             setBdhFileName(file.name)
@@ -92,6 +95,7 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
           processFile={async ([file]) => {
             const newXml = await createEpcClassXml(file)
             if (!newXml) return
+            debug(newXml)
 
             setEpcClassXml(newXml)
             setEpcClassFileName(file.name)
@@ -103,6 +107,7 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
           processFile={async ([file]) => {
             const newXml = await createLocationXml(file)
             if (!newXml) return
+            debug(newXml)
 
             setLocationXml(newXml)
             setLocationFileName(file.name)
@@ -114,6 +119,7 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
           processFile={async ([file]) => {
             const newXml = await createObjectEventXml(file)
             if (!newXml) return
+            debug(newXml)
 
             setObjectEventXml(newXml)
             setObjectEventFileName(file.name)
@@ -129,7 +135,7 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
           processFile={async ([file]) => {
             const newXml = await createTransformationEventXml(file)
             if (!newXml) return
-            console.log(newXml)
+            debug(newXml)
 
             setTransformationEventXml(newXml)
             setTransformationEventFileName(file.name)
@@ -144,7 +150,7 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
           }
           processFile={async ([file]) => {
             const newXml = await createAggregationEventXml(file)
-            console.log(newXml)
+            debug(newXml)
 
             if (!newXml) return
             setAggregationEventXml(newXml)

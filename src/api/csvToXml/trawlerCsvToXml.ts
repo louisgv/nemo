@@ -10,6 +10,8 @@ import {
 } from './csvHeader'
 import { DateTime } from 'luxon'
 
+const debug = require("debug")("TrawlerCsvToXml");
+
 const withIgnoreError = async fx => {
   try {
     return fx()
@@ -51,8 +53,10 @@ export const createAggregationEventXml = file =>
   withIgnoreError(async () => {
     const readerStream = createCsvFileReaderStream(file)
     const parsedData = (await neatCsv(readerStream, {
-      headers: csvAggregationEventHeader,
-      skipLines: 5
+      // headers: csvAggregationEventHeader,
+      // skipLines: 5
+      mapHeaders: ({ index }) => csvAggregationEventHeader[index] || null,
+      skipLines: 4
     })) as any
     return parsedData
       .map(
@@ -144,8 +148,10 @@ export const createTransformationEventXml = file =>
   withIgnoreError(async () => {
     const readerStream = createCsvFileReaderStream(file)
     const parsedData = (await neatCsv(readerStream, {
-      headers: csvTransformationEventHeader,
-      skipLines: 4
+      // headers: csvTransformationEventHeader,
+      // skipLines: 4
+      mapHeaders: ({ index }) => csvTransformationEventHeader[index] || null,
+      skipLines: 3
     })) as any
     return parsedData
       .map(
@@ -296,9 +302,13 @@ export const createObjectEventXml = file =>
   withIgnoreError(async () => {
     const readerStream = createCsvFileReaderStream(file)
     const parsedData = (await neatCsv(readerStream, {
-      headers: csvObjectEventHeader,
-      skipLines: 5
+      // headers: csvObjectEventHeader,
+      // skipLines: 5
+      mapHeaders: ({ index }) => csvObjectEventHeader[index] || null,
+      skipLines: 4
     })) as any
+
+    debug(parsedData);
 
     return parsedData
       .map(
@@ -522,8 +532,10 @@ export const createLocationXml = file =>
   withIgnoreError(async () => {
     const readerStream = createCsvFileReaderStream(file)
     const parsedData = (await neatCsv(readerStream, {
-      headers: csvLocationHeader,
-      skipLines: 3
+      // headers: csvLocationHeader,
+      // skipLines: 3
+      mapHeaders: ({ index }) => csvLocationHeader[index] || null,
+      skipLines: 2
     })) as any
 
     const vocabArrayKeyList = [
@@ -576,6 +588,7 @@ export const createLocationXml = file =>
         }
       )
       .join('\n')
+      .trim()
 
     return `<Vocabulary type="urn:epcglobal:epcis:vtype:Location">
   <VocabularyElementList>
@@ -588,9 +601,13 @@ export const createEpcClassXml = file =>
   withIgnoreError(async () => {
     const readerStream = createCsvFileReaderStream(file)
     const parsedData = (await neatCsv(readerStream, {
-      headers: csvEpcClassHeader,
-      skipLines: 3
+      mapHeaders: ({ index }) => csvEpcClassHeader[index] || null,
+      skipLines: 2
+      // headers: csvEpcClassHeader,
+      // skipLines: 3
     })) as any
+
+    debug(parsedData);
 
     const vocabArrayKeyList = [
       'grossWeightMeasurementValue',
@@ -651,6 +668,7 @@ export const createEpcClassXml = file =>
         }
       )
       .join('\n')
+      .trim()
 
     return `<Vocabulary type="urn:epcglobal:epcis:vtype:EPCClass">
     <VocabularyElementList>
@@ -662,8 +680,8 @@ export const createEpcClassXml = file =>
 export const createBusinessDocumentHeaderXml = file =>
   withIgnoreError(async () => {
     const readerStream = createCsvFileReaderStream(file)
-    const [, data] = (await neatCsv(readerStream, {
-      headers: csvBusinessDocumentHeader
+    const [data] = (await neatCsv(readerStream, {
+      mapHeaders: ({ index }) => csvBusinessDocumentHeader[index] || null,
     })) as any
 
     const {
