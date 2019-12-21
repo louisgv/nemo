@@ -1,7 +1,7 @@
 ---
 name: 🤓 Question
 labels: 'question'
-title: '[Q/A] '
+title: 'Q/A | '
 about: Ask, discuss, debate with the team
 ---
 

@@ -1,6 +1,6 @@
 ## Issues resolved:
 
-- [ ] closes #
+- closes #
 
 <!-- 
 ## Screenshot (optional)
