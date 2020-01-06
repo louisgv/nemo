@@ -509,6 +509,7 @@ export const createObjectEventXml = file =>
           return `<ObjectEvent>
     <eventTime>${eventTime}</eventTime> 
     <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
+    ${epcListXml}
     <action>${action}</action>
     <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
     <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
@@ -518,7 +519,6 @@ export const createObjectEventXml = file =>
     <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
     <gdst:productOwner>${productOwner}</gdst:productOwner>
     <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider> 
-    ${epcListXml}
     ${bizTransactionListXml}
     ${extensionXml}
 </ObjectEvent>`
