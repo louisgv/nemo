@@ -66,12 +66,12 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
   const [aggregationEventXml, setAggregationEventXml] = useState('')
   const [aggregationEventFileName, setAggregationEventFileName] = useState('')
 
-  const isAllXmlValid = () =>
-    !!bdhXml &&
-    !!epcClassXml &&
-    !!locationXml &&
-    !!objectEventXml &&
-    !!transformationEventXml &&
+  const isAnyXmlValid = () =>
+    !!bdhXml ||
+    !!epcClassXml ||
+    !!locationXml ||
+    !!objectEventXml ||
+    !!transformationEventXml ||
     !!aggregationEventXml
 
   return (
@@ -160,7 +160,7 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
       </DropContainer>
 
       <XmlDownloadButton
-        disabled={!isAllXmlValid()}
+        disabled={!isAnyXmlValid()}
         fileLabel="Bolton"
         xml={createTrawlerXml({
           bdhXml,
