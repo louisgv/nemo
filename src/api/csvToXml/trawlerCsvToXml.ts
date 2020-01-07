@@ -124,20 +124,19 @@ export const createAggregationEventXml = file =>
           return `<AggregationEvent>
   <eventTime>${eventTime}</eventTime> 
   <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
+  ${childEPCsXml}
+
   <action>${action}</action>
   <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
   <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
-  <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
-  <parentID>${parentID}</parentID> <!--  Pallet ID -->
-
-  <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
-  <gdst:productOwner>${productOwner}</gdst:productOwner>
-  <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider> 
+  <parentID>${parentID}</parentID>
   
   <readPoint><id>${readPoint_id}</id></readPoint>
   <bizLocation><id>${bizLocation_id}</id></bizLocation>
-  ${childEPCsXml}
   ${extensionXml}
+  <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
+  <gdst:productOwner>${productOwner}</gdst:productOwner>
+  <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider> 
 </AggregationEvent>`
         }
       )
@@ -280,16 +279,16 @@ export const createTransformationEventXml = file =>
   <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
   <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
   
-  <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
-  <gdst:productOwner>${productOwner}</gdst:productOwner> 
-  <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider>   
-  
   <readPoint><id>${readPoint_id}</id></readPoint>
   <bizLocation><id>${bizLocation_id}</id></bizLocation>
 
   ${inputQuantityListXml}
   ${outputQuantityListXml}
   ${ilmdXml}
+  
+  <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
+  <gdst:productOwner>${productOwner}</gdst:productOwner> 
+  <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider>   
 </TransformationEvent>
 </extension>`
         }
@@ -496,9 +495,9 @@ export const createObjectEventXml = file =>
           //#endregion
 
           const extensionItemsXml = [
+            quantityListXml,
             sourceListXml,
             destinationListXml,
-            quantityListXml,
             ilmdXml
           ].join('\n')
 
@@ -516,11 +515,11 @@ export const createObjectEventXml = file =>
     <readPoint><id>${readPoint_id}</id></readPoint>
     <bizLocation><id>${bizLocation_id}</id></bizLocation>
     
+    ${bizTransactionListXml}
+    ${extensionXml}
     <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
     <gdst:productOwner>${productOwner}</gdst:productOwner>
     <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider> 
-    ${bizTransactionListXml}
-    ${extensionXml}
 </ObjectEvent>`
         }
       )
