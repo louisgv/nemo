@@ -18,7 +18,7 @@ import {
   createAggregationEventXml
 } from '../api/csvToXml/trawlerCsvToXml'
 
-const debug = require("debug")("TrawlerEpcisToolsInput");
+const debug = require('debug')('TrawlerEpcisToolsInput')
 
 type FileDropProps = {
   fileValid?: boolean
@@ -54,25 +54,27 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
   const [locationXml, setLocationXml] = useState('')
   const [locationFileName, setLocationFileName] = useState('')
 
-  const [objectEventXml, setObjectEventXml] = useState('')
+  const [objectEventXmlList, setObjectEventXmlList] = useState([])
   const [objectEventFileName, setObjectEventFileName] = useState('')
 
-  const [transformationEventXml, setTransformationEventXml] = useState('')
+  const [transformationEventXmlList, setTransformationEventXmlList] = useState(
+    []
+  )
   const [
     transformationEventFileName,
     setTransformationEventFileName
   ] = useState('')
 
-  const [aggregationEventXml, setAggregationEventXml] = useState('')
+  const [aggregationEventXmlList, setAggregationEventXmlList] = useState([])
   const [aggregationEventFileName, setAggregationEventFileName] = useState('')
 
   const isAnyXmlValid = () =>
     !!bdhXml ||
     !!epcClassXml ||
     !!locationXml ||
-    !!objectEventXml ||
-    !!transformationEventXml ||
-    !!aggregationEventXml
+    objectEventXmlList[0] ||
+    transformationEventXmlList[0] ||
+    aggregationEventXmlList[0]
 
   return (
     <FileDropContainer>
@@ -114,21 +116,21 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
           }}
         />
         <StyledCsvFileDrop
-          fileValid={!!objectEventXml}
-          dropText={!!objectEventXml ? objectEventFileName : 'ObjectEvent'}
+          fileValid={objectEventXmlList[0]}
+          dropText={objectEventXmlList[0] ? objectEventFileName : 'ObjectEvent'}
           processFile={async ([file]) => {
             const newXml = await createObjectEventXml(file)
             if (!newXml) return
             debug(newXml)
 
-            setObjectEventXml(newXml)
+            setObjectEventXmlList(newXml)
             setObjectEventFileName(file.name)
           }}
         />
         <StyledCsvFileDrop
-          fileValid={!!transformationEventXml}
+          fileValid={transformationEventXmlList[0]}
           dropText={
-            !!transformationEventXml
+            transformationEventXmlList[0]
               ? transformationEventFileName
               : 'TransformationEvent'
           }
@@ -137,14 +139,14 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
             if (!newXml) return
             debug(newXml)
 
-            setTransformationEventXml(newXml)
+            setTransformationEventXmlList(newXml)
             setTransformationEventFileName(file.name)
           }}
         />
         <StyledCsvFileDrop
-          fileValid={!!aggregationEventXml}
+          fileValid={aggregationEventXmlList[0]}
           dropText={
-            !!aggregationEventXml
+            aggregationEventXmlList[0]
               ? aggregationEventFileName
               : 'AggregationEvent'
           }
@@ -153,7 +155,7 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
             debug(newXml)
 
             if (!newXml) return
-            setAggregationEventXml(newXml)
+            setAggregationEventXmlList(newXml)
             setAggregationEventFileName(file.name)
           }}
         />
@@ -166,9 +168,11 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
           bdhXml,
           epcClassXml,
           locationXml,
-          objectEventXml,
-          transformationEventXml,
-          aggregationEventXml
+          xmlList: [
+            ...objectEventXmlList,
+            ...transformationEventXmlList,
+            ...aggregationEventXmlList
+          ]
         })}
       />
 
