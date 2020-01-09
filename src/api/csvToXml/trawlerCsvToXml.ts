@@ -10,7 +10,7 @@ import {
 } from './csvHeader'
 import { DateTime } from 'luxon'
 
-const debug = require("debug")("TrawlerCsvToXml");
+const debug = require('debug')('TrawlerCsvToXml')
 
 const withIgnoreError = async fx => {
   try {
@@ -121,7 +121,9 @@ export const createAggregationEventXml = file =>
             ? `<extension>${extensionItemsXml}</extension>`
             : ''
 
-          return `<AggregationEvent>
+          return {
+            date: new Date(eventTime),
+            xml: `<AggregationEvent>
   <eventTime>${eventTime}</eventTime> 
   <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
   ${childEPCsXml}
@@ -138,10 +140,10 @@ export const createAggregationEventXml = file =>
   <gdst:productOwner>${productOwner}</gdst:productOwner>
   <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider> 
 </AggregationEvent>`
+          }
         }
       )
-      .filter(t => !!t)
-      .join('\n')
+      .filter(t => !!t.xml)
   })
 export const createTransformationEventXml = file =>
   withIgnoreError(async () => {
@@ -272,7 +274,9 @@ export const createTransformationEventXml = file =>
               </ilmd>`
             : ''
 
-          return `<extension>
+          return {
+            date: new Date(eventTime),
+            xml: `<extension>
 <TransformationEvent>
   <eventTime>${eventTime}</eventTime> 
   <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
@@ -291,10 +295,10 @@ export const createTransformationEventXml = file =>
   <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider>   
 </TransformationEvent>
 </extension>`
+          }
         }
       )
       .filter(t => !!t)
-      .join('\n')
   })
 
 export const createObjectEventXml = file =>
@@ -307,7 +311,7 @@ export const createObjectEventXml = file =>
       skipLines: 4
     })) as any
 
-    debug(parsedData);
+    debug(parsedData)
 
     return parsedData
       .map(
@@ -505,7 +509,9 @@ export const createObjectEventXml = file =>
             ? `<extension>${extensionItemsXml}</extension>`
             : ''
 
-          return `<ObjectEvent>
+          return {
+            date: new Date(eventTime),
+            xml: `<ObjectEvent>
     <eventTime>${eventTime}</eventTime> 
     <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
     ${epcListXml}
@@ -521,10 +527,10 @@ export const createObjectEventXml = file =>
     <gdst:productOwner>${productOwner}</gdst:productOwner>
     <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider> 
 </ObjectEvent>`
+          }
         }
       )
-      .filter(t => !!t)
-      .join('\n')
+      .filter(t => !!t.xml)
   })
 
 export const createLocationXml = file =>
@@ -606,7 +612,7 @@ export const createEpcClassXml = file =>
       // skipLines: 3
     })) as any
 
-    debug(parsedData);
+    debug(parsedData)
 
     const vocabArrayKeyList = [
       'grossWeightMeasurementValue',
@@ -680,7 +686,7 @@ export const createBusinessDocumentHeaderXml = file =>
   withIgnoreError(async () => {
     const readerStream = createCsvFileReaderStream(file)
     const [data] = (await neatCsv(readerStream, {
-      mapHeaders: ({ index }) => csvBusinessDocumentHeader[index] || null,
+      mapHeaders: ({ index }) => csvBusinessDocumentHeader[index] || null
     })) as any
 
     const {
@@ -737,9 +743,7 @@ export const createTrawlerXml = ({
   bdhXml,
   epcClassXml,
   locationXml,
-  objectEventXml,
-  transformationEventXml,
-  aggregationEventXml
+  xmlList
 }) => {
   return `<?xml version="1.0" encoding="UTF-8"?> 
 <epcis:EPCISDocument xmlns:epcis="urn:epcglobal:epcis:xsd:1" 
@@ -751,7 +755,7 @@ export const createTrawlerXml = ({
   xmlns:cbvmda="urn:epcglobal:cbv:mda" 
   xmlns:gdst="https://traceability-dialogue.org/epcis">
   <EPCISHeader>
-       ${bdhXml}
+    ${bdhXml}
     <extension>
       <EPCISMasterData>
         <VocabularyList> 
@@ -763,9 +767,10 @@ export const createTrawlerXml = ({
   </EPCISHeader>
   <EPCISBody>
     <EventList>
-      ${objectEventXml}
-      ${aggregationEventXml}
-      ${transformationEventXml}
+      ${xmlList
+        .sort((a, b) => a.date - b.date)
+        .map(i => i.xml)
+        .join('\n')}
     </EventList>
   </EPCISBody>
 </epcis:EPCISDocument>`
