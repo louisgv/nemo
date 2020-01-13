@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/nemo/static/css/main.da3020f0.chunk.css",
-    "main.js": "/nemo/static/js/main.dee57cb5.chunk.js",
-    "main.js.map": "/nemo/static/js/main.dee57cb5.chunk.js.map",
-    "runtime-main.js": "/nemo/static/js/runtime-main.37cf73cc.js",
-    "runtime-main.js.map": "/nemo/static/js/runtime-main.37cf73cc.js.map",
-    "static/js/2.1f450758.chunk.js": "/nemo/static/js/2.1f450758.chunk.js",
-    "static/js/2.1f450758.chunk.js.map": "/nemo/static/js/2.1f450758.chunk.js.map",
+    "main.js": "/nemo/static/js/main.e1cd54e4.chunk.js",
+    "main.js.map": "/nemo/static/js/main.e1cd54e4.chunk.js.map",
+    "runtime-main.js": "/nemo/static/js/runtime-main.49a8c993.js",
+    "runtime-main.js.map": "/nemo/static/js/runtime-main.49a8c993.js.map",
+    "static/js/2.400fb006.chunk.js": "/nemo/static/js/2.400fb006.chunk.js",
+    "static/js/2.400fb006.chunk.js.map": "/nemo/static/js/2.400fb006.chunk.js.map",
     "index.html": "/nemo/index.html",
-    "precache-manifest.93cb480969199fc662f49e52f37f1993.js": "/nemo/precache-manifest.93cb480969199fc662f49e52f37f1993.js",
+    "precache-manifest.66afdaacaaa4e52ab36b4c939038a452.js": "/nemo/precache-manifest.66afdaacaaa4e52ab36b4c939038a452.js",
     "service-worker.js": "/nemo/service-worker.js",
     "static/css/main.da3020f0.chunk.css.map": "/nemo/static/css/main.da3020f0.chunk.css.map",
-    "static/js/2.1f450758.chunk.js.LICENSE": "/nemo/static/js/2.1f450758.chunk.js.LICENSE"
+    "static/js/2.400fb006.chunk.js.LICENSE": "/nemo/static/js/2.400fb006.chunk.js.LICENSE"
   },
   "entrypoints": [
-    "static/js/runtime-main.37cf73cc.js",
-    "static/js/2.1f450758.chunk.js",
+    "static/js/runtime-main.49a8c993.js",
+    "static/js/2.400fb006.chunk.js",
     "static/css/main.da3020f0.chunk.css",
-    "static/js/main.dee57cb5.chunk.js"
+    "static/js/main.e1cd54e4.chunk.js"
   ]
 }
