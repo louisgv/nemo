@@ -5,28 +5,9 @@ const debug = require("debug")("use-ipfs");
 
 const { Ipfs } = window as any
 
-const w = window as any
-
-const ipfs = new Ipfs({
+const ipfs = Ipfs.create({
   repo: api.dapp.dappVault.ipfsRepo,
   silent: true
-})
-
-ipfs.once('ready', () => {
-  w.ipfsReady = true
-})
-
-const initIpfs = (ipfs: any) => new Promise((resolve, reject) => {
-  if (w.ipfsReady) {
-    resolve()
-  }
-
-  ipfs.once('ready', () => {
-    w.ipfsReady = true
-    resolve()
-  })
-
-  ipfs.once('error', (err: any) => reject(err))
 })
 
 export function useIpfs(opts?: any) {
@@ -47,7 +28,6 @@ export function useIpfs(opts?: any) {
 
   async function startIpfs() {
     try {
-      await initIpfs(ipfs)
       setIpfsReady(true)
     } catch (error) {
       console.error('IPFS init error:', error)
