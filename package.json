@@ -43,7 +43,7 @@
     "uuid": "^7.0.2"
   },
   "scripts": {
-    "predeploy": "npm run version && react-scripts build",
+    "predeploy": "yarn version && react-scripts build",
     "deploy": "npx gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
