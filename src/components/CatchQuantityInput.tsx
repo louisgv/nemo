@@ -6,9 +6,9 @@ import { useFormState } from "react-use-form-state";
 import { useProfileState, useCatchCacheState, uomMap } from "../_data";
 import { strings } from "../i18n";
 
-import {Qrcode} from 'styled-icons/icomoon/Qrcode'
+import {Qrcode} from '@styled-icons/icomoon/Qrcode'
 
-import uuid from 'uuid/v4'
+import { v4 as uuid } from 'uuid';
 
 interface CatchQuantityFormFields {
   amount: number;

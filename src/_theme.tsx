@@ -3,8 +3,8 @@ import React from "react";
 import styled from "styled-components";
 
 import Select from "react-styled-select";
-import { Refresh } from "styled-icons/material/Refresh";
-import { Check } from "styled-icons/material/Check";
+import { Refresh } from "@styled-icons/material/Refresh";
+import { Check } from "@styled-icons/material/Check";
 
 export const theme = {
   background: "#f5f8fb",

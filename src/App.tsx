@@ -103,11 +103,11 @@ export const App = ({ props }: any) => {
             />
           }
           enableMobileAutoFocus
-          botAvatar={'assets/avatar.png'}
+          botAvatar={process.env.PUBLIC_URL + '/assets/avatar.png'}
           hideUserAvatar
           cache={isProfileSetup}
           cacheName={localStorageKey.chatCache}
-          userAvatar={'assets/captain.png'}
+          userAvatar={process.env.PUBLIC_URL + '/assets/captain.png'}
           placeholder={strings.placeholder}
           userDelay={0}
           steps={steps}
