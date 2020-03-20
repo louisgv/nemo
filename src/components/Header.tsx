@@ -57,7 +57,7 @@ export const Header = ({ language, onLanguageChanged }: any) => {
         }}
         valueRenderer={({ value, label }: any) => (
           <div>
-            <Flag code={value} svg />{" "}
+            <Flag countryCode={value} svg />{" "}
             <span className="select-label">{label}</span>
           </div>
         )}

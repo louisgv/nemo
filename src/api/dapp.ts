@@ -149,9 +149,12 @@ export const sendCatchEvent = async ({
   const { account, keys } = dappVault;
 
   const content = Buffer.from(body);
-  const results = await ipfs.add(content);
+  console.log(ipfs);
+  
+  const results = await ipfs.add(content).next();
+  console.log(results);
 
-  const { hash } = results[0];
+  const { path: hash } = results.value;
 
   const signatureProvider = new JsSignatureProvider(keys);
 

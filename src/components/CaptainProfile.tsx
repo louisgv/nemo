@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { useSpring, useChain, config, animated } from 'react-spring'
 import styled from 'styled-components'
 
-import { Close } from 'styled-icons/material/Close'
+import { Close } from '@styled-icons/material/Close'
 import { useProfileState, localStorageKey } from '../_data'
 import { useFormState } from 'react-use-form-state'
 import {
