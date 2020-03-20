@@ -17,6 +17,7 @@ import {
 import { useFormState } from "react-use-form-state";
 import { dappVault } from "../api/dapp";
 import { useIpfs } from "../hooks/use-ipfs";
+import api from "../api";
 
 const debug = require("debug")("DappSendInput");
 
@@ -31,7 +32,7 @@ const Container = styled(StyledColumn)`
 `;
 
 export const DappSendInput = ({ triggerNextStep, step }: any) => {
-  const { ipfs, isIpfsReady, ipfsInitError } = useIpfs();
+  const { getIpfs, ipfsError } = useIpfs(api.dapp.dappVault.ipfsRepo)
 
   const { keys, account, apiUrl } = dappVault;
 
@@ -45,7 +46,6 @@ export const DappSendInput = ({ triggerNextStep, step }: any) => {
 
   return (
     <Container>
-      {isIpfsReady && (
         <StyledColumnForm
           onSubmit={async event => {
             event.preventDefault();
@@ -53,6 +53,7 @@ export const DappSendInput = ({ triggerNextStep, step }: any) => {
 
             try {
               // Jungle testnet keys
+              const ipfs = await getIpfs();
               const { apiUrl, echoString } = formState.values;
               const content = Buffer.from(echoString);
               const results = await ipfs.add(content);
@@ -172,12 +173,11 @@ export const DappSendInput = ({ triggerNextStep, step }: any) => {
 
           <FillButton disabled={disabled}>Submit</FillButton>
         </StyledColumnForm>
-      )}
 
       <div style={{ color: "red" }}>
         {error.length > 0 && <span>ERROR: {error}</span>}
-        {ipfsInitError && (
-          <span>ERROR: {ipfsInitError.message || ipfsInitError}</span>
+        {ipfsError && (
+          <span>ERROR: {ipfsError}</span>
         )}
       </div>
       {success.length > 0 && (

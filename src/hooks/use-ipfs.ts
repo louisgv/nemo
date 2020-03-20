@@ -1,43 +1,40 @@
-import { useState, useEffect } from 'react'
-import api from "../api";
+import { useState } from 'react'
 
-const debug = require("debug")("use-ipfs");
-
-const { Ipfs } = window as any
-
-const ipfs = Ipfs.create({
-  repo: api.dapp.dappVault.ipfsRepo,
-  silent: true
-})
-
-export function useIpfs(opts?: any) {
-
+export function useIpfs(repo) {
+  const [ipfs, setIpfs] = useState(null)
   const [isIpfsReady, setIpfsReady] = useState(false)
-  const [ipfsInitError, setIpfsInitError] = useState(null as any)
+  const [ipfsError, setIpfsError] = useState('')
 
-  useEffect(() => {
-    startIpfs()
-    return function cleanup() {
-      if (ipfs && ipfs.stop) {
-        debug('Stopping IPFS')
-        ipfs.stop()
-        setIpfsReady(false)
-      }
+  async function getIpfs() {
+    if (!window.Ipfs) {
+      return null
     }
-  }, [])
 
-  async function startIpfs() {
+    if (isIpfsReady) {
+      return ipfs
+    }
+
+    const { Ipfs } = window
+
     try {
+      const ipfsInstance = await Ipfs.create({
+        repo
+      })
+
       setIpfsReady(true)
+      setIpfs(ipfsInstance)
+
+      if (!ipfsInstance) {
+        throw new Error('IPFS initialize error, please try again.')
+      }
+
+      return ipfsInstance
     } catch (error) {
-      console.error('IPFS init error:', error)
-      setIpfsInitError(error)
       setIpfsReady(false)
+      setIpfsError('IPFS Error')
+      console.error(error)
     }
   }
 
-  debug(ipfs)
-
-  return { ipfs, isIpfsReady, ipfsInitError }
+  return { getIpfs, isIpfsReady, ipfsError }
 }
-

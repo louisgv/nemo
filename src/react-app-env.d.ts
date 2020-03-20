@@ -1,14 +1,5 @@
 /// <reference types="react-scripts" />
 
-declare module "react-simple-chatbot";
-declare module 'react-country-flag';
-declare module 'react-autosuggest';
-declare module 'react-styled-select';
-declare module 'autoscroll-react';
-declare module 'react-rewards';
-declare module 'use-persisted-state';
-declare module 'uuid/v4';
-
 interface IDialogue extends LocalizedStringsMethods {
   initialAsk: string;
 }
@@ -34,4 +25,8 @@ interface CaptainProfileReviewFormFields {
   vesselCertificationIdentification: string;
 
   unitOfMeasurement: string;
+}
+
+interface Window {
+  Ipfs: ?any
 }
