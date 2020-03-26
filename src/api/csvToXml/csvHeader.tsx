@@ -81,6 +81,8 @@ export const csvObjectEventHeader = [
 
   'readPoint_id',
   'bizLocation_id',
+  
+  'humanWelfarePolicy',
 
   'bizTransactionList_bizTransaction_type',
   'bizTransactionList_bizTransaction_value',
@@ -90,29 +92,20 @@ export const csvObjectEventHeader = [
 
   'extension_destinationList_destination_type',
   'extension_destinationList_destination_value',
-  
-  'extension_humanWelfarePolicy',
 
   'extension_ilmd_fisheryImprovementProject',
-  'extension_ilmd_harvestCertification',
-  'extension_ilmd_harvestCertificationCoC',
   'extension_ilmd_harvestEndDate',
   'extension_ilmd_harvestStartDate',
-  'extension_ilmd_ISSF',
 
   'extension_ilmd_transshipStartDate',
   'extension_ilmd_transshipEndDate',
 
-  'extension_ilmd_landingDateEnd',
-  'extension_ilmd_landingDateStart',
+  'extension_ilmd_landingEndDate',
+  'extension_ilmd_landingStartDate',
+
   'extension_ilmd_productionMethodCode',
-  'extension_ilmd_ratingsScheme',
-  'extension_ilmd_ratingsScore',
   'extension_ilmd_unloadingPort',
   'extension_ilmd_broodstockSource',
-
-  'extension_ilmd_vesselRegistryLink',
-  'extension_ilmd_vesselTransponder',
 
   'extension_ilmd_certificationList_certification_certificationAgency',
   'extension_ilmd_certificationList_certification_certificationIdentification',
@@ -128,7 +121,6 @@ export const csvObjectEventHeader = [
   'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselFlagState',
   'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselID',
   'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselName',
-  'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselOperator',
   'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_gpsAvailability',
   'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselPublicRegistry', 
   'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselRegistration',
