@@ -69,7 +69,6 @@ export const createAggregationEventXml = file =>
             parentID,
             eventTime,
             eventTimeZoneOffset,
-            visibilityEvent,
             disposition,
             readPoint_id,
             bizLocation_id,
@@ -115,7 +114,32 @@ export const createAggregationEventXml = file =>
             ? `<childQuantityList>${childQuantityListItem}</childQuantityList>`
             : ''
 
-          const extensionItemsXml = [childQuantityListXml].join('\n')
+          
+          const certificationListItem = parseCsvColumnList({
+            csvData: parsedData,
+            index,
+            indexKey: 'informationProvider',
+            itemKeyList: [
+              'extension_certificationList_certification_certificationAgency',
+              'extension_certificationList_certification_certificationIdentification',
+              'extension_certificationList_certification_certificationStandard',
+              'extension_certificationList_certification_certificationValue'
+             ]
+          })
+            .map(
+              d => `<certification><certificationAgency>${d.extension_certificationList_certification_certificationAgency}</certificationAgency>
+    <certificationIdentification>${d.extension_certificationList_certification_certificationIdentification}</certificationIdentification>
+    <certificationStandard>${d.extension_certificationList_certification_certificationStandard}</certificationStandard>
+    <certificationValue>${d.extension_certificationList_certification_certificationValue}</certificationValue>
+  </certification>`
+            )
+            .join('\n')
+
+          const certificationListXml = !!certificationListItem
+            ? `<certificationList>${certificationListItem}</certificationList>`
+            : ''
+
+          const extensionItemsXml = [childQuantityListXml, certificationListXml].join('\n')
 
           const extensionXml = !!extensionItemsXml
             ? `<extension>${extensionItemsXml}</extension>`
@@ -136,7 +160,6 @@ export const createAggregationEventXml = file =>
   <readPoint><id>${readPoint_id}</id></readPoint>
   <bizLocation><id>${bizLocation_id}</id></bizLocation>
   ${extensionXml}
-  <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
   <gdst:productOwner>${productOwner}</gdst:productOwner>
   <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider> 
 </AggregationEvent>`
@@ -163,7 +186,6 @@ export const createTransformationEventXml = file =>
             productOwner,
             eventTime,
             eventTimeZoneOffset,
-            visibilityEvent,
             disposition,
             readPoint_id,
             bizLocation_id,
@@ -290,7 +312,6 @@ export const createTransformationEventXml = file =>
   ${outputQuantityListXml}
   ${ilmdXml}
   
-  <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
   <gdst:productOwner>${productOwner}</gdst:productOwner> 
   <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider>   
 </TransformationEvent>
@@ -323,7 +344,6 @@ export const createObjectEventXml = file =>
             productOwner,
             eventTime,
             eventTimeZoneOffset,
-            visibilityEvent,
             disposition,
             readPoint_id,
             bizLocation_id,
@@ -523,7 +543,6 @@ export const createObjectEventXml = file =>
     
     ${bizTransactionListXml}
     ${extensionXml}
-    <gdst:visibilityEvent>${visibilityEvent}</gdst:visibilityEvent>
     <gdst:productOwner>${productOwner}</gdst:productOwner>
     <cbvmda:informationProvider>${informationProvider}</cbvmda:informationProvider> 
 </ObjectEvent>`
