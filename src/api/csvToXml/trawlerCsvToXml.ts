@@ -118,7 +118,8 @@ export const createAggregationEventXml = file =>
             csvData: parsedData,
             index,
             indexKey: 'informationProvider',
-            itemKeyList: [
+            itemKeyList: [              
+              'extension_certificationList_certification_certificationType',
               'extension_certificationList_certification_certificationAgency',
               'extension_certificationList_certification_certificationIdentification',
               'extension_certificationList_certification_certificationStandard',
@@ -126,12 +127,13 @@ export const createAggregationEventXml = file =>
             ]
           })
             .map(
-              d => `<certification>
-    <certificationAgency>${d.extension_certificationList_certification_certificationAgency}</certificationAgency>
-    <certificationIdentification>${d.extension_certificationList_certification_certificationIdentification}</certificationIdentification>
-    <certificationStandard>${d.extension_certificationList_certification_certificationStandard}</certificationStandard>
-    <certificationValue>${d.extension_certificationList_certification_certificationValue}</certificationValue>
-  </certification>`
+              d => `<cbvmda:certification>
+    <gdst:certificateType>${d.extension_certificationList_certification_certificationType}</gdst:certificateType>
+    <cbvmda:certificationAgency>${d.extension_certificationList_certification_certificationAgency}</cbvmda:certificationAgency>
+    <cbvmda:certificationIdentification>${d.extension_certificationList_certification_certificationIdentification}</certificationIdentification>
+    <cbvmda:certificationStandard>${d.extension_certificationList_certification_certificationStandard}</certificationStandard>
+    <cbvmda:certificationValue>${d.extension_certificationList_certification_certificationValue}</certificationValue>
+  </cbvmda:certification>`
             )
             .join('\n')
 
@@ -254,7 +256,7 @@ export const createTransformationEventXml = file =>
             .join('\n')
 
           const outputQuantityListXml = !!outputQuantityItemXml
-            ? `<inputQuantityList>${outputQuantityItemXml}</inputQuantityList>`
+            ? `<outputQuantityList>${outputQuantityItemXml}</outputQuantityList>`
             : ''
 
           const ilmdCbvmdaItemsXml = [
@@ -289,9 +291,9 @@ export const createTransformationEventXml = file =>
               d => `<cbvmda:vesselCatchInformation>
     <cbvmda:vesselName>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_vesselName}</cbvmda:vesselName> 
     <cbvmda:vesselID>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_vesselID}</cbvmda:vesselID>
-    <cbvmda:vesselPublicRegistry>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_vesselPublicRegistry}</cbvmda:vesselPublicRegistry>
+    <gdst:vesselPublicRegistry>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_vesselPublicRegistry}</gdst:vesselPublicRegistry>
     <cbvmda:vesselFlagState>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_vesselFlagState}</cbvmda:vesselFlagState>
-    <cbvmda:imoNumber>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_imoNumber}</cbvmda:imoNumber>
+    <gdst:imoNumber>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_imoNumber}</gdst:imoNumber>
 </cbvmda:vesselCatchInformation>`
             )
             .join('\n')
@@ -306,6 +308,7 @@ export const createTransformationEventXml = file =>
             index,
             indexKey: 'informationProvider',
             itemKeyList: [
+              'ilmd_certificationList_certification_certificationType',
               'ilmd_certificationList_certification_certificationAgency',
               'ilmd_certificationList_certification_certificationIdentification',
               'ilmd_certificationList_certification_certificationStandard',
@@ -313,12 +316,13 @@ export const createTransformationEventXml = file =>
             ]
           })
             .map(
-              d => `<certification>
-  <certificationStandard>${d.ilmd_certificationList_certification_certificationStandard}</certificationStandard> 
-  <certificationAgency>${d.ilmd_certificationList_certification_certificationAgency}</certificationAgency>
-  <certificationValue>${d.ilmd_certificationList_certification_certificationValue}</certificationValue>
-  <certificationIdentification>${d.ilmd_certificationList_certification_certificationIdentification}</certificationIdentification>
-</certification>`
+              d => `<cbvmda:certification>
+  <gdst:certificateType>${d.ilmd_certificationList_certification_certificationType}</gdst:certificateType>              
+  <cbvmda:certificationStandard>${d.ilmd_certificationList_certification_certificationStandard}</c,certificationStandard> 
+  <cbvmda:certificationAgency>${d.ilmd_certificationList_certification_certificationAgency}</certificationAgency>
+  <cbvmda:certificationValue>${d.ilmd_certificationList_certification_certificationValue}</certificationValue>
+  <cbvmda:certificationIdentification>${d.ilmd_certificationList_certification_certificationIdentification}</certificationIdentification>
+</cbvmda:certification>`
             )
             .join('\n')
             .trim()
@@ -326,6 +330,7 @@ export const createTransformationEventXml = file =>
           const ilmdCertificationXml = !!ilmdCertificationItemsXml
             ? `<cbvmda:certificationList>${ilmdCertificationItemsXml}</cbvmda:certificationList>`
             : ''
+
           const ilmdItemsXml = [
             ilmdCbvmdaItemsXml,
             ilmdVesselCatchInformationListXml,
@@ -577,6 +582,7 @@ export const createObjectEventXml = file =>
             index,
             indexKey: 'informationProvider',
             itemKeyList: [
+              'extension_ilmd_certificationList_certification_certificationType',
               'extension_ilmd_certificationList_certification_certificationAgency',
               'extension_ilmd_certificationList_certification_certificationIdentification',
               'extension_ilmd_certificationList_certification_certificationStandard',
@@ -584,12 +590,13 @@ export const createObjectEventXml = file =>
             ]
           })
             .map(
-              d => `<certification>
-    <certificationStandard>${d.extension_ilmd_certificationList_certification_certificationStandard}</certificationStandard> 
-    <certificationAgency>${d.extension_ilmd_certificationList_certification_certificationAgency}</certificationAgency>
-    <certificationValue>${d.extension_ilmd_certificationList_certification_certificationValue}</certificationValue>
-    <certificationIdentification>${d.extension_ilmd_certificationList_certification_certificationIdentification}</certificationIdentification>
-  </certification>`
+              d => `<cbvmda:certification>
+    <gdst:certificateType>${d.extension_ilmd_certificationList_certification_certificationType}</gdst:certificateType>
+    <cbvmda:certificationStandard>${d.extension_ilmd_certificationList_certification_certificationStandard}</cbvmda:certificationStandard> 
+    <cbvmda:certificationAgency>${d.extension_ilmd_certificationList_certification_certificationAgency}</certificationAgency>
+    <cbvmda:certificationValue>${d.extension_ilmd_certificationList_certification_certificationValue}</certificationValue>
+    <cbvmda:certificationIdentification>${d.extension_ilmd_certificationList_certification_certificationIdentification}</certificationIdentification>
+  </cbvmda:certification>`
             )
             .join('\n')
             .trim()
@@ -638,7 +645,6 @@ export const createObjectEventXml = file =>
     <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
     <readPoint><id>${readPoint_id}</id></readPoint>
     <bizLocation><id>${bizLocation_id}</id></bizLocation>
-    
     ${bizTransactionListXml}
     ${extensionXml}
     ${humanWelfarePolicyXml}

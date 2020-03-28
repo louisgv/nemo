@@ -17,6 +17,7 @@ export const csvAggregationEventHeader = [
   'extension_childQuantityList_quantityElement_quantity',
   'extension_childQuantityList_quantityElement_uom',
 
+  'extension_certificationList_certification_certificationType',
   'extension_certificationList_certification_certificationAgency',
   'extension_certificationList_certification_certificationIdentification',
   'extension_certificationList_certification_certificationStandard',
@@ -62,6 +63,7 @@ export const csvTransformationEventHeader = [
   'ilmd_vesselCatchInformationList_vesselCatchInformation_vesselFlagState',
   'ilmd_vesselCatchInformationList_vesselCatchInformation_imoNumber',
 
+  'ilmd_certificationList_certification_certificationType',
   'ilmd_certificationList_certification_certificationAgency',
   'ilmd_certificationList_certification_certificationIdentification',
   'ilmd_certificationList_certification_certificationStandard',
@@ -82,11 +84,11 @@ export const csvObjectEventHeader = [
   'readPoint_id',
   'bizLocation_id',
   
-  'humanWelfarePolicy',
-
   'bizTransactionList_bizTransaction_type',
   'bizTransactionList_bizTransaction_value',
-
+  
+  'humanWelfarePolicy',
+  
   'extension_sourceList_source_type',
   'extension_sourceList_source_value',
 
@@ -106,6 +108,7 @@ export const csvObjectEventHeader = [
   'extension_ilmd_unloadingPort',
   'extension_ilmd_broodstockSource',
 
+  'extension_ilmd_certificationList_certification_certificationType',
   'extension_ilmd_certificationList_certification_certificationAgency',
   'extension_ilmd_certificationList_certification_certificationIdentification',
   'extension_ilmd_certificationList_certification_certificationStandard',
