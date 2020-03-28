@@ -93,7 +93,6 @@ export const csvObjectEventHeader = [
   'extension_destinationList_destination_type',
   'extension_destinationList_destination_value',
 
-  'extension_ilmd_fisheryImprovementProject',
   'extension_ilmd_harvestEndDate',
   'extension_ilmd_harvestStartDate',
 
@@ -103,7 +102,7 @@ export const csvObjectEventHeader = [
   'extension_ilmd_landingEndDate',
   'extension_ilmd_landingStartDate',
 
-  'extension_ilmd_productionMethodCode',
+  'extension_ilmd_productionMethodForFishAndSeafoodCode',
   'extension_ilmd_unloadingPort',
   'extension_ilmd_broodstockSource',
 
@@ -123,7 +122,10 @@ export const csvObjectEventHeader = [
   'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselName',
   'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_gpsAvailability',
   'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselPublicRegistry', 
-  'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselRegistration',
+
+  'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_satelliteTrackingAuthority',
+  'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_fisheryImprovementProject',
+  'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_imoNumber',
 
   'extension_quantityList_quantityElement_epcClass',
   'extension_quantityList_quantityElement_quantity',
@@ -160,14 +162,14 @@ export const csvLocationHeader = [
 export const csvEpcClassHeader = [
   'informationProvider',
   'id',
+  'speciesForFisheryStatisticsPurposesCode',
   'descriptionShort',
   'speciesForFisheryStatisticsPurposesName',
-  'speciesForFisheryStatisticsPurposesCode',
   'tradeItemConditionCode',
   'additionalTradeItemIdentification',
   'preservationTechniqueCode',
-  'grossWeightMeasurementValue',
-  'grossWeightMeasurementUnitCode'
+  'grossWeight_measurement_value',
+  'grossWeight_measurementUnit_code'
 ]
 
 export const csvBusinessDocumentHeader = [
