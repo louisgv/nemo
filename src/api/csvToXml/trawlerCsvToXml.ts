@@ -720,11 +720,9 @@ export const createEpcClassXml = file =>
       // skipLines: 3
     })) as any
 
-    debug(parsedData)
-
     const vocabArrayKeyList = [
-      'grossWeightMeasurementValue',
-      'grossWeightMeasurementUnitCode'
+      'grossWeight_measurement_value',
+      'grossWeight_measurementUnit_code'
     ]
 
     const vocabElementListItems = parsedData
@@ -732,15 +730,12 @@ export const createEpcClassXml = file =>
         (
           {
             id,
-            informationProvider,
-            speciesForFisheryStatisticsPurposesCode,
-
             ...optionalAttributeMap
           },
           index
         ) => {
           if (!id) return ''
-          const optionalAttributeItems = Object.entries(optionalAttributeMap)
+          const cbvMdaAttributeItems = Object.entries(optionalAttributeMap)
             .filter(([k, v]) => !!v && !vocabArrayKeyList.includes(k))
             .map(
               ([k, v]) =>
@@ -756,14 +751,10 @@ export const createEpcClassXml = file =>
           })
 
           const grossWeightItemsXml = grossWeightDataList
-            .map(
-              ({
-                grossWeightMeasurementUnitCode,
-                grossWeightMeasurementValue
-              }) =>
+            .map(d =>
                 `<measurement measurementUnitCode="${parseUom(
-                  grossWeightMeasurementUnitCode
-                )}">${grossWeightMeasurementValue}</measurement>`
+                  d.grossWeight_measurementUnit_code
+                )}">${d.grossWeight_measurement_value}</measurement>`
             )
             .join('\n')
             .trim()
@@ -773,9 +764,7 @@ export const createEpcClassXml = file =>
             : ''
 
           return `<VocabularyElement id="${id}">
-  <attribute id="urn:epcglobal:cbv:mda#informationProvider">${informationProvider}</attribute>
-  <attribute id="urn:epcglobal:cbv:mda#speciesForFisheryStatisticsPurposesCode">${speciesForFisheryStatisticsPurposesCode}</attribute>
-  ${optionalAttributeItems}
+  ${cbvMdaAttributeItems}
   ${grossWeightXml}
 </VocabularyElement>`
         }
