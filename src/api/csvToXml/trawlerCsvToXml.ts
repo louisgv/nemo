@@ -118,7 +118,7 @@ export const createAggregationEventXml = file =>
             csvData: parsedData,
             index,
             indexKey: 'informationProvider',
-            itemKeyList: [              
+            itemKeyList: [
               'extension_certificationList_certification_certificationType',
               'extension_certificationList_certification_certificationAgency',
               'extension_certificationList_certification_certificationIdentification',
@@ -494,7 +494,8 @@ export const createObjectEventXml = file =>
             ]
           })
             .map(
-              d => `<quantityElement><epcClass>${d.extension_quantityList_quantityElement_epcClass}</epcClass>
+              d => `<quantityElement>
+  <epcClass>${d.extension_quantityList_quantityElement_epcClass}</epcClass>
   <quantity>${d.extension_quantityList_quantityElement_quantity}</quantity>
   <uom>${d.extension_quantityList_quantityElement_uom}</uom>
 </quantityElement>`
