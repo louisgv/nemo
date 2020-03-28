@@ -155,8 +155,8 @@ export const csvLocationHeader = [
   'vesselOwnerName',
   'vesselOrganizationName',
   'fishingGearTypeCode',
-  'geofencePolygonPolygonPointSeq',
-  'geofencePolygonPolygonPointValue'
+  'geofencePolygon_polygonPoint_seq',
+  'geofencePolygon_polygonPoint_value'
 ]
 
 export const csvEpcClassHeader = [

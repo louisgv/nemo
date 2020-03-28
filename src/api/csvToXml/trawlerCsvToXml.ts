@@ -114,7 +114,6 @@ export const createAggregationEventXml = file =>
             ? `<childQuantityList>${childQuantityListItem}</childQuantityList>`
             : ''
 
-          
           const certificationListItem = parseCsvColumnList({
             csvData: parsedData,
             index,
@@ -124,7 +123,7 @@ export const createAggregationEventXml = file =>
               'extension_certificationList_certification_certificationIdentification',
               'extension_certificationList_certification_certificationStandard',
               'extension_certificationList_certification_certificationValue'
-             ]
+            ]
           })
             .map(
               d => `<certification>
@@ -140,7 +139,10 @@ export const createAggregationEventXml = file =>
             ? `<cbvmda:certificationList>${certificationListItem}</cbvmda:certificationList>`
             : ''
 
-          const extensionItemsXml = [childQuantityListXml, certificationListXml].join('\n')
+          const extensionItemsXml = [
+            childQuantityListXml,
+            certificationListXml
+          ].join('\n')
 
           const extensionXml = !!extensionItemsXml
             ? `<extension>${extensionItemsXml}</extension>`
@@ -169,7 +171,6 @@ export const createAggregationEventXml = file =>
       )
       .filter(t => !!t.xml)
   })
-
 
 export const createTransformationEventXml = file =>
   withIgnoreError(async () => {
@@ -272,33 +273,33 @@ export const createTransformationEventXml = file =>
             .map(k => `<cbvmda:${k}>${rest[`ilmd_${k}`]}</cbvmda:${k}>`)
             .join('\n')
 
-            const ilmdVesselCatchInformationItemsXml = parseCsvColumnList({
-              csvData: parsedData,
-              index,
-              indexKey: 'informationProvider',
-              itemKeyList: [
-                'ilmd_vesselCatchInformationList_vesselCatchInformation_vesselName',
-                'ilmd_vesselCatchInformationList_vesselCatchInformation_vesselID',
-                'ilmd_vesselCatchInformationList_vesselCatchInformation_vesselPublicRegistry', 
-                'ilmd_vesselCatchInformationList_vesselCatchInformation_vesselFlagState',
-                'ilmd_vesselCatchInformationList_vesselCatchInformation_imoNumber',
-              ]
-            })
-              .map(
-                d => `<cbvmda:vesselCatchInformation>
+          const ilmdVesselCatchInformationItemsXml = parseCsvColumnList({
+            csvData: parsedData,
+            index,
+            indexKey: 'informationProvider',
+            itemKeyList: [
+              'ilmd_vesselCatchInformationList_vesselCatchInformation_vesselName',
+              'ilmd_vesselCatchInformationList_vesselCatchInformation_vesselID',
+              'ilmd_vesselCatchInformationList_vesselCatchInformation_vesselPublicRegistry',
+              'ilmd_vesselCatchInformationList_vesselCatchInformation_vesselFlagState',
+              'ilmd_vesselCatchInformationList_vesselCatchInformation_imoNumber'
+            ]
+          })
+            .map(
+              d => `<cbvmda:vesselCatchInformation>
     <cbvmda:vesselName>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_vesselName}</cbvmda:vesselName> 
     <cbvmda:vesselID>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_vesselID}</cbvmda:vesselID>
     <cbvmda:vesselPublicRegistry>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_vesselPublicRegistry}</cbvmda:vesselPublicRegistry>
     <cbvmda:vesselFlagState>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_vesselFlagState}</cbvmda:vesselFlagState>
     <cbvmda:imoNumber>${d.ilmd_vesselCatchInformationList_vesselCatchInformation_imoNumber}</cbvmda:imoNumber>
 </cbvmda:vesselCatchInformation>`
-              )
-              .join('\n')
-              .trim()
-  
-            const ilmdVesselCatchInformationListXml = !!ilmdVesselCatchInformationItemsXml
-              ? `<cbvmda:vesselCatchInformationList>${ilmdVesselCatchInformationItemsXml}</cbvmda:vesselCatchInformationList>`
-              : ''
+            )
+            .join('\n')
+            .trim()
+
+          const ilmdVesselCatchInformationListXml = !!ilmdVesselCatchInformationItemsXml
+            ? `<cbvmda:vesselCatchInformationList>${ilmdVesselCatchInformationItemsXml}</cbvmda:vesselCatchInformationList>`
+            : ''
 
           const ilmdCertificationItemsXml = parseCsvColumnList({
             csvData: parsedData,
@@ -325,7 +326,11 @@ export const createTransformationEventXml = file =>
           const ilmdCertificationXml = !!ilmdCertificationItemsXml
             ? `<cbvmda:certificationList>${ilmdCertificationItemsXml}</cbvmda:certificationList>`
             : ''
-          const ilmdItemsXml = [ilmdCbvmdaItemsXml, ilmdVesselCatchInformationListXml, ilmdCertificationXml]
+          const ilmdItemsXml = [
+            ilmdCbvmdaItemsXml,
+            ilmdVesselCatchInformationListXml,
+            ilmdCertificationXml
+          ]
             .join('\n')
             .trim()
 
@@ -459,7 +464,9 @@ export const createObjectEventXml = file =>
           })
             .map(
               d =>
-                `<destination type="urn:epcglobal:cbv:sdt:${d.extension_destinationList_destination_type}">${d.extension_destinationList_destination_value}</destination>`
+                `<destination type="urn:epcglobal:cbv:sdt:${d.extension_destinationList_destination_type}">
+                  ${d.extension_destinationList_destination_value}
+                </destination>`
             )
             .join('\n')
 
@@ -467,7 +474,9 @@ export const createObjectEventXml = file =>
             ? `<destinationList>${destinationListItem}</destinationList>`
             : ''
 
-          const humanWelfarePolicyXml = !!humanWelfarePolicy ? `<gdst:humanWelfarePolicy>${humanWelfarePolicy}</gdst:humanWelfarePolicy>` : '';
+          const humanWelfarePolicyXml = !!humanWelfarePolicy
+            ? `<gdst:humanWelfarePolicy>${humanWelfarePolicy}</gdst:humanWelfarePolicy>`
+            : ''
 
           const quantityListItem = parseCsvColumnList({
             csvData: parsedData,
@@ -500,21 +509,22 @@ export const createObjectEventXml = file =>
             'transshipStartDate',
             'transshipEndDate',
             'landingEndDate',
-            'landingStartDate',          ]
+            'landingStartDate'
+          ]
             .filter(k => !!rest[`extension_ilmd_${k}`])
             .map(
               k => `<cbvmda:${k}>${rest[`extension_ilmd_${k}`]}</cbvmda:${k}>`
             )
             .join('\n')
 
-          const ilmdGdstItemsXml = [
-            'broodstockSource'
-          ]
+          const ilmdGdstItemsXml = ['broodstockSource']
             .filter(k => !!rest[`extension_ilmd_${k}`])
             .map(k => `<gdst:${k}>${rest[`extension_ilmd_${k}`]}</gdst:${k}>`)
             .join('\n')
 
-          const ilmdProductionMethodXml = !!extension_ilmd_productionMethodForFishAndSeafoodCode ? `<productionMethodForFishAndSeafoodCode>${extension_ilmd_productionMethodForFishAndSeafoodCode}</productionMethodForFishAndSeafoodCode>` : ''
+          const ilmdProductionMethodXml = !!extension_ilmd_productionMethodForFishAndSeafoodCode
+            ? `<productionMethodForFishAndSeafoodCode>${extension_ilmd_productionMethodForFishAndSeafoodCode}</productionMethodForFishAndSeafoodCode>`
+            : ''
 
           const ilmdVesselCatchInformationItemsXml = parseCsvColumnList({
             csvData: parsedData,
@@ -525,17 +535,17 @@ export const createObjectEventXml = file =>
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_rmfoArea',
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_economicZone',
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_subnationalPermitArea',
-            
+
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_fishingGearTypeCode',
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselFlagState',
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselID',
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselName',
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_gpsAvailability',
-              'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselPublicRegistry', 
-            
+              'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_vesselPublicRegistry',
+
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_satelliteTrackingAuthority',
               'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_fisheryImprovementProject',
-              'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_imoNumber',            
+              'extension_ilmd_vesselCatchInformationList_vesselCatchInformation_imoNumber'
             ]
           })
             .map(
@@ -561,32 +571,32 @@ export const createObjectEventXml = file =>
           const ilmdVesselCatchInformationListXml = !!ilmdVesselCatchInformationItemsXml
             ? `<cbvmda:vesselCatchInformationList>${ilmdVesselCatchInformationItemsXml}</cbvmda:vesselCatchInformationList>`
             : ''
-          
-            const ilmdCertificationItemsXml = parseCsvColumnList({
-              csvData: parsedData,
-              index,
-              indexKey: 'informationProvider',
-              itemKeyList: [
-                'extension_ilmd_certificationList_certification_certificationAgency',
-                'extension_ilmd_certificationList_certification_certificationIdentification',
-                'extension_ilmd_certificationList_certification_certificationStandard',
-                'extension_ilmd_certificationList_certification_certificationValue'
-              ]
-            })
-              .map(
-                d => `<certification>
+
+          const ilmdCertificationItemsXml = parseCsvColumnList({
+            csvData: parsedData,
+            index,
+            indexKey: 'informationProvider',
+            itemKeyList: [
+              'extension_ilmd_certificationList_certification_certificationAgency',
+              'extension_ilmd_certificationList_certification_certificationIdentification',
+              'extension_ilmd_certificationList_certification_certificationStandard',
+              'extension_ilmd_certificationList_certification_certificationValue'
+            ]
+          })
+            .map(
+              d => `<certification>
     <certificationStandard>${d.extension_ilmd_certificationList_certification_certificationStandard}</certificationStandard> 
     <certificationAgency>${d.extension_ilmd_certificationList_certification_certificationAgency}</certificationAgency>
     <certificationValue>${d.extension_ilmd_certificationList_certification_certificationValue}</certificationValue>
     <certificationIdentification>${d.extension_ilmd_certificationList_certification_certificationIdentification}</certificationIdentification>
   </certification>`
-              )
-              .join('\n')
-              .trim()
-  
-            const ilmdCertificationXml = !!ilmdCertificationItemsXml
-              ? `<cbvmda:certificationList>${ilmdCertificationItemsXml}</cbvmda:certificationList>`
-              : ''
+            )
+            .join('\n')
+            .trim()
+
+          const ilmdCertificationXml = !!ilmdCertificationItemsXml
+            ? `<cbvmda:certificationList>${ilmdCertificationItemsXml}</cbvmda:certificationList>`
+            : ''
 
           const ilmdItemsXml = [
             ilmdCbvmdaItemsXml,
@@ -597,7 +607,7 @@ export const createObjectEventXml = file =>
           ]
             .join('\n')
             .trim()
-            
+
           const ilmdXml = !!ilmdItemsXml
             ? `<ilmd>
               ${ilmdItemsXml}
@@ -652,8 +662,8 @@ export const createLocationXml = file =>
     })) as any
 
     const vocabArrayKeyList = [
-      'geofencePolygonPolygonPointSeq',
-      'geofencePolygonPolygonPointValue'
+      'geofencePolygon_polygonPoint_seq',
+      'geofencePolygon_polygonPoint_value'
     ]
 
     const vocabElementListItems = parsedData
@@ -661,7 +671,6 @@ export const createLocationXml = file =>
         (
           {
             id,
-            informationProvider,
 
             ...optionalAttributeMap
           },
@@ -684,7 +693,7 @@ export const createLocationXml = file =>
           })
             .map(
               d =>
-                `<polygonPoint seq="${d.geofencePolygonPolygonPointSeq}">${d.geofencePolygonPolygonPointValue}</polygonPoint>`
+                `<polygonPoint seq="${d.geofencePolygon_polygonPoint_seq}">${d.geofencePolygon_polygonPoint_value}</polygonPoint>`
             )
             .join('\n')
             .trim()
@@ -694,7 +703,6 @@ export const createLocationXml = file =>
             : ''
 
           return `<VocabularyElement id="${id}">
-  <attribute id="urn:epcglobal:cbv:mda#informationProvider">${informationProvider}</attribute>
   ${optionalAttributeItems}
   ${geofanceXml}
 </VocabularyElement>`
@@ -726,49 +734,42 @@ export const createEpcClassXml = file =>
     ]
 
     const vocabElementListItems = parsedData
-      .map(
-        (
-          {
-            id,
-            ...optionalAttributeMap
-          },
-          index
-        ) => {
-          if (!id) return ''
-          const cbvMdaAttributeItems = Object.entries(optionalAttributeMap)
-            .filter(([k, v]) => !!v && !vocabArrayKeyList.includes(k))
-            .map(
-              ([k, v]) =>
-                `<attribute id="urn:epcglobal:cbv:mda#${k}">${v}</attribute>`
-            )
-            .join('\n')
+      .map(({ id, ...optionalAttributeMap }, index) => {
+        if (!id) return ''
+        const optionalAttributeItems = Object.entries(optionalAttributeMap)
+          .filter(([k, v]) => !!v && !vocabArrayKeyList.includes(k))
+          .map(
+            ([k, v]) =>
+              `<attribute id="urn:epcglobal:cbv:mda#${k}">${v}</attribute>`
+          )
+          .join('\n')
 
-          const grossWeightDataList = parseCsvColumnList({
-            csvData: parsedData,
-            index,
-            indexKey: 'id',
-            itemKeyList: vocabArrayKeyList
-          })
+        const grossWeightDataList = parseCsvColumnList({
+          csvData: parsedData,
+          index,
+          indexKey: 'id',
+          itemKeyList: vocabArrayKeyList
+        })
 
-          const grossWeightItemsXml = grossWeightDataList
-            .map(d =>
-                `<measurement measurementUnitCode="${parseUom(
-                  d.grossWeight_measurementUnit_code
-                )}">${d.grossWeight_measurement_value}</measurement>`
-            )
-            .join('\n')
-            .trim()
+        const grossWeightItemsXml = grossWeightDataList
+          .map(
+            d =>
+              `<measurement measurementUnitCode="${parseUom(
+                d.grossWeight_measurementUnit_code
+              )}">${d.grossWeight_measurement_value}</measurement>`
+          )
+          .join('\n')
+          .trim()
 
-          const grossWeightXml = !!grossWeightItemsXml
-            ? `<attribute id="urn:epcglobal:cbv:mda#grossWeight">${grossWeightItemsXml}</attribute>`
-            : ''
+        const grossWeightXml = !!grossWeightItemsXml
+          ? `<attribute id="urn:epcglobal:cbv:mda#grossWeight">${grossWeightItemsXml}</attribute>`
+          : ''
 
-          return `<VocabularyElement id="${id}">
-  ${cbvMdaAttributeItems}
+        return `<VocabularyElement id="${id}">
+  ${optionalAttributeItems}
   ${grossWeightXml}
 </VocabularyElement>`
-        }
-      )
+      })
       .join('\n')
       .trim()
 
