@@ -1,4 +1,6 @@
 export const csvAggregationEventHeader = [
+  'eventId',
+
   'action',
   'bizStep',
   'informationProvider',
@@ -25,6 +27,8 @@ export const csvAggregationEventHeader = [
 ]
 
 export const csvTransformationEventHeader = [
+  'eventId',
+
   'bizStep',
   'informationProvider',
   'productOwner',
@@ -71,6 +75,8 @@ export const csvTransformationEventHeader = [
 ]
 
 export const csvObjectEventHeader = [
+  'eventId',
+
   'action',
   'bizStep',
   'informationProvider',
