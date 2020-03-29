@@ -520,7 +520,7 @@ export const createObjectEventXml = file =>
           //#endregion
 
           //#region parse ilmd
-          const ilmdCbvmdaItemsXml = [
+          const cbvmdaItemsXml = [
             'unloadingPort',
             'harvestEndDate',
             'harvestStartDate',
@@ -621,10 +621,10 @@ export const createObjectEventXml = file =>
             : ''
 
           const ilmdItemsXml = [
-            ilmdCbvmdaItemsXml,
             ilmdGdstItemsXml,
             ilmdVesselCatchInformationListXml,
             ilmdProductionMethodXml,
+            !isObserve ? cbvmdaItemsXml : '',
             !isObserve ? certificationXml : ''
           ]
             .join('\n')
@@ -664,7 +664,10 @@ export const createObjectEventXml = file =>
     <readPoint><id>${readPoint_id}</id></readPoint>
     <bizLocation><id>${bizLocation_id}</id></bizLocation>
     ${bizTransactionListXml}
+
     ${isObserve ? certificationXml : ''}
+    ${isObserve ? cbvmdaItemsXml : ''}
+
     ${extensionXml}
     ${humanWelfarePolicyXml}
     <gdst:productOwner>${productOwner}</gdst:productOwner>
