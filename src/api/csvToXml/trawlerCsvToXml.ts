@@ -62,6 +62,7 @@ export const createAggregationEventXml = file =>
       .map(
         (
           {
+            eventId,
             action,
             bizStep,
             informationProvider,
@@ -155,6 +156,10 @@ export const createAggregationEventXml = file =>
             xml: `<AggregationEvent>
   <eventTime>${eventTime}</eventTime> 
   <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
+  <baseExtension>
+    <eventID>${eventId}</eventID>
+  </baseExtension>
+  
   ${childEPCsXml}
 
   <action>${action}</action>
@@ -187,6 +192,7 @@ export const createTransformationEventXml = file =>
       .map(
         (
           {
+            eventId,
             bizStep,
             informationProvider,
             productOwner,
@@ -351,6 +357,9 @@ export const createTransformationEventXml = file =>
 <TransformationEvent>
   <eventTime>${eventTime}</eventTime> 
   <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
+  <baseExtension>
+    <eventID>${eventId}</eventID>
+  </baseExtension>
   <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
   <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
   
@@ -387,6 +396,7 @@ export const createObjectEventXml = file =>
       .map(
         (
           {
+            eventId,
             action,
             bizStep,
             informationProvider,
@@ -640,6 +650,9 @@ export const createObjectEventXml = file =>
             xml: `<ObjectEvent>
     <eventTime>${eventTime}</eventTime> 
     <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
+    <baseExtension>
+      <eventID>${eventId}</eventID>
+    </baseExtension>
     ${epcListXml}
     <action>${action}</action>
     <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
