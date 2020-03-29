@@ -416,6 +416,8 @@ export const createObjectEventXml = file =>
         ) => {
           if (!action || !eventTime || !informationProvider) return ''
 
+          const isObserve = action === 'OBSERVE'
+
           //#region parse basic lists
           const epcItemsXml = parseCsvColumnList({
             csvData: parsedData,
@@ -588,7 +590,7 @@ export const createObjectEventXml = file =>
             ? `<cbvmda:vesselCatchInformationList>${ilmdVesselCatchInformationItemsXml}</cbvmda:vesselCatchInformationList>`
             : ''
 
-          const ilmdCertificationItemsXml = parseCsvColumnList({
+          const certificationItemsXml = parseCsvColumnList({
             csvData: parsedData,
             index,
             indexKey: 'informationProvider',
@@ -612,8 +614,10 @@ export const createObjectEventXml = file =>
             .join('\n')
             .trim()
 
-          const ilmdCertificationXml = !!ilmdCertificationItemsXml
-            ? `<cbvmda:certificationList>${ilmdCertificationItemsXml}</cbvmda:certificationList>`
+          const certificationXml = !!certificationItemsXml
+            ? isObserve
+              ? `<gdst:certificationList>${certificationItemsXml}</gdst:certificationList>`
+              : `<cbvmda:certificationList>${certificationItemsXml}</cbvmda:certificationList>`
             : ''
 
           const ilmdItemsXml = [
@@ -621,7 +625,7 @@ export const createObjectEventXml = file =>
             ilmdGdstItemsXml,
             ilmdVesselCatchInformationListXml,
             ilmdProductionMethodXml,
-            ilmdCertificationXml
+            !isObserve ? certificationXml : ''
           ]
             .join('\n')
             .trim()
@@ -660,6 +664,7 @@ export const createObjectEventXml = file =>
     <readPoint><id>${readPoint_id}</id></readPoint>
     <bizLocation><id>${bizLocation_id}</id></bizLocation>
     ${bizTransactionListXml}
+    ${isObserve ? certificationXml : ''}
     ${extensionXml}
     ${humanWelfarePolicyXml}
     <gdst:productOwner>${productOwner}</gdst:productOwner>
