@@ -163,7 +163,7 @@ export const TrawlerEpcisToolsInput = ({ triggerNextStep }: any) => {
 
       <XmlDownloadButton
         disabled={!isAnyXmlValid()}
-        fileLabel="Bolton"
+        fileLabel="Trawler"
         xml={createTrawlerXml({
           bdhXml,
           epcClassXml,

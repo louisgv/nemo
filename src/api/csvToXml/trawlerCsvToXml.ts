@@ -131,9 +131,9 @@ export const createAggregationEventXml = file =>
               d => `<cbvmda:certification>
     <gdst:certificateType>${d.extension_certificationList_certification_certificationType}</gdst:certificateType>
     <cbvmda:certificationAgency>${d.extension_certificationList_certification_certificationAgency}</cbvmda:certificationAgency>
-    <cbvmda:certificationIdentification>${d.extension_certificationList_certification_certificationIdentification}</certificationIdentification>
-    <cbvmda:certificationStandard>${d.extension_certificationList_certification_certificationStandard}</certificationStandard>
-    <cbvmda:certificationValue>${d.extension_certificationList_certification_certificationValue}</certificationValue>
+    <cbvmda:certificationIdentification>${d.extension_certificationList_certification_certificationIdentification}</cbvmda:certificationIdentification>
+    <cbvmda:certificationStandard>${d.extension_certificationList_certification_certificationStandard}</cbvmda:certificationStandard>
+    <cbvmda:certificationValue>${d.extension_certificationList_certification_certificationValue}</cbvmda:certificationValue>
   </cbvmda:certification>`
             )
             .join('\n')
@@ -152,7 +152,7 @@ export const createAggregationEventXml = file =>
             : ''
 
           return {
-            date: new Date(eventTime),
+            date: new Date(`${eventTime}Z${eventTimeZoneOffset}`),
             xml: `<AggregationEvent>
   <eventTime>${eventTime}</eventTime> 
   <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
@@ -324,10 +324,10 @@ export const createTransformationEventXml = file =>
             .map(
               d => `<cbvmda:certification>
   <gdst:certificateType>${d.ilmd_certificationList_certification_certificationType}</gdst:certificateType>              
-  <cbvmda:certificationStandard>${d.ilmd_certificationList_certification_certificationStandard}</c,certificationStandard> 
-  <cbvmda:certificationAgency>${d.ilmd_certificationList_certification_certificationAgency}</certificationAgency>
-  <cbvmda:certificationValue>${d.ilmd_certificationList_certification_certificationValue}</certificationValue>
-  <cbvmda:certificationIdentification>${d.ilmd_certificationList_certification_certificationIdentification}</certificationIdentification>
+  <cbvmda:certificationStandard>${d.ilmd_certificationList_certification_certificationStandard}</cbvmda:certificationStandard> 
+  <cbvmda:certificationAgency>${d.ilmd_certificationList_certification_certificationAgency}</cbvmda:certificationAgency>
+  <cbvmda:certificationValue>${d.ilmd_certificationList_certification_certificationValue}</cbvmda:certificationValue>
+  <cbvmda:certificationIdentification>${d.ilmd_certificationList_certification_certificationIdentification}</cbvmda:certificationIdentification>
 </cbvmda:certification>`
             )
             .join('\n')
@@ -352,7 +352,7 @@ export const createTransformationEventXml = file =>
             : ''
 
           return {
-            date: new Date(eventTime),
+            date: new Date(`${eventTime}Z${eventTimeZoneOffset}`),
             xml: `<extension>
 <TransformationEvent>
   <eventTime>${eventTime}</eventTime> 
@@ -606,9 +606,9 @@ export const createObjectEventXml = file =>
               d => `<cbvmda:certification>
     <gdst:certificateType>${d.extension_ilmd_certificationList_certification_certificationType}</gdst:certificateType>
     <cbvmda:certificationStandard>${d.extension_ilmd_certificationList_certification_certificationStandard}</cbvmda:certificationStandard> 
-    <cbvmda:certificationAgency>${d.extension_ilmd_certificationList_certification_certificationAgency}</certificationAgency>
-    <cbvmda:certificationValue>${d.extension_ilmd_certificationList_certification_certificationValue}</certificationValue>
-    <cbvmda:certificationIdentification>${d.extension_ilmd_certificationList_certification_certificationIdentification}</certificationIdentification>
+    <cbvmda:certificationAgency>${d.extension_ilmd_certificationList_certification_certificationAgency}</cbvmda:certificationAgency>
+    <cbvmda:certificationValue>${d.extension_ilmd_certificationList_certification_certificationValue}</cbvmda:certificationValue>
+    <cbvmda:certificationIdentification>${d.extension_ilmd_certificationList_certification_certificationIdentification}</cbvmda:certificationIdentification>
   </cbvmda:certification>`
             )
             .join('\n')
@@ -650,7 +650,7 @@ export const createObjectEventXml = file =>
             : ''
 
           return {
-            date: new Date(eventTime),
+            date: new Date(`${eventTime}Z${eventTimeZoneOffset}`),
             xml: `<ObjectEvent>
     <eventTime>${eventTime}</eventTime> 
     <eventTimeZoneOffset>${eventTimeZoneOffset}</eventTimeZoneOffset>
