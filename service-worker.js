@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/nemo/precache-manifest.e7e80c307d528a450997296ed753a30e.js"
+  "/nemo/precache-manifest.64b5029f2af34262133b2a4ce689acbb.js"
 );
 
 self.addEventListener('message', (event) => {
