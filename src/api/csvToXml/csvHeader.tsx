@@ -92,7 +92,14 @@ export const csvObjectEventHeader = [
   
   'bizTransactionList_bizTransaction_type',
   'bizTransactionList_bizTransaction_value',
+
+  'transshipStartDate',
+  'transshipEndDate',
+  'landingEndDate',
+  'landingStartDate',
   
+  'unloadingPort',
+
   'humanWelfarePolicy',
   
   'extension_sourceList_source_type',
@@ -104,14 +111,7 @@ export const csvObjectEventHeader = [
   'extension_ilmd_harvestEndDate',
   'extension_ilmd_harvestStartDate',
 
-  'extension_ilmd_transshipStartDate',
-  'extension_ilmd_transshipEndDate',
-
-  'extension_ilmd_landingEndDate',
-  'extension_ilmd_landingStartDate',
-
   'extension_ilmd_productionMethodForFishAndSeafoodCode',
-  'extension_ilmd_unloadingPort',
   'extension_ilmd_broodstockSource',
 
   'extension_ilmd_certificationList_certification_certificationType',

@@ -151,6 +151,14 @@ export const createAggregationEventXml = file =>
             ? `<extension>${extensionItemsXml}</extension>`
             : ''
 
+            const bizStepXml = !!bizStep
+            ? `<bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>`
+            : '<bizStep></bizStep>'
+
+          const dispositionXml = !!disposition
+            ? `<disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>`
+            : '<disposition></disposition>'
+
           return {
             date: new Date(`${eventTime}Z${eventTimeZoneOffset}`),
             xml: `<AggregationEvent>
@@ -163,8 +171,8 @@ export const createAggregationEventXml = file =>
   ${childEPCsXml}
 
   <action>${action}</action>
-  <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
-  <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
+  ${bizStepXml}
+  ${dispositionXml}
   <parentID>${parentID}</parentID>
   
   <readPoint><id>${readPoint_id}</id></readPoint>
@@ -351,6 +359,14 @@ export const createTransformationEventXml = file =>
               </ilmd>`
             : ''
 
+          const bizStepXml = !!bizStep
+            ? `<bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>`
+            : '<bizStep></bizStep>'
+
+          const dispositionXml = !!disposition
+            ? `<disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>`
+            : '<disposition></disposition>'
+
           return {
             date: new Date(`${eventTime}Z${eventTimeZoneOffset}`),
             xml: `<extension>
@@ -360,8 +376,8 @@ export const createTransformationEventXml = file =>
   <baseExtension>
     <eventID>${eventId}</eventID>
   </baseExtension>
-  <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
-  <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
+  ${bizStepXml}
+  ${dispositionXml}
   
   <readPoint><id>${readPoint_id}</id></readPoint>
   <bizLocation><id>${bizLocation_id}</id></bizLocation>
@@ -519,15 +535,23 @@ export const createObjectEventXml = file =>
             : ''
           //#endregion
 
-          //#region parse ilmd
           const cbvmdaItemsXml = [
-            'unloadingPort',
-            'harvestEndDate',
-            'harvestStartDate',
             'transshipStartDate',
             'transshipEndDate',
             'landingEndDate',
             'landingStartDate'
+          ]
+            .filter(k => !!rest[k])
+            .map(
+              k => `<cbvmda:${k}>${rest[k]}</cbvmda:${k}>`
+            )
+            .join('\n')
+
+          //#region parse ilmd
+          const ilmdCbvmdaItemsXml = [
+            'unloadingPort',
+            'harvestEndDate',
+            'harvestStartDate',
           ]
             .filter(k => !!rest[`extension_ilmd_${k}`])
             .map(
@@ -624,7 +648,7 @@ export const createObjectEventXml = file =>
             ilmdGdstItemsXml,
             ilmdVesselCatchInformationListXml,
             ilmdProductionMethodXml,
-            !isObserve ? cbvmdaItemsXml : '',
+            ilmdCbvmdaItemsXml,
             !isObserve ? certificationXml : ''
           ]
             .join('\n')
@@ -649,6 +673,14 @@ export const createObjectEventXml = file =>
             ? `<extension>${extensionItemsXml}</extension>`
             : ''
 
+          const bizStepXml = !!bizStep
+            ? `<bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>`
+            : '<bizStep></bizStep>'
+
+          const dispositionXml = !!disposition
+            ? `<disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>`
+            : '<disposition></disposition>'
+
           return {
             date: new Date(`${eventTime}Z${eventTimeZoneOffset}`),
             xml: `<ObjectEvent>
@@ -659,14 +691,17 @@ export const createObjectEventXml = file =>
     </baseExtension>
     ${epcListXml}
     <action>${action}</action>
-    <bizStep>urn:epcglobal:cbv:bizstep:${bizStep}</bizStep>
-    <disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>
+
+    ${bizStepXml}
+    ${dispositionXml}
+
     <readPoint><id>${readPoint_id}</id></readPoint>
     <bizLocation><id>${bizLocation_id}</id></bizLocation>
+
     ${bizTransactionListXml}
 
     ${isObserve ? certificationXml : ''}
-    ${isObserve ? cbvmdaItemsXml : ''}
+    ${cbvmdaItemsXml}
 
     ${extensionXml}
     ${humanWelfarePolicyXml}
