@@ -156,7 +156,7 @@ export const createAggregationEventXml = file =>
             : '<bizStep></bizStep>'
 
           const dispositionXml = !!disposition
-            ? `<disposition>${disposition}</disposition>`
+            ? `<disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>`
             : '<disposition></disposition>'
 
           return {
@@ -364,7 +364,7 @@ export const createTransformationEventXml = file =>
             : '<bizStep></bizStep>'
 
           const dispositionXml = !!disposition
-            ? `<disposition>${disposition}</disposition>`
+            ? `<disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>`
             : '<disposition></disposition>'
 
           return {
@@ -678,7 +678,7 @@ export const createObjectEventXml = file =>
             : '<bizStep></bizStep>'
 
           const dispositionXml = !!disposition
-            ? `<disposition>${disposition}</disposition>`
+            ? `<disposition>urn:epcglobal:cbv:disp:${disposition}</disposition>`
             : '<disposition></disposition>'
 
           return {
